@@ -13,31 +13,26 @@ Platforms:
 
 [Download](https://github.com/diademoff/snake-cli/releases)
 
-**Build**
+# Build
+Install `dotnet-runtime` and `dotnet-sdk` to build.
 
-Dependencies (Arch linux):
-```
-pacman -S dotnet-runtime dotnet-sdk
-```
+## Linux
 
 ```
-git clone https://github.com/diademoff/snake-cli
+git clone https://github.com/diademoff/snake-cli && cd snake-cli
 ```
 
-```
-cd snake-cli
-```
-
+Build and install
 ```
 make && sudo make install
 ```
 
-Run:
+Run
 ```
 snake-cli
 ```
 
-**Build for Windows**
+## Build for Windows
 ```
-dotnet build --runtime win-x64
+dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
 ```
