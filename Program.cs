@@ -36,7 +36,7 @@ namespace snake_cli
             Console.CursorVisible = false;
 
             // Отступ снизу для отображения информации
-            Padding p = new Padding(1, 1, 3, 10);
+            Padding p = new Padding(1, 1, 3, 5);
 
             snake = new Snake('*', p);
             drawer.CreateBorder('·', p);
