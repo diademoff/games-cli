@@ -23,7 +23,6 @@ enum Direction
     None
 }
 
-
 class Snake : IDrawableElement, IInteractive
 {
     public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();

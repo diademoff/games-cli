@@ -47,4 +47,3 @@ class TextField : IDrawableElement
         return r;
     }
 }
-
