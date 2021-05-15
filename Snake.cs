@@ -41,11 +41,11 @@ class Snake : IDrawableElement, IInteractive
     public bool IsFocused { get => isFocused; set => isFocused = value; }
     bool isFocused = true;
 
-    public Snake(char c)
+    public Snake(char c, Padding p)
     {
         this.SnakeChar = c;
         this.Direction = Direction.Right;
-        this.Blocks.Add(new SnakeBlock(c, new Point(1, 1)));
+        this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
     }
 
     // Сдвинуть змейку по направлению

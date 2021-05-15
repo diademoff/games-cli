@@ -5,33 +5,40 @@ namespace snake_cli
 {
     class Program
     {
-        const int FIELD_SIZE_WIDTH = 100;
-        const int FIELD_SIZE_HEIGHT = 30;
+        static int FIELD_SIZE_WIDTH;
+        static int FIELD_SIZE_HEIGHT;
         static int DELAY = 100;
 
-        static Snake snake = new Snake('*');
+        static Snake snake;
         /*
         Для отрисовки используется класс Drawer. Он предоставляет
         возможность отрисовать IDrawable.
         */
-        static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+        static Drawer drawer;
         static Apple apple;
         /*
         Прогресс игрока
         */
-        static Progress progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);
+        static Progress progress;
         static Random rnd = new Random();
 
         static bool isPaused = false;
 
         static void Main(string[] args)
         {
+            FIELD_SIZE_WIDTH = Console.WindowWidth;
+            FIELD_SIZE_HEIGHT = Console.WindowHeight;
+
+            drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+            progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);
+
             Console.Title = "snake-cli";
             Console.CursorVisible = false;
 
             // Отступ снизу для отображения информации
-            Padding p = new Padding(0, 0, 0, 2);
+            Padding p = new Padding(1, 1, 3, 10);
 
+            snake = new Snake('*', p);
             drawer.CreateBorder('·', p);
             InitKeyReading();
             RegenerateApple(p);
@@ -90,6 +97,7 @@ namespace snake_cli
                                 FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
             drawer.Create(box);
+            drawer.DrawToConsole();
             drawer.RedrawAll();
 
             Console.CursorVisible = true;
