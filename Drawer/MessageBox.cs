@@ -1,10 +1,16 @@
+/*
+Текстовое сообщение в рамке.
+*/
+
 using System.Collections.Generic;
 using System.Drawing;
 
 class MessageBox : IDrawableElement
 {
     public IDrawable[] ElementContent => getContent();
-
+    /*
+    Состоит из рамки (Border) и текстового поля (TextField)
+    */
     Border border;
     TextField textField;
 
@@ -19,9 +25,15 @@ class MessageBox : IDrawableElement
         int padding_topbuttom = (field_height - height) / 2;
         int padding_leftright = (field_width - width) / 2;
 
+        /*
+        Расчитать отступы таким образом сообщение было по середине
+        */
         Padding p_border = new Padding(padding_leftright, padding_leftright,
                             padding_topbuttom, padding_topbuttom);
 
+        /*
+        Расчитать координаты текста так чтобы он был в центе обводки
+        */
         Point textStartLocation = new Point((field_width / 2) - (text.Length / 2),
                                 padding_topbuttom + (height / 2));
 

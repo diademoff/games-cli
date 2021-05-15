@@ -1,3 +1,6 @@
+/*
+Класс для отслеживания прогресса игрока
+*/
 class Progress
 {
     public TextField StatusBar { get; }

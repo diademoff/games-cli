@@ -1,6 +1,7 @@
 /*
 Граница/обводка чего-либо
 */
+
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -16,6 +17,10 @@ class Border : IDrawableElement
 
     public Border(char c, int width, int height, Padding p)
     {
+        /*
+        Создать ключевые точки с учетом отступов
+        */
+
         var lt = new Point(p.Left, p.Top); // left top
         var rt = new Point(width - p.Right - 1, p.Top); // right top
         var lb = new Point(p.Left, height - p.Buttom - 1); // left buttom

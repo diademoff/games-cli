@@ -1,3 +1,7 @@
+/*
+Простая реализация IDrawable - символ
+*/
+
 using System.Drawing;
 
 class DrawableChar : IDrawable

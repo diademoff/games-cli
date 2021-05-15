@@ -57,12 +57,18 @@ class Snake : IDrawableElement, IInteractive
 
         if (addBlockQueue > 0)
         {
+            // Вместо добавления, не удаляется
             addBlockQueue -= 1;
         }
         else
         {
             Blocks.RemoveAt(Blocks.Count - 1);
         }
+
+        /*
+        Для смещения последий блок перемещается в начало, перед текущим
+        ведущим.
+        */
 
         Point newBlockLocation = head.Location; // Координаты нового ведущего блока
 
@@ -92,6 +98,9 @@ class Snake : IDrawableElement, IInteractive
         }
     }
 
+    /*
+    Добавить блок к змейке
+    */
     public void AddBlock()
     {
         this.addBlockQueue += 1;
@@ -104,6 +113,9 @@ class Snake : IDrawableElement, IInteractive
                 Blocks[0].Location.Y == apple.Location.Y;
     }
 
+    /*
+    Пересекает ли змейка сама себя в данный момент
+    */
     public bool SelfIntersect()
     {
         for (int i = 0; i < Blocks.Count - 1; i++)

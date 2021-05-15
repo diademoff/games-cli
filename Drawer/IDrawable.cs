@@ -1,8 +1,9 @@
-using System.Drawing;
-
 /*
 Символ, который можно вывеси в консоль
 */
+
+using System.Drawing;
+
 interface IDrawable
 {
     char Char { get; }

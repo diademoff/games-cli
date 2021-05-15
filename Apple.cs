@@ -44,6 +44,9 @@ struct AppleGen
         this.Padding = p;
     }
 
+    /*
+    Сгенерировать место в соответствии с заданными параметрами.
+    */
     public Point GetRandomPoint(ref Random rnd)
     {
         Point point;

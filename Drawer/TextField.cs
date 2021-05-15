@@ -1,5 +1,6 @@
-// Текстовое поле
-// Многострочность не поддерживается
+/*
+Реализация IDrawableElement для вывода теста в консоль
+*/
 using System.Drawing;
 
 class TextField : IDrawableElement
@@ -7,6 +8,9 @@ class TextField : IDrawableElement
     public string Text { get; set; }
     public IDrawable[] ElementContent => getContent();
 
+    /*
+    Позиция, начиная с которой будет напечатан текст слева направо
+    */
     private Point startLocation;
     public int length { get; private set; }
 
@@ -32,11 +36,13 @@ class TextField : IDrawableElement
             }
             else
             {
-                // Если строка закончилась добавить пробел
+                /*
+                Если строка закончилась заполнить оставшееся
+                место пробелами
+                */
                 c = ' ';
             }
             r[i] = new DrawableChar(c, location);
-
         }
         return r;
     }

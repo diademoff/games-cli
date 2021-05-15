@@ -10,8 +10,15 @@ namespace snake_cli
         static int DELAY = 100;
 
         static Snake snake = new Snake('*');
+        /*
+        Для отрисовки используется класс Drawer. Он предоставляет
+        возможность отрисовать IDrawable.
+        */
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
         static Apple apple;
+        /*
+        Прогресс игрока
+        */
         static Progress progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);
         static Random rnd = new Random();
 
@@ -29,21 +36,21 @@ namespace snake_cli
             InitKeyReading();
             RegenerateApple(p);
 
-            MessageBox info = new MessageBox("Press ESC to resume", 30, 5,
+            MessageBox info_paused = new MessageBox("Press ESC to resume", 30, 5,
                                                     FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
             drawer.RedrawAll();
             while (true)
             {
                 if (isPaused)
                 {
-                    drawer.Create(info);
+                    drawer.Create(info_paused);
                     drawer.DrawToConsole();
 
                     Thread.Sleep(100);
                     continue;
                 }
 
-                drawer.Remove(info);
+                drawer.Remove(info_paused);
                 drawer.Remove(snake); // стереть старую змейку
 
                 snake.Move();
@@ -56,10 +63,16 @@ namespace snake_cli
                     progress.AppleEaten();
                 }
 
-                drawer.Create(snake); // Отрисовать новую змейки
-                drawer.Create(apple); //  Отрисовать яблоко
-                drawer.Create(progress.StatusBar); // Отрисовать бар
+                /*
+                Добавить в очередь запросы на отрисовку компонентов
+                */
+                drawer.Create(snake);
+                drawer.Create(apple);
+                drawer.Create(progress.StatusBar);
 
+                /*
+                Отрисовать очередь.
+                */
                 drawer.DrawToConsole();
 
                 if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
@@ -70,6 +83,9 @@ namespace snake_cli
                 Thread.Sleep(progress.Delay);
             }
 
+            /*
+            Выход из цикла означает что игра окончена.
+            */
             MessageBox box = new MessageBox("GAME OVER", 50, 7,
                                 FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
@@ -94,7 +110,7 @@ namespace snake_cli
 
         /*
         Бесконечный цикл, который читает нажатые клавиши и
-        изменяет направление змейки
+        изменяет направление змейки (запущен в другом потоке)
         */
         static void ReadKeysThread()
         {
