@@ -85,35 +85,11 @@ namespace snake_cli
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
-                var dir = GetDirectionFromKey(keyPressed);
-                if (dir != Direction.None)
+                if (snake.IsFocused)
                 {
-                    snake.Direction = dir;
+                    snake.HandleKey(keyPressed);
                 }
             }
-        }
-
-
-        static Direction GetDirectionFromKey(ConsoleKey key)
-        {
-            if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
-            {
-                return Direction.Up;
-            }
-            else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
-            {
-                return Direction.Left;
-            }
-            else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
-            {
-                return Direction.Right;
-            }
-            else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow)
-            {
-                return Direction.Down;
-            }
-
-            return Direction.None;
         }
     }
 }

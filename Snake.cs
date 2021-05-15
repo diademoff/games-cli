@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -23,7 +24,7 @@ enum Direction
 }
 
 
-class Snake : IDrawableElement
+class Snake : IDrawableElement, IInteractive
 {
     public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
     public Direction Direction { get; set; }
@@ -37,6 +38,9 @@ class Snake : IDrawableElement
     переменной показывает сколько еще блоков нужно добавить к змейке.
     */
     private int addBlockQueue = 0;
+
+    public bool IsFocused { get => isFocused; set => isFocused = value; }
+    bool isFocused = true;
 
     public Snake(char c)
     {
@@ -66,6 +70,26 @@ class Snake : IDrawableElement
 
         SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
         Blocks.Insert(0, blockToAdd);
+    }
+
+    public void HandleKey(ConsoleKey key)
+    {
+        if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
+        {
+            this.Direction = Direction.Up;
+        }
+        else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
+        {
+            this.Direction = Direction.Left;
+        }
+        else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
+        {
+            this.Direction = Direction.Right;
+        }
+        else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow)
+        {
+            this.Direction = Direction.Down;
+        }
     }
 
     public void AddBlock()
