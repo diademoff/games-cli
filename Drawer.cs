@@ -1,7 +1,10 @@
 using System;
 using System.Drawing;
 
-// Для рисования в консоли
+/* Для рисования в консоли
+Методы Draw* взаимодействуют с консолью
+Методы Create* и Remove* изменяют содержимое Content
+*/
 class Drawer
 {
     // Содержимое консоли
@@ -47,6 +50,12 @@ class Drawer
         Content[x, y] = c;
     }
 
+    // Удалить символ по координатам (поставить пробел)
+    public void RemoveChar(int x, int y)
+    {
+        Content[x, y] = ' ';
+    }
+
     // Нарисовать границу из символов
     public void CreateBorder(char c)
     {
@@ -63,6 +72,23 @@ class Drawer
         CreateLine(c, rt, rb);
         // Нижняя граница
         CreateLine(c, lb, rb);
+    }
+
+    // Нарисовать змейку
+    public void CreateSnake(Snake snake)
+    {
+        foreach (SnakeBlock block in snake.Blocks)
+        {
+            CreateChar(block.Char, block.Location.X, block.Location.Y);
+        }
+    }
+
+    public void RemoveSnake(Snake snake)
+    {
+        foreach (SnakeBlock block in snake.Blocks)
+        {
+            RemoveChar(block.Location.X, block.Location.Y);
+        }
     }
 
     // Нарисовать горизонтальную или вертикальную линию
