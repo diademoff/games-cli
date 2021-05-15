@@ -3,7 +3,7 @@ using System.Drawing;
 
 /* Для рисования в консоли
 Методы Draw* взаимодействуют с консолью
-Методы Create* и Remove* изменяют содержимое Content
+Методы Create и Remove изменяют содержимое Content
 */
 class Drawer
 {
@@ -45,50 +45,50 @@ class Drawer
         Console.Write(c);
     }
 
-    // Поместить символ по координатам
-    public void CreateChar(char c, int x, int y)
-    {
-        Content[x, y] = c;
-    }
-
-    // Удалить символ по координатам (поставить пробел)
-    public void RemoveChar(int x, int y)
-    {
-        Content[x, y] = ' ';
-    }
-
     // Нарисовать границу из символов с отступами
     public void CreateBorder(char c, Padding p)
     {
         Border b = new Border(c, Width, Height, p);
-        CreateElement(b);
+        Create(b);
     }
 
     // Нарисовать элемент
-    public void CreateElement(IDrawableElement element)
+    public void Create(IDrawableElement element)
     {
         foreach (IDrawable d in element.ElementContent)
         {
-            CreateDrawable(d);
+            Create(d);
         }
+    }
+
+    // Поместить символ по координатам
+    public void Create(char c, int x, int y)
+    {
+        Content[x, y] = c;
+    }
+
+    public void Create(IDrawable drawable)
+    {
+        Create(drawable.Char, drawable.Location.X, drawable.Location.Y);
     }
 
     // Удалить элемент
-    public void RemoveElement(IDrawableElement element)
+    public void Remove(IDrawableElement element)
     {
         foreach (IDrawable d in element.ElementContent)
         {
-            RemoveChar(d.Location.X, d.Location.Y);
+            Remove(d.Location.X, d.Location.Y);
         }
     }
 
-    public void CreateDrawable(IDrawable drawable)
+    public void Remove(IDrawable drawable)
     {
-        CreateChar(drawable.Char, drawable.Location.X, drawable.Location.Y);
+        Remove(drawable.Location.X, drawable.Location.Y);
     }
 
-    public void RemoveDrawable(IDrawable drawable)
+    // Удалить символ по координатам (поставить пробел)
+    public void Remove(int x, int y)
     {
-        RemoveChar(drawable.Location.X, drawable.Location.Y);
+        Content[x, y] = ' ';
     }
 }

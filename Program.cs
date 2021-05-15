@@ -36,29 +36,29 @@ namespace snake_cli
             {
                 if (isPaused)
                 {
-                    drawer.CreateElement(info);
+                    drawer.Create(info);
                     drawer.DrawAllToConsole();
 
                     Thread.Sleep(100);
                     continue;
                 }
 
-                drawer.RemoveElement(info);
-                drawer.RemoveElement(snake); // стереть старую змейку
+                drawer.Remove(info);
+                drawer.Remove(snake); // стереть старую змейку
 
                 snake.Move();
 
                 if (snake.IsEaten(apple))
                 {
                     snake.AddBlock();
-                    drawer.RemoveDrawable(apple); // удалить старое яблоко
+                    drawer.Remove(apple); // удалить старое яблоко
                     RegenerateApple(p);
                     progress.AppleEaten();
                 }
 
-                drawer.CreateElement(snake); // Отрисовать новую змейки
-                drawer.CreateDrawable(apple); //  Отрисовать яблоко
-                drawer.CreateElement(progress.StatusBar); // Отрисовать бар
+                drawer.Create(snake); // Отрисовать новую змейки
+                drawer.Create(apple); //  Отрисовать яблоко
+                drawer.Create(progress.StatusBar); // Отрисовать бар
 
                 drawer.DrawAllToConsole();
 
@@ -73,7 +73,7 @@ namespace snake_cli
             MessageBox box = new MessageBox("GAME OVER", 50, 7,
                                 FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
-            drawer.CreateElement(box);
+            drawer.Create(box);
             drawer.DrawAllToConsole();
 
             Console.CursorVisible = true;
