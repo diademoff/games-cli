@@ -1,5 +1,7 @@
 Play your favorite game in console written in .NET Core.
 
+<img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="600"/>
+
 Platforms:
 * Windows
 * Gnu Linux
