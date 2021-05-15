@@ -9,7 +9,7 @@ namespace snake_cli
         const int FIELD_SIZE_HEIGHT = 30;
         static int DELAY = 100;
 
-        static Snake snake = new Snake('■');
+        static Snake snake = new Snake('*');
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
         static Apple apple;
         static Progress progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);

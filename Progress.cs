@@ -11,16 +11,21 @@ class Progress
 
         this.StatusBar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - buttonShift),
                             FIELD_SIZE_WIDTH);
-
+        ChangeStatusBarText();
     }
 
     public void AppleEaten()
     {
         Score += 1;
-        StatusBar.Text = $"Score: {Score}";
+        ChangeStatusBarText();
         if (Delay > 50)
         {
             Delay -= 5;
         }
+    }
+
+    private void ChangeStatusBarText()
+    {
+        StatusBar.Text = $"Score: {Score}";
     }
 }
