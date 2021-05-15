@@ -31,3 +31,8 @@ Run:
 ```
 snake-cli
 ```
+
+**Build for Windows**
+```
+dotnet build --runtime win-x64
+```
