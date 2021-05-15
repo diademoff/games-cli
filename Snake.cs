@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-struct SnakeBlock
+struct SnakeBlock : IDrawable
 {
     public Point Location { get; private set; }
     public char Char { get; private set; }
@@ -70,6 +70,17 @@ class Snake
 
         SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
         Blocks.Insert(0, blockToAdd);
+    }
+
+    public void AddBlock(){
+        this.addBlockQueue += 1;
+    }
+
+    // Находится ли голова змейки на яблоке
+    public bool IsEaten(Apple apple)
+    {
+        return Blocks[0].Location.X == apple.Location.X &&
+                Blocks[0].Location.Y == apple.Location.Y;
     }
 
     /*

@@ -11,6 +11,8 @@ namespace snake_cli
 
         static Snake snake = new Snake('*');
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+        static Apple apple;
+        static Random rnd = new Random();
 
         static void Main(string[] args)
         {
@@ -22,18 +24,33 @@ namespace snake_cli
             keyReading.IsBackground = false;
             keyReading.Start();
 
+            RegenerateApple();
+
             while (true)
             {
                 drawer.RemoveSnake(snake); // стереть старую змейку
 
                 snake.Move();
 
+                if (snake.IsEaten(apple))
+                {
+                    snake.AddBlock();
+                    drawer.RemoveDrawable(apple); // удалить старое яблоко
+                    RegenerateApple();
+                }
+
                 drawer.CreateSnake(snake); // Отрисовать новую змейки
+                drawer.CreateDrawable(apple); //  Отрисовать яблоко
 
                 drawer.DrawAllToConsole();
 
                 Thread.Sleep(DELAY);
             }
+        }
+
+        static void RegenerateApple()
+        {
+            apple = new Apple(new AppleGen(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, snake), ref rnd);
         }
 
         /*

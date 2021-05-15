@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 /* Для рисования в консоли
@@ -79,15 +80,42 @@ class Drawer
     {
         foreach (SnakeBlock block in snake.Blocks)
         {
-            CreateChar(block.Char, block.Location.X, block.Location.Y);
+            CreateDrawable((IDrawable)block);
         }
     }
 
+    // Удалить змейку
     public void RemoveSnake(Snake snake)
     {
         foreach (SnakeBlock block in snake.Blocks)
         {
-            RemoveChar(block.Location.X, block.Location.Y);
+            RemoveDrawable((IDrawable)block);
+        }
+    }
+
+    public void CreateDrawable(IDrawable drawable)
+    {
+        CreateChar(drawable.Char, drawable.Location.X, drawable.Location.Y);
+    }
+
+    public void CreateDrawable(List<IDrawable> drawable)
+    {
+        foreach (var c in drawable)
+        {
+            CreateChar(c.Char, c.Location.X, c.Location.Y);
+        }
+    }
+
+    public void RemoveDrawable(IDrawable drawable)
+    {
+        RemoveChar(drawable.Location.X, drawable.Location.Y);
+    }
+
+    public void RemoveDrawable(List<IDrawable> drawable)
+    {
+        foreach (var c in drawable)
+        {
+            RemoveChar(c.Location.X, c.Location.Y);
         }
     }
 
