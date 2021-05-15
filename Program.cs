@@ -8,6 +8,7 @@ namespace snake_cli
         const int FIELD_SIZE_WIDTH = 100;
         const int FIELD_SIZE_HEIGHT = 30;
         static int DELAY = 100;
+        const int MIN_DELAY = 40;
 
         static Snake snake = new Snake('*');
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
@@ -44,11 +45,10 @@ namespace snake_cli
                     RegenerateApple(p);
                     score += 1;
                     bar.Text = $"Score: {score}";
-                }
-
-                if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
-                {
-                    break;
+                    if (DELAY > MIN_DELAY)
+                    {
+                        DELAY -= 10;
+                    }
                 }
 
                 drawer.CreateElement(snake); // Отрисовать новую змейки
@@ -57,10 +57,20 @@ namespace snake_cli
 
                 drawer.DrawAllToConsole();
 
+                if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
+                {
+                    break;
+                }
+
                 Thread.Sleep(DELAY);
             }
 
-            Console.WriteLine("\nGave over\n");
+            MessageBox box = new MessageBox("GAME OVER", 50, 7,
+                                FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+
+            drawer.CreateElement(box);
+            drawer.DrawAllToConsole();
+
             Console.CursorVisible = true;
         }
 
