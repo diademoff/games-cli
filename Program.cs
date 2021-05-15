@@ -18,13 +18,13 @@ namespace snake_cli
         {
             Console.Title = "snake-cli";
             Console.CursorVisible = false;
-            drawer.CreateBorder('.');
 
-            Thread keyReading = new Thread(ReadKeysThread);
-            keyReading.IsBackground = true;
-            keyReading.Start();
+            // Отступ снизу для отображения информации
+            Padding p = new Padding(0, 0,  0, 5);
 
-            RegenerateApple();
+            drawer.CreateBorder('.', p);
+            InitKeyReading();
+            RegenerateApple(p);
 
             while (true)
             {
@@ -36,10 +36,11 @@ namespace snake_cli
                 {
                     snake.AddBlock();
                     drawer.RemoveDrawable(apple); // удалить старое яблоко
-                    RegenerateApple();
+                    RegenerateApple(p);
                 }
+                RegenerateApple(p);
 
-                if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT))
+                if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
                 {
                     break;
                 }
@@ -55,9 +56,16 @@ namespace snake_cli
             Console.WriteLine("\nGave over\n");
         }
 
-        static void RegenerateApple()
+        static void InitKeyReading()
         {
-            apple = new Apple(new AppleGen(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, snake), ref rnd);
+            Thread keyReading = new Thread(ReadKeysThread);
+            keyReading.IsBackground = true;
+            keyReading.Start();
+        }
+
+        static void RegenerateApple(Padding p)
+        {
+            apple = new Apple(new AppleGen(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, snake, p), ref rnd);
         }
 
         /*

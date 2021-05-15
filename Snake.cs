@@ -96,11 +96,15 @@ class Snake : IDrawableElement
         return false;
     }
 
-    public bool BorderIntersect(int field_width, int field_height)
+    /*
+    Пересекает ли змейка границы
+    */
+    public bool BorderIntersect(int field_width, int field_height, Padding p)
     {
-        var p = this.Blocks[0].Location;
-        if (p.X == 0 || p.X == field_width - 1 ||
-            p.Y == 0 || p.Y == field_height - 1)
+        var h = this.Blocks[0].Location;
+
+        if (h.X <= p.Left || h.X >= field_width - p.Right - 1 ||
+            h.Y <= p.Top || h.Y >= field_height - p.Buttom - 1)
         {
             return true;
         }
