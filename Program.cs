@@ -23,7 +23,7 @@ namespace snake_cli
         static Random rnd = new Random();
 
         static bool isPaused = false;
-
+        static bool speedUp = false;
         static void Main(string[] args)
         {
             FIELD_SIZE_WIDTH = Console.WindowWidth;
@@ -87,6 +87,12 @@ namespace snake_cli
                     break;
                 }
 
+                if (speedUp)
+                {
+                    Thread.Sleep(progress.Delay / 4);
+                    speedUp = false;
+                    continue;
+                }
                 Thread.Sleep(progress.Delay);
             }
 
@@ -128,6 +134,11 @@ namespace snake_cli
                 if (keyPressed == ConsoleKey.Escape)
                 {
                     isPaused = !isPaused;
+                    continue;
+                }
+                if(keyPressed == ConsoleKey.Spacebar)
+                {
+                    speedUp = true;
                     continue;
                 }
                 if (snake.IsFocused)
