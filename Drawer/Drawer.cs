@@ -93,7 +93,7 @@ class Drawer
     }
 
     // Нарисовать элемент
-    public void CreateSnake(IDrawableElement element)
+    public void CreateElement(IDrawableElement element)
     {
         foreach (IDrawable d in element.ElementContent)
         {
@@ -102,7 +102,7 @@ class Drawer
     }
 
     // Удалить элемент
-    public void RemoveSnake(IDrawableElement element)
+    public void RemoveElement(IDrawableElement element)
     {
         foreach (IDrawable d in element.ElementContent)
         {

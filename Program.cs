@@ -12,6 +12,7 @@ namespace snake_cli
         static Snake snake = new Snake('*');
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
         static Apple apple;
+        static TextField bar;
         static Random rnd = new Random();
 
         static void Main(string[] args)
@@ -20,7 +21,11 @@ namespace snake_cli
             Console.CursorVisible = false;
 
             // Отступ снизу для отображения информации
-            Padding p = new Padding(0, 0,  0, 5);
+            Padding p = new Padding(0, 0, 0, 5);
+            bar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - 4), FIELD_SIZE_WIDTH);
+            bar.Text = "Score: 0";
+
+            int score = 0;
 
             drawer.CreateBorder('.', p);
             InitKeyReading();
@@ -28,7 +33,7 @@ namespace snake_cli
 
             while (true)
             {
-                drawer.RemoveSnake(snake); // стереть старую змейку
+                drawer.RemoveElement(snake); // стереть старую змейку
 
                 snake.Move();
 
@@ -37,16 +42,18 @@ namespace snake_cli
                     snake.AddBlock();
                     drawer.RemoveDrawable(apple); // удалить старое яблоко
                     RegenerateApple(p);
+                    score += 1;
+                    bar.Text = $"Score: {score}";
                 }
-                RegenerateApple(p);
 
                 if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
                 {
                     break;
                 }
 
-                drawer.CreateSnake(snake); // Отрисовать новую змейки
+                drawer.CreateElement(snake); // Отрисовать новую змейки
                 drawer.CreateDrawable(apple); //  Отрисовать яблоко
+                drawer.CreateElement(bar); // Отрисовать бар
 
                 drawer.DrawAllToConsole();
 
@@ -54,6 +61,7 @@ namespace snake_cli
             }
 
             Console.WriteLine("\nGave over\n");
+            Console.CursorVisible = true;
         }
 
         static void InitKeyReading()
@@ -77,7 +85,6 @@ namespace snake_cli
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
-                // ConsoleKey keyPressed = ConsoleKey.D;
                 var dir = GetDirectionFromKey(keyPressed);
                 if (dir != Direction.None)
                 {
