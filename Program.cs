@@ -31,13 +31,13 @@ namespace snake_cli
 
             MessageBox info = new MessageBox("Press ESC to resume", 30, 5,
                                                     FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-
+            drawer.RedrawAll();
             while (true)
             {
                 if (isPaused)
                 {
                     drawer.Create(info);
-                    drawer.DrawAllToConsole();
+                    drawer.DrawToConsole();
 
                     Thread.Sleep(100);
                     continue;
@@ -60,7 +60,7 @@ namespace snake_cli
                 drawer.Create(apple); //  Отрисовать яблоко
                 drawer.Create(progress.StatusBar); // Отрисовать бар
 
-                drawer.DrawAllToConsole();
+                drawer.DrawToConsole();
 
                 if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p))
                 {
@@ -74,7 +74,7 @@ namespace snake_cli
                                 FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
             drawer.Create(box);
-            drawer.DrawAllToConsole();
+            drawer.RedrawAll();
 
             Console.CursorVisible = true;
             Console.WriteLine();
