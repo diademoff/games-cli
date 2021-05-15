@@ -3,7 +3,7 @@
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/snake-cli)
 ![GitHub](https://img.shields.io/github/license/diademoff/snake-cli)
 
-Play your favorite game in console written in .NET Core.
+Play your favorite game in console.
 
 <img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="600"/>
 
@@ -32,7 +32,7 @@ Run
 snake-cli
 ```
 
-## Build for Windows
+## Windows
 ```
 dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
 ```
