@@ -8,12 +8,11 @@ namespace snake_cli
         const int FIELD_SIZE_WIDTH = 100;
         const int FIELD_SIZE_HEIGHT = 30;
         static int DELAY = 100;
-        const int MIN_DELAY = 40;
 
-        static Snake snake = new Snake('*');
+        static Snake snake = new Snake('■');
         static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
         static Apple apple;
-        static TextField bar;
+        static Progress progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);
         static Random rnd = new Random();
 
         static void Main(string[] args)
@@ -22,13 +21,9 @@ namespace snake_cli
             Console.CursorVisible = false;
 
             // Отступ снизу для отображения информации
-            Padding p = new Padding(0, 0, 0, 5);
-            bar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - 4), FIELD_SIZE_WIDTH);
-            bar.Text = "Score: 0";
+            Padding p = new Padding(0, 0, 0, 2);
 
-            int score = 0;
-
-            drawer.CreateBorder('.', p);
+            drawer.CreateBorder('·', p);
             InitKeyReading();
             RegenerateApple(p);
 
@@ -43,17 +38,12 @@ namespace snake_cli
                     snake.AddBlock();
                     drawer.RemoveDrawable(apple); // удалить старое яблоко
                     RegenerateApple(p);
-                    score += 1;
-                    bar.Text = $"Score: {score}";
-                    if (DELAY > MIN_DELAY)
-                    {
-                        DELAY -= 10;
-                    }
+                    progress.AppleEaten();
                 }
 
                 drawer.CreateElement(snake); // Отрисовать новую змейки
                 drawer.CreateDrawable(apple); //  Отрисовать яблоко
-                drawer.CreateElement(bar); // Отрисовать бар
+                drawer.CreateElement(progress.StatusBar); // Отрисовать бар
 
                 drawer.DrawAllToConsole();
 
@@ -62,7 +52,7 @@ namespace snake_cli
                     break;
                 }
 
-                Thread.Sleep(DELAY);
+                Thread.Sleep(progress.Delay);
             }
 
             MessageBox box = new MessageBox("GAME OVER", 50, 7,
@@ -72,6 +62,7 @@ namespace snake_cli
             drawer.DrawAllToConsole();
 
             Console.CursorVisible = true;
+            Console.WriteLine();
         }
 
         static void InitKeyReading()
