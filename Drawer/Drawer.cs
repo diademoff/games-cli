@@ -82,14 +82,15 @@ class Drawer
 
     private void CreateBorder(char c, Point lt, Point rt, Point lb, Point rb)
     {
-        // Верхняя граница
-        CreateLine(c, lt, rt);
-        // Левая граница
-        CreateLine(c, lt, lb);
-        // Правая граница
-        CreateLine(c, rt, rb);
-        // Нижняя граница
-        CreateLine(c, lb, rb);
+        Line top = new Line(c, lt, rt);
+        Line left = new Line(c, lt, lb);
+        Line right = new Line(c, rt, rb);
+        Line button = new Line(c, lb, rb);
+
+        CreateElement(top);
+        CreateElement(left);
+        CreateElement(right);
+        CreateElement(button);
     }
 
     // Нарисовать элемент
@@ -133,39 +134,6 @@ class Drawer
         foreach (var c in drawable)
         {
             RemoveChar(c.Location.X, c.Location.Y);
-        }
-    }
-
-    // Нарисовать горизонтальную или вертикальную линию
-    public void CreateLine(char c, Point p1, Point p2)
-    {
-        if (!(p1.X == p2.X || p1.Y == p2.Y))
-        {
-            throw new Exception("Можно нарисовать только вертикальную или горизонтальную линию. " +
-            $"Координаты переданы: {p1.X} {p1.Y} и {p2.X} {p2.Y}");
-        }
-
-        if (p1.X == p2.X)
-        {
-            // Вертикальная прямая
-            int from = Math.Min(p1.Y, p2.Y);
-            int to = Math.Max(p1.Y, p2.Y);
-
-            for (int i = from; i <= to; i++)
-            {
-                CreateChar(c, p1.X, i);
-            }
-        }
-        else
-        {
-            // Горизонтальная прямая
-            int from = Math.Min(p1.X, p2.X);
-            int to = Math.Max(p1.X, p2.X);
-
-            for (int i = from; i <= to; i++)
-            {
-                CreateChar(c, i, p1.Y);
-            }
         }
     }
 }
