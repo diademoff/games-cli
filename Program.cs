@@ -15,6 +15,8 @@ namespace snake_cli
         static Progress progress = new Progress(DELAY, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 1);
         static Random rnd = new Random();
 
+        static bool isPaused = false;
+
         static void Main(string[] args)
         {
             Console.Title = "snake-cli";
@@ -27,8 +29,21 @@ namespace snake_cli
             InitKeyReading();
             RegenerateApple(p);
 
+            MessageBox info = new MessageBox("Press ESC to resume", 30, 5,
+                                                    FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+
             while (true)
             {
+                if (isPaused)
+                {
+                    drawer.CreateElement(info);
+                    drawer.DrawAllToConsole();
+
+                    Thread.Sleep(100);
+                    continue;
+                }
+
+                drawer.RemoveElement(info);
                 drawer.RemoveElement(snake); // стереть старую змейку
 
                 snake.Move();
@@ -86,6 +101,11 @@ namespace snake_cli
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
+                if (keyPressed == ConsoleKey.Escape)
+                {
+                    isPaused = !isPaused;
+                    continue;
+                }
                 if (snake.IsFocused)
                 {
                     snake.HandleKey(keyPressed);
