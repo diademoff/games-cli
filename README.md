@@ -1,7 +1,14 @@
-Play your favorite game in console.
+Play your favorite game in console written in .NET Core.
+
+Platforms:
+* Windows
+* Gnu Linux
+
+[Download](https://github.com/diademoff/snake-cli/releases)
 
 **Build**
-Dependencies:
+
+Dependencies (Arch linux):
 ```
 pacman -S dotnet-runtime dotnet-sdk
 ```
