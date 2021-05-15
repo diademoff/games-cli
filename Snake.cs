@@ -100,6 +100,17 @@ class Snake
         return false;
     }
 
+    public bool BorderIntersect(int field_width, int field_height)
+    {
+        var p = this.Blocks[0].Location;
+        if (p.X == 0 || p.X == field_width - 1 ||
+            p.Y == 0 || p.Y == field_height - 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /*
     Получить координаты левее/правее/ниже/выше на 1 чем заданная
     */

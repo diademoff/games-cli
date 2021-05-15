@@ -43,7 +43,7 @@ struct AppleGen
 
         do
         {
-            point =  new Point(rnd.Next(this.Field_width), rnd.Next(this.Field_height));
+            point =  new Point(rnd.Next(1, this.Field_width - 1), rnd.Next(1, this.Field_height - 1));
         } while (Avoid.ToList().Contains(point));
 
         return point;

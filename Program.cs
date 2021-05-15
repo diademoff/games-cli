@@ -39,7 +39,7 @@ namespace snake_cli
                     RegenerateApple();
                 }
 
-                if (snake.SelfIntersect())
+                if (snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT))
                 {
                     break;
                 }
