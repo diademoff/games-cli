@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 /* Для рисования в консоли
@@ -58,39 +57,11 @@ class Drawer
         Content[x, y] = ' ';
     }
 
-    // Нарисовать границу из символов
-    public void CreateBorder(char c)
-    {
-        var lt = new Point(0, 0); // left top
-        var rt = new Point(Width - 1, 0); // right top
-        var lb = new Point(0, Height - 1); // left buttom
-        var rb = new Point(Width - 1, Height - 1); // right buttom
-
-        CreateBorder(c, lt, rt, lb, rb);
-    }
-
     // Нарисовать границу из символов с отступами
     public void CreateBorder(char c, Padding p)
     {
-        var lt = new Point(p.Left, p.Top); // left top
-        var rt = new Point(Width - p.Right - 1, p.Top); // right top
-        var lb = new Point(p.Left, Height - p.Buttom - 1); // left buttom
-        var rb = new Point(Width - p.Right - 1, Height - p.Buttom - 1); // right buttom
-
-        CreateBorder(c, lt, rt, lb, rb);
-    }
-
-    private void CreateBorder(char c, Point lt, Point rt, Point lb, Point rb)
-    {
-        Line top = new Line(c, lt, rt);
-        Line left = new Line(c, lt, lb);
-        Line right = new Line(c, rt, rb);
-        Line button = new Line(c, lb, rb);
-
-        CreateElement(top);
-        CreateElement(left);
-        CreateElement(right);
-        CreateElement(button);
+        Border b = new Border(c, Width, Height, p);
+        CreateElement(b);
     }
 
     // Нарисовать элемент
@@ -116,24 +87,8 @@ class Drawer
         CreateChar(drawable.Char, drawable.Location.X, drawable.Location.Y);
     }
 
-    public void CreateDrawable(List<IDrawable> drawable)
-    {
-        foreach (var c in drawable)
-        {
-            CreateChar(c.Char, c.Location.X, c.Location.Y);
-        }
-    }
-
     public void RemoveDrawable(IDrawable drawable)
     {
         RemoveChar(drawable.Location.X, drawable.Location.Y);
-    }
-
-    public void RemoveDrawable(List<IDrawable> drawable)
-    {
-        foreach (var c in drawable)
-        {
-            RemoveChar(c.Location.X, c.Location.Y);
-        }
     }
 }
