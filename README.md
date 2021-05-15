@@ -1,3 +1,8 @@
+# About
+![GitHub repo size](https://img.shields.io/github/repo-size/diademoff/snake-cli)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/snake-cli)
+![GitHub](https://img.shields.io/github/license/diademoff/snake-cli)
+
 Play your favorite game in console written in .NET Core.
 
 <img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="600"/>
