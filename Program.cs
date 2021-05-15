@@ -1,35 +1,59 @@
 ﻿using System;
+using System.Threading;
 
 namespace snake_cli
 {
     class Program
     {
+        const int FIELD_SIZE_WIDTH = 100;
+        const int FIELD_SIZE_HEIGHT = 30;
+        static int DELAY = 100;
+
+        static Snake snake = new Snake('*');
+        static Drawer drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+
         static void Main(string[] args)
         {
             Console.Title = "snake-cli";
             Console.CursorVisible = false;
-            Snake snake = new Snake('*');
-            Drawer drawer = new Drawer(100, 30);
             drawer.CreateBorder('.');
 
+            Thread keyReading = new Thread(ReadKeysThread);
+            keyReading.IsBackground = false;
+            keyReading.Start();
+
+            while (true)
+            {
+                drawer.RemoveSnake(snake); // стереть старую змейку
+
+                snake.Move();
+
+                drawer.CreateSnake(snake); // Отрисовать новую змейки
+
+                drawer.DrawAllToConsole();
+
+                Thread.Sleep(DELAY);
+            }
+        }
+
+        /*
+        Бесконечный цикл, который читает нажатые клавиши и
+        изменяет направление змейки
+        */
+        static void ReadKeysThread()
+        {
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
                 // ConsoleKey keyPressed = ConsoleKey.D;
                 var dir = GetDirectionFromKey(keyPressed);
-                if (dir == Direction.None)
+                if (dir != Direction.None)
                 {
-                    continue;
+                    snake.Direction = dir;
                 }
-                drawer.RemoveSnake(snake); // стереть старую змейку
-
-                snake.Direction = dir;
-                snake.Move();
-
-                drawer.CreateSnake(snake);
-                drawer.DrawAllToConsole();
             }
         }
+
 
         static Direction GetDirectionFromKey(ConsoleKey key)
         {
