@@ -23,11 +23,14 @@ enum Direction
 }
 
 
-class Snake
+class Snake : IDrawableElement
 {
     public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
     public Direction Direction { get; set; }
     public char SnakeChar { get; set; }
+
+    public Point Position => new Point(1, 1);
+    public IDrawable[] ElementContent => getContent();
 
     /*
     Добавление нового блока к змейки происходит во время движения. Значение
@@ -40,13 +43,6 @@ class Snake
         this.SnakeChar = c;
         this.Direction = Direction.Right;
         this.Blocks.Add(new SnakeBlock(c, new Point(1, 1)));
-    }
-
-    public Snake(char c, Direction dir, Point initPos)
-    {
-        this.SnakeChar = c;
-        this.Direction = dir;
-        this.Blocks.Add(new SnakeBlock(c, initPos));
     }
 
     // Сдвинуть змейку по направлению
@@ -135,5 +131,19 @@ class Snake
                 break;
         }
         return point;
+    }
+
+    /*
+    Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
+    IDrawableElement
+    */
+    private IDrawable[] getContent()
+    {
+        IDrawable[] r = new IDrawable[Blocks.Count];
+        for (int i = 0; i < Blocks.Count; i++)
+        {
+            r[i] = (IDrawable)Blocks[i];
+        }
+        return r;
     }
 }

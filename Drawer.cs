@@ -40,6 +40,7 @@ class Drawer
     // Отрисовать один символ в консоль
     public void DrawCharToConsole(char c, Point p)
     {
+        c = c == (char)0 ? ' ' : c; // заменить пустой символ пробелом
         Content[p.X, p.Y] = c;
         Console.SetCursorPosition(p.X, p.Y);
         Console.Write(c);
@@ -75,21 +76,21 @@ class Drawer
         CreateLine(c, lb, rb);
     }
 
-    // Нарисовать змейку
-    public void CreateSnake(Snake snake)
+    // Нарисовать элемент
+    public void CreateSnake(IDrawableElement element)
     {
-        foreach (SnakeBlock block in snake.Blocks)
+        foreach (IDrawable d in element.ElementContent)
         {
-            CreateDrawable((IDrawable)block);
+            CreateDrawable(d);
         }
     }
 
-    // Удалить змейку
-    public void RemoveSnake(Snake snake)
+    // Удалить элемент
+    public void RemoveSnake(IDrawableElement element)
     {
-        foreach (SnakeBlock block in snake.Blocks)
+        foreach (IDrawable d in element.ElementContent)
         {
-            RemoveDrawable((IDrawable)block);
+            RemoveChar(d.Location.X, d.Location.Y);
         }
     }
 
