@@ -21,7 +21,7 @@ namespace snake_cli
             drawer.CreateBorder('.');
 
             Thread keyReading = new Thread(ReadKeysThread);
-            keyReading.IsBackground = false;
+            keyReading.IsBackground = true;
             keyReading.Start();
 
             RegenerateApple();
@@ -39,6 +39,11 @@ namespace snake_cli
                     RegenerateApple();
                 }
 
+                if (snake.SelfIntersect())
+                {
+                    break;
+                }
+
                 drawer.CreateSnake(snake); // Отрисовать новую змейки
                 drawer.CreateDrawable(apple); //  Отрисовать яблоко
 
@@ -46,6 +51,8 @@ namespace snake_cli
 
                 Thread.Sleep(DELAY);
             }
+
+            Console.WriteLine("\nGave over\n");
         }
 
         static void RegenerateApple()

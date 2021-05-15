@@ -72,7 +72,8 @@ class Snake
         Blocks.Insert(0, blockToAdd);
     }
 
-    public void AddBlock(){
+    public void AddBlock()
+    {
         this.addBlockQueue += 1;
     }
 
@@ -81,6 +82,22 @@ class Snake
     {
         return Blocks[0].Location.X == apple.Location.X &&
                 Blocks[0].Location.Y == apple.Location.Y;
+    }
+
+    public bool SelfIntersect()
+    {
+        for (int i = 0; i < Blocks.Count - 1; i++)
+        {
+            for (int j = i + 1; j < Blocks.Count; j++)
+            {
+                if (Blocks[i].Location == Blocks[j].Location)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /*
