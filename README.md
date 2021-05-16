@@ -11,6 +11,7 @@ Platforms:
 * Windows
 * Gnu Linux
 
+Features:
 * Use `W`, `A`, `S`, `D` or arrows for moving
 * Use `Escape` for pause
 * Use `Space` for speedup
