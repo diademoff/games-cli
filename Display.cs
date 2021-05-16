@@ -76,44 +76,29 @@ class Display : IInteractive
         drawer.RedrawAll();
     }
 
-    public void Draw()
-    {
-        /*
-        Добавить в очередь запросы на отрисовку компонентов
-        */
-        drawer.Create(snake);
-        drawer.Create(apple);
-        drawer.Create(progress.StatusBar);
-
-    }
-
+    // Отрисовать окно Game over
     public void GameOver()
     {
         MessageBox box = new MessageBox("GAME OVER", 50, 7,
                     FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
         drawer.Create(box);
-        drawer.DrawToConsole();
+        Flush();
         drawer.RedrawAll();
 
         Console.CursorVisible = true;
     }
 
-    public void RemoveSnake()
-    {
-        drawer.Remove(snake); // запрос на удаление змейки
-    }
-
+    // Отрисовать окна паузы
     public void Paused()
     {
         drawer.Create(info_paused);
+        Flush();
     }
 
-    public void UnPause()
-    {
-        drawer.Remove(info_paused);
-    }
-
+    /*
+    Удовлетворить запросы на отрисовку
+    */
     public void Flush()
     {
         drawer.DrawToConsole();
@@ -121,15 +106,19 @@ class Display : IInteractive
 
     public void MoveSnake()
     {
-        snake.Move();
-    }
+        UnPause(); // стереть надпись паузы
+        RemoveSnake(); // Удалить старую змейку
 
-    public void AddBlock()
-    {
-        snake.AddBlock();
-        drawer.Remove(apple); // удалить старое яблоко
-        RegenerateApple(p);
-        progress.AppleEaten();
+        snake.Move();
+
+        if (IsAppleEaten)
+        {
+            AddBlock();
+        }
+
+        Draw(); // добавить в очередь на отрисовку всё содержимое
+
+        Flush(); // отрисовать очередь
     }
 
     public bool IsFocused { get => true; set => throw new NotImplementedException(); }
@@ -142,6 +131,36 @@ class Display : IInteractive
             return;
         }
         snake.HandleKey(key);
+    }
+
+    /*
+    Добавить в очередь запросы на отрисовку компонентов
+    */
+    void Draw()
+    {
+        drawer.Create(snake);
+        drawer.Create(apple);
+        drawer.Create(progress.StatusBar);
+    }
+
+    void AddBlock()
+    {
+        snake.AddBlock();
+        drawer.Remove(apple); // удалить старое яблоко
+        RegenerateApple(p);
+        progress.AppleEaten();
+    }
+
+    // Запрос на удаление окна паузы
+    void UnPause()
+    {
+        drawer.Remove(info_paused);
+    }
+
+    // Запрос на удаление змейки
+    void RemoveSnake()
+    {
+        drawer.Remove(snake); // запрос на удаление змейки
     }
 
     void RegenerateApple(Padding p)

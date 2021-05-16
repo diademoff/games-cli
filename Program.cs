@@ -17,7 +17,6 @@ namespace snake_cli
                 if (isPaused)
                 {
                     display.Paused();
-                    display.Flush();
                     Thread.Sleep(100);
                     continue;
                 }
@@ -27,7 +26,7 @@ namespace snake_cli
                     break;
                 }
 
-                NextFrame();
+                display.MoveSnake();
 
                 Thread.Sleep(display.FrameDelay);
             }
@@ -36,23 +35,6 @@ namespace snake_cli
             Выход из цикла означает что игра окончена.
             */
             display.GameOver();
-        }
-
-        static void NextFrame()
-        {
-            display.UnPause(); // стереть надпись паузы
-            display.RemoveSnake(); // Удалить старую змейку
-
-            display.MoveSnake();
-
-            if (display.IsAppleEaten)
-            {
-                display.AddBlock();
-            }
-
-            display.Draw(); // добавить в очередь на отрисовку всё содержимое
-
-            display.Flush(); // отрисовать очередь
         }
 
         /*
