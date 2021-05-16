@@ -40,11 +40,17 @@ class Snake : IDrawableElement, IInteractive
 
     public bool IsFocused { get => isFocused; set => isFocused = value; }
     bool isFocused = true;
+    /*
+    В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
+    направление может сменится два раза.
+    */
+    Direction actual_direction;
 
     public Snake(char c, Padding p)
     {
         this.SnakeChar = c;
         this.Direction = Direction.Right;
+        this.actual_direction = Direction.Right;
         this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
     }
 
@@ -72,6 +78,7 @@ class Snake : IDrawableElement, IInteractive
         Point newBlockLocation = head.Location; // Координаты нового ведущего блока
 
         newBlockLocation = GetPosFollowingDirection(newBlockLocation, this.Direction);
+        actual_direction = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
 
         SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
         Blocks.Insert(0, blockToAdd);
@@ -81,19 +88,31 @@ class Snake : IDrawableElement, IInteractive
     {
         if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
         {
-            this.Direction = Direction.Up;
+            if (actual_direction != Direction.Down)
+            {
+                this.Direction = Direction.Up;
+            }
         }
         else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
         {
-            this.Direction = Direction.Left;
+            if (actual_direction != Direction.Right)
+            {
+                this.Direction = Direction.Left;
+            }
         }
         else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
         {
-            this.Direction = Direction.Right;
+            if (actual_direction != Direction.Left)
+            {
+                this.Direction = Direction.Right;
+            }
         }
         else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow)
         {
-            this.Direction = Direction.Down;
+            if (actual_direction != Direction.Up)
+            {
+                this.Direction = Direction.Down;
+            }
         }
     }
 
