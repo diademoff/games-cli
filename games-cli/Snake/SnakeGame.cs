@@ -62,7 +62,6 @@ namespace Games
         Random rnd = new Random();
 
         MessageBox info_paused;
-        MessageBox game_over;
         Padding padding;
         bool isPaused = false;
 
