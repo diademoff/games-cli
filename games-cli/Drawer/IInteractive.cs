@@ -3,8 +3,11 @@
 */
 using System;
 
-interface IInteractive
+namespace Games
 {
-    bool IsFocused {get; set; }
-    void HandleKey(ConsoleKey key);
+    public interface IInteractive
+    {
+        bool IsFocused { get; set; }
+        void HandleKey(ConsoleKey key);
+    }
 }

@@ -1,11 +1,13 @@
 /*
 Символ, который можно вывеси в консоль
 */
-
 using System.Drawing;
 
-interface IDrawable
+namespace Games
 {
-    char Char { get; }
-    Point Location { get; }
+    public interface IDrawable
+    {
+        char Char { get; }
+        Point Location { get; }
+    }
 }

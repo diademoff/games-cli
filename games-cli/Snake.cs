@@ -2,206 +2,209 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-struct SnakeBlock : IDrawable
+namespace Games
 {
-    public Point Location { get; private set; }
-    public char Char { get; private set; }
-
-    public SnakeBlock(char c, Point p)
+    public struct SnakeBlock : IDrawable
     {
-        this.Location = p;
-        this.Char = c;
-    }
-}
+        public Point Location { get; private set; }
+        public char Char { get; private set; }
 
-enum Direction
-{
-    Up,
-    Down,
-    Left,
-    Right,
-    None
-}
-
-class Snake : IDrawableElement, IInteractive
-{
-    public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
-    public Direction Direction { get; set; }
-    public char SnakeChar { get; set; }
-
-    public Point Position => new Point(1, 1);
-    public IDrawable[] ElementContent => getContent();
-
-    /*
-    Добавление нового блока к змейки происходит во время движения. Значение
-    переменной показывает сколько еще блоков нужно добавить к змейке.
-    */
-    private int addBlockQueue = 0;
-
-    public bool IsFocused { get => isFocused; set => isFocused = value; }
-    bool isFocused = true;
-    /*
-    В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
-    направление может сменится два раза.
-    */
-    Direction actual_direction;
-
-    public Snake(char c, Padding p)
-    {
-        this.SnakeChar = c;
-        this.Direction = Direction.Right;
-        this.actual_direction = Direction.Right;
-        this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
+        public SnakeBlock(char c, Point p)
+        {
+            this.Location = p;
+            this.Char = c;
+        }
     }
 
-    // Сдвинуть змейку по направлению
-    public void Move()
+    public enum Direction
     {
-        // Первый (ведущий) блок змейки
-        SnakeBlock head = Blocks[0];
+        Up,
+        Down,
+        Left,
+        Right,
+        None
+    }
 
-        if (addBlockQueue > 0)
-        {
-            // Вместо добавления, не удаляется
-            addBlockQueue -= 1;
-        }
-        else
-        {
-            Blocks.RemoveAt(Blocks.Count - 1);
-        }
+    public class Snake : IDrawableElement, IInteractive
+    {
+        public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
+        public Direction Direction { get; set; }
+        public char SnakeChar { get; set; }
+
+        public Point Position => new Point(1, 1);
+        public IDrawable[] ElementContent => getContent();
 
         /*
-        Для смещения последий блок перемещается в начало, перед текущим
-        ведущим.
+        Добавление нового блока к змейки происходит во время движения. Значение
+        переменной показывает сколько еще блоков нужно добавить к змейке.
         */
+        private int addBlockQueue = 0;
 
-        Point newBlockLocation = head.Location; // Координаты нового ведущего блока
+        public bool IsFocused { get => isFocused; set => isFocused = value; }
+        bool isFocused = true;
+        /*
+        В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
+        направление может сменится два раза.
+        */
+        Direction actual_direction;
 
-        newBlockLocation = GetPosFollowingDirection(newBlockLocation, this.Direction);
-        actual_direction = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
-
-        SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
-        Blocks.Insert(0, blockToAdd);
-    }
-
-    public void HandleKey(ConsoleKey key)
-    {
-        if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
+        public Snake(char c, Padding p)
         {
-            if (actual_direction != Direction.Down)
-            {
-                this.Direction = Direction.Up;
-            }
+            this.SnakeChar = c;
+            this.Direction = Direction.Right;
+            this.actual_direction = Direction.Right;
+            this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
         }
-        else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
-        {
-            if (actual_direction != Direction.Right)
-            {
-                this.Direction = Direction.Left;
-            }
-        }
-        else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
-        {
-            if (actual_direction != Direction.Left)
-            {
-                this.Direction = Direction.Right;
-            }
-        }
-        else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow)
-        {
-            if (actual_direction != Direction.Up)
-            {
-                this.Direction = Direction.Down;
-            }
-        }
-    }
 
-    /*
-    Добавить блок к змейке
-    */
-    public void AddBlock()
-    {
-        this.addBlockQueue += 1;
-    }
-
-    // Находится ли голова змейки на яблоке
-    public bool IsEaten(Apple apple)
-    {
-        return Blocks[0].Location.X == apple.Location.X &&
-                Blocks[0].Location.Y == apple.Location.Y;
-    }
-
-    /*
-    Пересекает ли змейка сама себя в данный момент
-    */
-    public bool SelfIntersect()
-    {
-        for (int i = 0; i < Blocks.Count - 1; i++)
+        // Сдвинуть змейку по направлению
+        public void Move()
         {
-            for (int j = i + 1; j < Blocks.Count; j++)
+            // Первый (ведущий) блок змейки
+            SnakeBlock head = Blocks[0];
+
+            if (addBlockQueue > 0)
             {
-                if (Blocks[i].Location == Blocks[j].Location)
+                // Вместо добавления, не удаляется
+                addBlockQueue -= 1;
+            }
+            else
+            {
+                Blocks.RemoveAt(Blocks.Count - 1);
+            }
+
+            /*
+            Для смещения последий блок перемещается в начало, перед текущим
+            ведущим.
+            */
+
+            Point newBlockLocation = head.Location; // Координаты нового ведущего блока
+
+            newBlockLocation = GetPosFollowingDirection(newBlockLocation, this.Direction);
+            actual_direction = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
+
+            SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
+            Blocks.Insert(0, blockToAdd);
+        }
+
+        public void HandleKey(ConsoleKey key)
+        {
+            if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
+            {
+                if (actual_direction != Direction.Down)
                 {
-                    return true;
+                    this.Direction = Direction.Up;
+                }
+            }
+            else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
+            {
+                if (actual_direction != Direction.Right)
+                {
+                    this.Direction = Direction.Left;
+                }
+            }
+            else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
+            {
+                if (actual_direction != Direction.Left)
+                {
+                    this.Direction = Direction.Right;
+                }
+            }
+            else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow)
+            {
+                if (actual_direction != Direction.Up)
+                {
+                    this.Direction = Direction.Down;
                 }
             }
         }
 
-        return false;
-    }
-
-    /*
-    Пересекает ли змейка границы
-    */
-    public bool BorderIntersect(int field_width, int field_height, Padding p)
-    {
-        var h = this.Blocks[0].Location;
-
-        if (h.X <= p.Left || h.X >= field_width - p.Right - 1 ||
-            h.Y <= p.Top || h.Y >= field_height - p.Buttom - 1)
+        /*
+        Добавить блок к змейке
+        */
+        public void AddBlock()
         {
-            return true;
+            this.addBlockQueue += 1;
         }
-        return false;
-    }
 
-    /*
-    Получить координаты левее/правее/ниже/выше на 1 чем заданная
-    */
-    private Point GetPosFollowingDirection(Point point, Direction dir)
-    {
-        switch (dir)
+        // Находится ли голова змейки на яблоке
+        public bool IsEaten(Apple apple)
         {
-            case Direction.Up:
-                point.Y -= 1;
-                break;
-            case Direction.Down:
-                point.Y += 1;
-                break;
-            case Direction.Left:
-                point.X -= 1;
-                break;
-            case Direction.Right:
-                point.X += 1;
-                break;
-            case Direction.None:
-                // ничего не делать
-                break;
+            return Blocks[0].Location.X == apple.Location.X &&
+                    Blocks[0].Location.Y == apple.Location.Y;
         }
-        return point;
-    }
 
-    /*
-    Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
-    IDrawableElement
-    */
-    private IDrawable[] getContent()
-    {
-        IDrawable[] r = new IDrawable[Blocks.Count];
-        for (int i = 0; i < Blocks.Count; i++)
+        /*
+        Пересекает ли змейка сама себя в данный момент
+        */
+        public bool SelfIntersect()
         {
-            r[i] = (IDrawable)Blocks[i];
+            for (int i = 0; i < Blocks.Count - 1; i++)
+            {
+                for (int j = i + 1; j < Blocks.Count; j++)
+                {
+                    if (Blocks[i].Location == Blocks[j].Location)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
-        return r;
+
+        /*
+        Пересекает ли змейка границы
+        */
+        public bool BorderIntersect(int field_width, int field_height, Padding p)
+        {
+            var h = this.Blocks[0].Location;
+
+            if (h.X <= p.Left || h.X >= field_width - p.Right - 1 ||
+                h.Y <= p.Top || h.Y >= field_height - p.Buttom - 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /*
+        Получить координаты левее/правее/ниже/выше на 1 чем заданная
+        */
+        private Point GetPosFollowingDirection(Point point, Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.Up:
+                    point.Y -= 1;
+                    break;
+                case Direction.Down:
+                    point.Y += 1;
+                    break;
+                case Direction.Left:
+                    point.X -= 1;
+                    break;
+                case Direction.Right:
+                    point.X += 1;
+                    break;
+                case Direction.None:
+                    // ничего не делать
+                    break;
+            }
+            return point;
+        }
+
+        /*
+        Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
+        IDrawableElement
+        */
+        private IDrawable[] getContent()
+        {
+            IDrawable[] r = new IDrawable[Blocks.Count];
+            for (int i = 0; i < Blocks.Count; i++)
+            {
+                r[i] = (IDrawable)Blocks[i];
+            }
+            return r;
+        }
     }
 }

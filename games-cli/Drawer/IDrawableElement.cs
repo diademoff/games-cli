@@ -1,11 +1,15 @@
 /*
 Элемент, который можно вывести в консоль
 */
-interface IDrawableElement
+
+namespace Games
 {
-    /*
-    Любой элемент это просто массив из символов.
-    Here it is.
-    */
-    IDrawable[] ElementContent { get; }
+    public interface IDrawableElement
+    {
+        /*
+        Любой элемент это просто массив из символов.
+        Here it is.
+        */
+        IDrawable[] ElementContent { get; }
+    }
 }

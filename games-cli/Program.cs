@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace snake_cli
+namespace Games
 {
     class Program
     {

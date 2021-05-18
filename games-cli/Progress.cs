@@ -1,34 +1,38 @@
 /*
 Класс для отслеживания прогресса игрока
 */
-class Progress
+
+namespace Games
 {
-    public TextField StatusBar { get; }
-    public int Delay { get; set; }
-    public int Score { get; set; }
-
-    public Progress(int delay, int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, int buttonShift)
+    public class Progress
     {
-        this.Score = 0;
-        this.Delay = delay;
+        public TextField StatusBar { get; }
+        public int Delay { get; set; }
+        public int Score { get; set; }
 
-        this.StatusBar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - buttonShift),
-                            FIELD_SIZE_WIDTH);
-        ChangeStatusBarText();
-    }
-
-    public void AppleEaten()
-    {
-        Score += 1;
-        ChangeStatusBarText();
-        if (Delay > 50)
+        public Progress(int delay, int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, int buttonShift)
         {
-            Delay -= 5;
-        }
-    }
+            this.Score = 0;
+            this.Delay = delay;
 
-    private void ChangeStatusBarText()
-    {
-        StatusBar.Text = $"Score: {Score}";
+            this.StatusBar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - buttonShift),
+                                FIELD_SIZE_WIDTH);
+            ChangeStatusBarText();
+        }
+
+        public void AppleEaten()
+        {
+            Score += 1;
+            ChangeStatusBarText();
+            if (Delay > 50)
+            {
+                Delay -= 5;
+            }
+        }
+
+        private void ChangeStatusBarText()
+        {
+            StatusBar.Text = $"Score: {Score}";
+        }
     }
 }
