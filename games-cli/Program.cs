@@ -5,36 +5,21 @@ namespace Games
 {
     class Program
     {
-        static bool isPaused = false;
         static Display display;
         static void Main(string[] args)
         {
             display = new Display();
             InitKeyReading();
 
-            while (true)
+            do
             {
-                if (isPaused)
-                {
-                    display.Paused();
-                    Thread.Sleep(100);
-                    continue;
-                }
-
-                if (display.IsSnakeIntersect)
-                {
-                    break;
-                }
-
-                display.MoveSnake();
+                display.NextFrame();
 
                 Thread.Sleep(display.FrameDelay);
-            }
 
-            /*
-            Выход из цикла означает что игра окончена.
-            */
-            display.GameOver();
+            } while (!display.IsGameOver);
+
+            Console.CursorVisible = true;
         }
 
         /*
@@ -55,11 +40,6 @@ namespace Games
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
-                if (keyPressed == ConsoleKey.Escape)
-                {
-                    isPaused = !isPaused;
-                    continue;
-                }
                 display.HandleKey(keyPressed);
             }
         }

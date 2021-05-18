@@ -1,16 +1,16 @@
 /*
-Класс для отслеживания прогресса игрока
+Класс для отслеживания прогресса игры в змейку
 */
 
 namespace Games
 {
-    public class Progress
+    public class SnakeProgress
     {
         public TextField StatusBar { get; }
         public int Delay { get; set; }
         public int Score { get; set; }
 
-        public Progress(int delay, int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, int buttonShift)
+        public SnakeProgress(int delay, int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, int buttonShift)
         {
             this.Score = 0;
             this.Delay = delay;
