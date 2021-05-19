@@ -19,8 +19,6 @@ namespace Games
         public bool Exited { get; private set; } = false;
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
-        int INIT_DELAY = 100;
-
         Game game;
 
         /*
@@ -34,6 +32,8 @@ namespace Games
         Padding p = new Padding(1, 1, 3, 5);
         public Display()
         {
+            InitKeyReading();
+
             FIELD_SIZE_WIDTH = Console.WindowWidth;
             FIELD_SIZE_HEIGHT = Console.WindowHeight;
 
@@ -51,7 +51,7 @@ namespace Games
         {
             SelectionMenu sm = new SelectionMenu(new string[]{
                 "Snake game",
-                "Tetris",
+                // "Tetris",
                 "Exit"
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, p);
 
@@ -109,6 +109,28 @@ namespace Games
                 {
                     handler.HandleKey(key);
                 }
+            }
+        }
+
+        /*
+        Запустить поток, который читает нажатые клавиши
+        */
+        void InitKeyReading()
+        {
+            Thread keyReading = new Thread(ReadKeysThread);
+            keyReading.IsBackground = true;
+            keyReading.Start();
+        }
+
+        /*
+        Бесконечный цикл, который читает нажатые клавиши
+        */
+        void ReadKeysThread()
+        {
+            while (true)
+            {
+                ConsoleKey keyPressed = Console.ReadKey(true).Key;
+                this.HandleKey(keyPressed);
             }
         }
     }

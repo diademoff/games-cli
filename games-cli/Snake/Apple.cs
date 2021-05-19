@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace Games
 {
-
     public class Apple : IDrawable
     {
         public Point Location { get; private set; }
