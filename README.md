@@ -34,7 +34,7 @@ make && sudo make install
 
 Run
 ```
-snake-cli
+games-cli
 ```
 
 ## Windows

@@ -13,7 +13,17 @@ namespace Games
         Высчитать задержку между кадрами исходя из текущего прогресса и
         ускорения.
         */
-        public int FrameDelay => game.DelayBetweenFrames;
+        public int FrameDelay
+        {
+            get
+            {
+                if (game == null)
+                {
+                    return 0;
+                }
+                return game.DelayBetweenFrames;
+            }
+        }
         public bool IsGameOver => game.IsGameOver;
         // Пользователь вышел
         public bool Exited { get; private set; } = false;
@@ -71,7 +81,7 @@ namespace Games
             {
                 game = new SnakeGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
             }
-            else if (sm.SelectedIndex == 2)
+            else if (sm.SelectedIndex == 1)
             {
                 Exited = true;
             }
@@ -81,6 +91,11 @@ namespace Games
 
         public void NextFrame()
         {
+            if (game == null || Exited)
+            {
+                return;
+            }
+
             if (game.IsGameOver)
             {
                 SelectGame();
