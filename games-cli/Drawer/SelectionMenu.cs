@@ -39,7 +39,7 @@ namespace Games
             // Длина самого длинного слова
             int max_variant_length = str_variants.OrderByDescending(n => n.Length).First().Length + 2;
 
-            this.menu_height = str_variants.Length * 2 + 2;
+            this.menu_height = (str_variants.Length * 2) + 2;
             this.menu_width = max_variant_length + 4;
 
             this.padding_topbuttom = (field_height - menu_height) / 2;
@@ -97,7 +97,7 @@ namespace Games
                 }
 
                 Point textStartLocation = new Point((field_width / 2) - (text.Length / 2) - 1,
-                                    padding_topbuttom + i * 2 + 2);
+                                    padding_topbuttom + (i * 2) + 2);
 
                 TextField text_field = new TextField(textStartLocation, text.Length, text);
                 fields[i] = text_field;

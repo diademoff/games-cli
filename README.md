@@ -1,7 +1,7 @@
 # About
-![GitHub repo size](https://img.shields.io/github/repo-size/diademoff/snake-cli)
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/snake-cli)
-![GitHub](https://img.shields.io/github/license/diademoff/snake-cli)
+![GitHub repo size](https://img.shields.io/github/repo-size/diademoff/games-cli)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/games-cli)
+![GitHub](https://img.shields.io/github/license/diademoff/games-cli)
 
 Play your favorite game in console. Install `dotnet-runtime` to run app.
 
@@ -16,7 +16,7 @@ Features:
 * Use `Escape` for pause
 * Use `Space` for speedup
 
-[Download](https://github.com/diademoff/snake-cli/releases)
+[Download](https://github.com/diademoff/games-cli/releases)
 
 # Build
 Install `dotnet-sdk` to build.
@@ -24,7 +24,7 @@ Install `dotnet-sdk` to build.
 ## Linux
 
 ```
-git clone https://github.com/diademoff/snake-cli && cd snake-cli
+git clone https://github.com/diademoff/games-cli && cd games-cli/games-cli
 ```
 
 Build and install

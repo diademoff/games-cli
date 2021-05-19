@@ -17,7 +17,6 @@ namespace Games
                 display.NextFrame();
 
                 Thread.Sleep(display.FrameDelay);
-
             } while (!display.Exited);
 
             Console.CursorVisible = true;
