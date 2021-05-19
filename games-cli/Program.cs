@@ -11,6 +11,8 @@ namespace Games
             display = new Display();
             InitKeyReading();
 
+            display.SelectGame();
+
             do
             {
                 display.NextFrame();

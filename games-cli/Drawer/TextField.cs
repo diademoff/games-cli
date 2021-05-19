@@ -16,12 +16,12 @@ namespace Games
         private Point startLocation;
         public int length { get; private set; }
 
-        public TextField(Point startLocation, int length)
+        public TextField(Point startLocation, int length, string text = "")
         {
             // позиция с которой начинать писать
             this.startLocation = startLocation;
             this.length = length;
-            this.Text = "";
+            this.Text = text;
         }
 
         private IDrawable[] getContent()
