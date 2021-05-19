@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
-    public class Snake : IDrawableElement
+    public class Snake : IDrawableElement, IInteractive
     {
         public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
         public Direction Direction { get; private set; }
@@ -15,6 +16,8 @@ namespace Games
         */
         private int addBlockQueue = 0;
         public IDrawable[] ElementContent => getContent();
+
+        public bool IsFocused { get => true; set => throw new NotImplementedException(); }
 
         /*
         В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
@@ -140,6 +143,26 @@ namespace Games
         public void AddBlock()
         {
             this.addBlockQueue += 1;
+        }
+
+        public void HandleKey(ConsoleKey key)
+        {
+            if (key == ConsoleKey.W || key == ConsoleKey.UpArrow || key == ConsoleKey.K)
+            {
+                ChangeDirection(Direction.Up);
+            }
+            else if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow || key == ConsoleKey.H)
+            {
+                ChangeDirection(Direction.Left);
+            }
+            else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow || key == ConsoleKey.L)
+            {
+                ChangeDirection(Direction.Right);
+            }
+            else if (key == ConsoleKey.S || key == ConsoleKey.DownArrow || key == ConsoleKey.J)
+            {
+                ChangeDirection(Direction.Down);
+            }
         }
 
         /*

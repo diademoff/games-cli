@@ -19,7 +19,7 @@ namespace Games
 
                 Thread.Sleep(display.FrameDelay);
 
-            } while (!display.IsGameOver);
+            } while (!display.Exited);
 
             Console.CursorVisible = true;
         }

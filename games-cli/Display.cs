@@ -15,6 +15,8 @@ namespace Games
         */
         public int FrameDelay => game.DelayBetweenFrames;
         public bool IsGameOver => game.IsGameOver;
+        // Пользователь вышел
+        public bool Exited { get; private set; } = false;
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
         int INIT_DELAY = 100;
@@ -49,7 +51,8 @@ namespace Games
         {
             SelectionMenu sm = new SelectionMenu(new string[]{
                 "Snake game",
-                "Tetris"
+                "Tetris",
+                "Exit"
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, p);
 
             keyHandlers.Add(sm);
@@ -68,6 +71,10 @@ namespace Games
             {
                 game = new SnakeGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
             }
+            else if (sm.SelectedIndex == 2)
+            {
+                Exited = true;
+            }
 
             keyHandlers.Add(game);
         }
@@ -75,20 +82,16 @@ namespace Games
         public void NextFrame()
         {
             if (game.IsGameOver)
+            {
+                SelectGame();
                 return;
+            }
 
             /*
             Создать запросы на отрисовку
             */
             game.PrepareForNextFrame(drawer);
             game.NextFrame(drawer);
-
-            if (game.IsGameOver)
-            {
-                var game_over = new MessageBox("GAME OVER", 50, 7,
-                                        FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-                drawer.Create(game_over);
-            }
 
             /*
             Удовлетворить запросы на отрисовку
