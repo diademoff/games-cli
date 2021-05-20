@@ -19,7 +19,7 @@ namespace Games
 
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            falling_tetromino = new TetrominoO(20, padding.Top + 1);
+            falling_tetromino = new TetrominoJ(20, padding.Top + 1);
         }
 
         public override void HandleKey(ConsoleKey key)
