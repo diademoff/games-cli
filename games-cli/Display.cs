@@ -1,5 +1,5 @@
 /*
-Управление содержимым экрана.
+Управление содержимым экрана. Выбор игр.
 */
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace Games
         {
             SelectionMenu sm = new SelectionMenu(new string[]{
                 "Snake game",
-                // "Tetris",
+                "Tetris",
                 "Exit"
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, p);
 
@@ -82,6 +82,10 @@ namespace Games
                 game = new SnakeGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
             }
             else if (sm.SelectedIndex == 1)
+            {
+                game = new TetrisGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+            }
+            else if (sm.SelectedIndex == 2)
             {
                 Exited = true;
             }

@@ -64,12 +64,9 @@ namespace Games
         Ускорение
         */
         bool speedUp = false;
-        int FIELD_SIZE_WIDTH;
-        int FIELD_SIZE_HEIGHT;
         Random rnd = new Random();
 
         MessageBox info_paused;
-        Padding padding;
         bool isPaused = false;
 
         /*
@@ -78,14 +75,10 @@ namespace Games
         SnakeProgress progress;
         SelectionMenu gameOverAction;
 
-        public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p)
+        public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            this.FIELD_SIZE_HEIGHT = FIELD_SIZE_HEIGHT;
-            this.FIELD_SIZE_WIDTH = FIELD_SIZE_WIDTH;
-            this.padding = p;
-
             info_paused = new MessageBox("Press ESC to resume", 30, 5,
-                                        FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+                            FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
             Init();
         }
