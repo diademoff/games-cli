@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Games
 {
@@ -75,16 +76,43 @@ namespace Games
         {
             if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
             {
-                falling_tetromino.MoveLeft();
+                MoveFallingLeft();
             }
             else if (key == ConsoleKey.D || key == ConsoleKey.RightArrow)
             {
-                falling_tetromino.MoveRight();
+                MoveFallingRight();
             }
             else if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
             {
-                falling_tetromino.Rotate();
+                RotateFalling();
             }
+        }
+
+        void MoveFallingLeft()
+        {
+            if (IsIntersectsWithFallen(falling_tetromino.TryMoveLeft()))
+            {
+                return;
+            }
+            falling_tetromino.MoveLeft();
+        }
+
+        void MoveFallingRight()
+        {
+            if (IsIntersectsWithFallen(falling_tetromino.TryMoveRight()))
+            {
+                return;
+            }
+            falling_tetromino.MoveRight();
+        }
+
+        void RotateFalling()
+        {
+            if (IsIntersectsWithFallen(falling_tetromino.TryRotate()))
+            {
+                return;
+            }
+            falling_tetromino.Rotate();
         }
 
         public override void NextFrame(Drawer d)
@@ -95,9 +123,9 @@ namespace Games
                 padding.Top,
                 padding.Buttom));
 
-            if (IsOnButtom(falling_tetromino))
+            if (IsOnButtom(falling_tetromino) ||
+                IsIntersectsWithFallen(falling_tetromino.TryMoveDown()))
             {
-                AddCurrentTetrominoToFallen();
                 SwitchToNextTetromino();
             }
             else
@@ -108,7 +136,6 @@ namespace Games
             }
 
             d.Create(rf);
-
             d.Create(tetromino_fallen.ToArray());
         }
 
@@ -122,9 +149,29 @@ namespace Games
 
         void SwitchToNextTetromino()
         {
+            AddCurrentTetrominoToFallen();
             falling_tetromino = next_tetromino;
             next_tetromino = GetRandomTetromino();
             rf.ChangeNextTetromino(next_tetromino);
+        }
+
+        /*
+        Пересекается ли текущий блок с упавшими
+        */
+        bool IsIntersectsWithFallen(Point[] t)
+        {
+            foreach (var i in tetromino_fallen)
+            {
+                foreach (var j in t)
+                {
+                    if (i.Location.X == j.X &&
+                        i.Location.Y == j.Y)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         bool IsOnButtom(Tetromino t)

@@ -45,24 +45,77 @@ namespace Games
         {
             this.offset_y += 1;
         }
+
+        public Point[] TryMoveDown()
+        {
+            return Try(0, 1);
+        }
+
         public void MoveLeft()
         {
             this.offset_x -= 1;
         }
+
+        public Point[] TryMoveLeft()
+        {
+            return Try(-1, 0);
+        }
+
         public void MoveRight()
         {
             this.offset_x += 1;
         }
 
+        public Point[] TryMoveRight()
+        {
+            return Try(1, 0);
+        }
+
+        /*
+        Сдвинуть блок на X вправо и на Y вниз. Текущий
+        объект не изменится.
+        */
+        private Point[] Try(int plus_x, int plus_y)
+        {
+            Point[] r = new Point[structure.Length];
+            Point[] curr = structure_rotate[CurrentRotationState];
+
+            for (int i = 0; i < structure.Length; i++)
+            {
+                r[i] = new Point(curr[i].X + offset_x + plus_x, curr[i].Y + offset_y + plus_y);
+            }
+
+            return r;
+        }
+
         public void Rotate()
         {
-            if (CurrentRotationState == structure_rotate.Count - 1){
-                CurrentRotationState = 0;
+            CurrentRotationState = GetNextRotateIndex();
+        }
+
+        private int GetNextRotateIndex()
+        {
+            if (CurrentRotationState == structure_rotate.Count - 1)
+            {
+                return 0;
             }
             else
             {
-                CurrentRotationState += 1;
+                return CurrentRotationState + 1;
             }
+        }
+
+        public Point[] TryRotate()
+        {
+            Point[] s =  structure_rotate[GetNextRotateIndex()];
+            Point[] with_offsets = new Point[s.Length];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                with_offsets[i] = new Point(s[i].X + offset_x, s[i].Y + offset_y);
+            }
+
+            return with_offsets;
         }
 
         /*
