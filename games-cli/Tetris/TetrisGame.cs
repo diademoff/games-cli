@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Games
 {
@@ -22,6 +23,10 @@ namespace Games
         Фактически нарисованный падающий тетрамино
         */
         IDrawable[] tetromino_drawn = new IDrawable[0];
+        /*
+        Упавшие блоки
+        */
+        List<IDrawable> tetromino_fallen = new List<IDrawable>();
         Random rnd = new Random();
         int falling_blocks_field_width = 20;
         // Координата левого края
@@ -76,7 +81,7 @@ namespace Games
             {
                 falling_tetromino.MoveRight();
             }
-            else if (key == ConsoleKey.W)
+            else if (key == ConsoleKey.W || key == ConsoleKey.UpArrow)
             {
                 falling_tetromino.Rotate();
             }
@@ -90,20 +95,36 @@ namespace Games
                 padding.Top,
                 padding.Buttom));
 
-            if (IsOnButtom(falling_tetromino) || IsCollidesBorder(falling_tetromino))
+            if (IsOnButtom(falling_tetromino))
             {
-                falling_tetromino = next_tetromino;
-                next_tetromino = GetRandomTetromino();
-                rf.ChangeNextTetromino(next_tetromino);
-                return;
+                AddCurrentTetrominoToFallen();
+                SwitchToNextTetromino();
+            }
+            else
+            {
+                falling_tetromino.MoveDown();
+                tetromino_drawn = falling_tetromino.ElementContent; // сохранить, чтобы потом удалить
+                d.Create(falling_tetromino);
             }
 
             d.Create(rf);
 
-            falling_tetromino.MoveDown();
-            d.Create(falling_tetromino);
+            d.Create(tetromino_fallen.ToArray());
+        }
 
-            tetromino_drawn = falling_tetromino.ElementContent; // сохранить, чтобы потом удалить
+        void AddCurrentTetrominoToFallen()
+        {
+            foreach (IDrawable i in falling_tetromino.ElementContent)
+            {
+                tetromino_fallen.Add(i);
+            }
+        }
+
+        void SwitchToNextTetromino()
+        {
+            falling_tetromino = next_tetromino;
+            next_tetromino = GetRandomTetromino();
+            rf.ChangeNextTetromino(next_tetromino);
         }
 
         bool IsOnButtom(Tetromino t)
