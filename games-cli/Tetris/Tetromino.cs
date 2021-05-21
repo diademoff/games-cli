@@ -8,6 +8,7 @@ namespace Games
 {
     public abstract class Tetromino : IDrawableElement
     {
+        public Point[] structure => structure_rotate[CurrentRotationState];
         protected int offset_x, offset_y = 0;
         protected char Symbol = '*';
         /*
@@ -62,6 +63,15 @@ namespace Games
             {
                 CurrentRotationState += 1;
             }
+        }
+
+        /*
+        Сбросить все смещения, поместить элемент в левый
+        верхний угол
+        */
+        public void ResetOffsets()
+        {
+            offset_x = offset_y = 0;
         }
 
         public Tetromino(int field_width, int init_y_location)

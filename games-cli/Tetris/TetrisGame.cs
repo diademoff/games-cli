@@ -15,6 +15,10 @@ namespace Games
         */
         Tetromino falling_tetromino;
         /*
+        Следующий блок после текущего
+        */
+        Tetromino next_tetromino;
+        /*
         Фактически нарисованный падающий тетрамино
         */
         IDrawable[] tetromino_drawn = new IDrawable[0];
@@ -25,11 +29,17 @@ namespace Games
         // Координата правого края
         int right_border;
 
+        RightInfo rf;
+
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            falling_tetromino = GetRandomTetromino();
             left_border = padding.Left + (FIELD_SIZE_WIDTH / 2) - (falling_blocks_field_width / 2);
             right_border = FIELD_SIZE_WIDTH - (padding.Right + (FIELD_SIZE_WIDTH / 2) - (falling_blocks_field_width / 2));
+
+            falling_tetromino = GetRandomTetromino();
+            next_tetromino = GetRandomTetromino();
+
+            this.rf = new RightInfo(right_border, next_tetromino, padding);
         }
 
         Tetromino GetRandomTetromino()
@@ -74,7 +84,7 @@ namespace Games
 
         public override void NextFrame(Drawer d)
         {
-            d.CreateBorder('#', new Padding(
+            d.CreateBorder('·', new Padding(
                 left_border,
                 FIELD_SIZE_WIDTH - right_border,
                 padding.Top,
@@ -82,9 +92,13 @@ namespace Games
 
             if (IsOnButtom(falling_tetromino) || IsCollidesBorder(falling_tetromino))
             {
-                falling_tetromino = GetRandomTetromino();
+                falling_tetromino = next_tetromino;
+                next_tetromino = GetRandomTetromino();
+                rf.ChangeNextTetromino(next_tetromino);
                 return;
             }
+
+            d.Create(rf);
 
             falling_tetromino.MoveDown();
             d.Create(falling_tetromino);
@@ -119,6 +133,7 @@ namespace Games
         public override void PrepareForNextFrame(Drawer d)
         {
             d.Remove(tetromino_drawn);
+            d.Remove(rf);
         }
     }
 }

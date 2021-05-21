@@ -43,6 +43,10 @@ namespace Games
         bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
         int delay;
 
+        /*
+        Высчитать задержку между кадрами исходя из текущего прогресса и
+        ускорения.
+        */
         int frameDelay()
         {
             if (speedUp)

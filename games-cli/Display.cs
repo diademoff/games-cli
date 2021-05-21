@@ -9,10 +9,6 @@ namespace Games
 {
     public class Display : IInteractive
     {
-        /*
-        Высчитать задержку между кадрами исходя из текущего прогресса и
-        ускорения.
-        */
         public int FrameDelay
         {
             get
