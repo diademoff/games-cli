@@ -52,8 +52,6 @@ namespace Games
             Console.Title = "snake-cli";
             Console.CursorVisible = false;
 
-            drawer.CreateBorder('·', p);
-
             drawer.RedrawAll();
         }
 

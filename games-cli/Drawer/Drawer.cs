@@ -74,10 +74,11 @@ namespace Games
         }
 
         // Нарисовать границу из символов по краям с отступами
-        public void CreateBorder(char c, Padding p)
+        public Border CreateBorder(char c, Padding p)
         {
             Border b = new Border(c, Width, Height, p);
             Create(b);
+            return b;
         }
 
         /*

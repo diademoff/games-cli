@@ -35,14 +35,13 @@ namespace Games
         отказался перезапускать игру
         */
         public override bool IsGameOver => isGameOver;
-        bool isGameOver = false;
 
+        bool isGameOver = false;
         /*
         Столкнулась ли змейка с собой или с краем.
         */
         bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
-
-        int delay = 100;
+        int delay;
 
         int frameDelay()
         {
@@ -74,6 +73,8 @@ namespace Games
         */
         SnakeProgress progress;
         SelectionMenu gameOverAction;
+        bool drawBorder; // Нужно ли отрисовать границу
+        Border border; // Нарисованная граница
 
         public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
@@ -97,6 +98,8 @@ namespace Games
                 }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
             RegenerateApple();
             gameOverAction.IsFocused = false;
+            delay = 100;
+            drawBorder = true;
         }
 
         public override void PrepareForNextFrame(Drawer d)
@@ -106,7 +109,7 @@ namespace Games
                 d.Remove(info_paused);
             }
 
-            d.Remove(snake);
+            d.Remove(snake.ElementContent[snake.ElementContent.Length - 1]);
             d.Remove(apple);
         }
 
@@ -115,6 +118,12 @@ namespace Games
         */
         public override void NextFrame(Drawer d)
         {
+            if (drawBorder)
+            {
+                this.border = d.CreateBorder('·', padding);
+                drawBorder = false;
+            }
+
             if (isPaused)
             {
                 d.Create(info_paused);
@@ -127,6 +136,15 @@ namespace Games
                 return;
             }
 
+            MoveSnake();
+
+            d.Create(snake);
+            d.Create(apple);
+            d.Create(progress.StatusBar);
+        }
+
+        void MoveSnake()
+        {
             snake.Move();
             if (snake.IsEaten(apple))
             {
@@ -138,10 +156,6 @@ namespace Games
                     delay -= 5;
                 }
             }
-
-            d.Create(snake);
-            d.Create(apple);
-            d.Create(progress.StatusBar);
         }
 
         /*
@@ -159,6 +173,7 @@ namespace Games
                     d.Remove(apple);
                     d.Remove(progress.StatusBar);
                     d.Remove(gameOverAction);
+                    d.Remove(border);
                     return;
                 }
                 else if (gameOverAction.SelectedIndex == 0)
