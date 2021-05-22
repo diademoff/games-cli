@@ -60,9 +60,15 @@ namespace Games
             }
         }
 
+        /*
+        Перед сдвигом или поворотом блока будет выполнена проверка
+        не нарушает ли это действие правила.
+        */
+
         void MoveFallingLeft()
         {
-            if (IsIntersectsWithFallen(falling_tetromino.TryMoveLeft()))
+            Point[] theory_tetromino = falling_tetromino.TryMoveLeft();
+            if (AnyIntersects(theory_tetromino))
             {
                 return;
             }
@@ -71,7 +77,8 @@ namespace Games
 
         void MoveFallingRight()
         {
-            if (IsIntersectsWithFallen(falling_tetromino.TryMoveRight()))
+            Point[] theory_tetromino = falling_tetromino.TryMoveRight();
+            if (AnyIntersects(theory_tetromino))
             {
                 return;
             }
@@ -80,7 +87,8 @@ namespace Games
 
         void RotateFalling()
         {
-            if (IsIntersectsWithFallen(falling_tetromino.TryRotate()))
+            Point[] theory_tetromino = falling_tetromino.TryRotate();
+            if (AnyIntersects(theory_tetromino))
             {
                 return;
             }
@@ -146,6 +154,27 @@ namespace Games
             {
                 tetromino_fallen.Add(i);
             }
+        }
+
+        /*
+        Падающий блок не должен выходить за границы и
+        пересекаться с другими блоками
+        */
+        bool AnyIntersects(Point[] t)
+        {
+            return IsIntersectsWithBorder(t) || IsIntersectsWithFallen(t);
+        }
+
+        bool IsIntersectsWithBorder(Point[] t)
+        {
+            foreach (var i in t)
+            {
+                if (i.X <= left_border || i.X >= right_border - 1)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /*
