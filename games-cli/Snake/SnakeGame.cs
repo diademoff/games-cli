@@ -35,7 +35,10 @@ namespace Games
         отказался перезапускать игру
         */
         public override bool IsGameOver => isGameOver;
-
+        /*
+        Чтобы выйти из игры сделайте эту переменную true, чтобы сообщить
+        классу, который вызвал эту игру о том что игра закончена.
+        */
         bool isGameOver = false;
         /*
         Столкнулась ли змейка с собой или с краем.
@@ -128,19 +131,20 @@ namespace Games
                 drawBorder = false;
             }
 
-            if (isPaused)
-            {
-                d.Create(info_paused);
-                return;
-            }
-
             if (snakeDead)
             {
                 selectGameOverAction(d);
                 return;
             }
 
-            MoveSnake();
+            if (isPaused)
+            {
+                d.Create(info_paused);
+            }
+            else
+            {
+                MoveSnake();
+            }
 
             d.Create(snake);
             d.Create(apple);
@@ -172,23 +176,40 @@ namespace Games
                 // Пользователь уже выбрал что делать
                 if (gameOverAction.SelectedIndex == 1)
                 {
-                    this.isGameOver = true;
-                    d.Remove(snake);
-                    d.Remove(apple);
-                    d.Remove(progress.StatusBar);
-                    d.Remove(gameOverAction);
-                    d.Remove(border);
+                    ExitGame(d);
                     return;
                 }
                 else if (gameOverAction.SelectedIndex == 0)
                 {
-                    d.Remove(gameOverAction);
-                    Init();
+                    RestartGame(d);
                     return;
                 }
             }
             d.Create(gameOverAction);
             gameOverAction.IsFocused = true;
+        }
+
+        /*
+        Стереть не нужное содержимое и перезапустить игру
+        */
+        void RestartGame(Drawer d)
+        {
+            d.Remove(gameOverAction);
+            d.Remove(snake);
+            Init();
+        }
+
+        /*
+        Стереть ненужное содержимое и выйти из игры
+        */
+        void ExitGame(Drawer d)
+        {
+            this.isGameOver = true;
+            d.Remove(snake);
+            d.Remove(apple);
+            d.Remove(progress.StatusBar);
+            d.Remove(gameOverAction);
+            d.Remove(border);
         }
 
         public override void HandleKey(ConsoleKey key)
