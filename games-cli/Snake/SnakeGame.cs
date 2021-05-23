@@ -35,15 +35,21 @@ namespace Games
         отказался перезапускать игру
         */
         public override bool IsGameOver => isGameOver;
+        /*
+        Чтобы выйти из игры сделайте эту переменную true, чтобы сообщить
+        классу, который вызвал эту игру о том что игра закончена.
+        */
         bool isGameOver = false;
-
         /*
         Столкнулась ли змейка с собой или с краем.
         */
         bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
+        int delay;
 
-        int delay = 100;
-
+        /*
+        Высчитать задержку между кадрами исходя из текущего прогресса и
+        ускорения.
+        */
         int frameDelay()
         {
             if (speedUp)
@@ -64,12 +70,9 @@ namespace Games
         Ускорение
         */
         bool speedUp = false;
-        int FIELD_SIZE_WIDTH;
-        int FIELD_SIZE_HEIGHT;
         Random rnd = new Random();
 
         MessageBox info_paused;
-        Padding padding;
         bool isPaused = false;
 
         /*
@@ -77,15 +80,13 @@ namespace Games
         */
         SnakeProgress progress;
         SelectionMenu gameOverAction;
+        bool drawBorder; // Нужно ли отрисовать границу
+        Border border; // Нарисованная граница
 
-        public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p)
+        public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            this.FIELD_SIZE_HEIGHT = FIELD_SIZE_HEIGHT;
-            this.FIELD_SIZE_WIDTH = FIELD_SIZE_WIDTH;
-            this.padding = p;
-
             info_paused = new MessageBox("Press ESC to resume", 30, 5,
-                                        FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+                            FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
 
             Init();
         }
@@ -104,6 +105,8 @@ namespace Games
                 }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
             RegenerateApple();
             gameOverAction.IsFocused = false;
+            delay = 100;
+            drawBorder = true;
         }
 
         public override void PrepareForNextFrame(Drawer d)
@@ -113,7 +116,7 @@ namespace Games
                 d.Remove(info_paused);
             }
 
-            d.Remove(snake);
+            d.Remove(snake.ElementContent[snake.ElementContent.Length - 1]);
             d.Remove(apple);
         }
 
@@ -122,10 +125,10 @@ namespace Games
         */
         public override void NextFrame(Drawer d)
         {
-            if (isPaused)
+            if (drawBorder)
             {
-                d.Create(info_paused);
-                return;
+                this.border = d.CreateBorder('·', padding);
+                drawBorder = false;
             }
 
             if (snakeDead)
@@ -134,6 +137,22 @@ namespace Games
                 return;
             }
 
+            if (isPaused)
+            {
+                d.Create(info_paused);
+            }
+            else
+            {
+                MoveSnake();
+            }
+
+            d.Create(snake);
+            d.Create(apple);
+            d.Create(progress.StatusBar);
+        }
+
+        void MoveSnake()
+        {
             snake.Move();
             if (snake.IsEaten(apple))
             {
@@ -145,10 +164,6 @@ namespace Games
                     delay -= 5;
                 }
             }
-
-            d.Create(snake);
-            d.Create(apple);
-            d.Create(progress.StatusBar);
         }
 
         /*
@@ -161,22 +176,40 @@ namespace Games
                 // Пользователь уже выбрал что делать
                 if (gameOverAction.SelectedIndex == 1)
                 {
-                    this.isGameOver = true;
-                    d.Remove(snake);
-                    d.Remove(apple);
-                    d.Remove(progress.StatusBar);
-                    d.Remove(gameOverAction);
+                    ExitGame(d);
                     return;
                 }
                 else if (gameOverAction.SelectedIndex == 0)
                 {
-                    d.Remove(gameOverAction);
-                    Init();
+                    RestartGame(d);
                     return;
                 }
             }
             d.Create(gameOverAction);
             gameOverAction.IsFocused = true;
+        }
+
+        /*
+        Стереть не нужное содержимое и перезапустить игру
+        */
+        void RestartGame(Drawer d)
+        {
+            d.Remove(gameOverAction);
+            d.Remove(snake);
+            Init();
+        }
+
+        /*
+        Стереть ненужное содержимое и выйти из игры
+        */
+        void ExitGame(Drawer d)
+        {
+            this.isGameOver = true;
+            d.Remove(snake);
+            d.Remove(apple);
+            d.Remove(progress.StatusBar);
+            d.Remove(gameOverAction);
+            d.Remove(border);
         }
 
         public override void HandleKey(ConsoleKey key)

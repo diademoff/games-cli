@@ -74,10 +74,11 @@ namespace Games
         }
 
         // Нарисовать границу из символов по краям с отступами
-        public void CreateBorder(char c, Padding p)
+        public Border CreateBorder(char c, Padding p)
         {
             Border b = new Border(c, Width, Height, p);
             Create(b);
+            return b;
         }
 
         /*
@@ -107,6 +108,14 @@ namespace Games
             Create(drawable.Char, drawable.Location.X, drawable.Location.Y);
         }
 
+        public void Create(IDrawable[] drawables)
+        {
+            foreach (var item in drawables)
+            {
+                Create(item);
+            }
+        }
+
         /*
         Запросить затирание пробелами элемента. Запрос будет
         добавлен в очередь и удовлетворен во время следующей отрисовки.
@@ -122,6 +131,14 @@ namespace Games
         public void Remove(IDrawable drawable)
         {
             Remove(drawable.Location.X, drawable.Location.Y);
+        }
+
+        public void Remove(IDrawable[] drawables)
+        {
+            foreach (var item in drawables)
+            {
+                Remove(item);
+            }
         }
 
         public void Remove(int x, int y)
