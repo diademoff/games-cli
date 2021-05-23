@@ -19,6 +19,7 @@ namespace Games
         /*
         Блок, который падает в данный момент
         */
+        int buttom_border;
         Tetromino falling_tetromino;
         /*
         Следующий блок после текущего
@@ -42,6 +43,7 @@ namespace Games
             this.right_border = right_border;
             this.field_size = field_size;
             this.padding = p;
+            this.buttom_border = field_size.Height - padding.Buttom - 2;
 
             falling_tetromino = GetRandomTetromino();
             next_tetromino = GetRandomTetromino();
@@ -53,11 +55,91 @@ namespace Games
                 IsIntersectsWithFallen(falling_tetromino.TryMoveDown()))
             {
                 SwitchToNextTetromino();
+                int[] filledRaws = GetFilledRaws();
+                if (filledRaws.Length > 0)
+                {
+                    foreach (var row_y in filledRaws)
+                    {
+                        RemoveRow(row_y);
+                        ShiftBlocksAfterRowRemoved(row_y);
+                    }
+                }
             }
             else
             {
                 falling_tetromino.MoveDown();
             }
+        }
+
+        /*
+        Сместить упавшие блоки, которые находятся выше
+        удаленного ряда вниз
+        */
+        void ShiftBlocksAfterRowRemoved(int row_removed)
+        {
+            for (int i = 0; i < tetromino_fallen.Count; i++)
+            {
+                IDrawable symbol = tetromino_fallen[i];
+                if (symbol.Location.Y < row_removed)
+                {
+                    symbol = new DrawableChar(symbol.Char,
+                        new Point(symbol.Location.X, symbol.Location.Y + 1));
+                    tetromino_fallen[i] = symbol;
+                }
+            }
+        }
+
+        /*
+        Удалить упавшие блоки с заданным Y
+        */
+        void RemoveRow(int y)
+        {
+            tetromino_fallen.RemoveAll((IDrawable x) =>
+            {
+                return x.Location.Y == y;
+            });
+        }
+
+        /*
+        Получить массив с координатами заполненных рядов
+        */
+        int[] GetFilledRaws()
+        {
+            List<int> r = new List<int>();
+            for (int i = buttom_border; i >= padding.Top; i--)
+            {
+                bool line_filled = true;
+                for (int j = left_border + 1; j < right_border - 1; j++)
+                {
+                    Point p = new Point(j, i);
+                    if (!isPointInFallen(p))
+                    {
+                        line_filled = false;
+                        break;
+                    }
+                }
+                if (line_filled)
+                {
+                    r.Add(i);
+                }
+            }
+            return r.ToArray();
+        }
+
+        /*
+        Находится ли какой-нибудь упавший блок на
+        заданной точке
+        */
+        bool isPointInFallen(Point p)
+        {
+            foreach (var i in tetromino_fallen)
+            {
+                if (p.X == i.Location.X && p.Y == i.Location.Y)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /*
@@ -133,7 +215,7 @@ namespace Games
         {
             foreach (IDrawable i in t.ElementContent)
             {
-                if (i.Location.Y >= field_size.Height - padding.Buttom - 2)
+                if (i.Location.Y >= buttom_border)
                 {
                     return true;
                 }
@@ -200,7 +282,7 @@ namespace Games
         {
             foreach (IDrawable i in t.ElementContent)
             {
-                if (i.Location.X <= left_border || i.Location.X + 1 >= right_border)
+                if (i.Location.X <= left_border || i.Location.X >= right_border)
                 {
                     return true;
                 }
