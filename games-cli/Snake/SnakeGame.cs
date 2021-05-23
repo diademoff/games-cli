@@ -76,7 +76,7 @@ namespace Games
         bool isPaused = false;
 
         /*
-        Сохраняет очки, набранные змейкой и выводит ит в StatusBar
+        Сохраняет очки, набранные змейкой и выводит их в StatusBar
         */
         SnakeProgress progress;
         SelectionMenu gameOverAction;
@@ -92,7 +92,7 @@ namespace Games
         }
 
         /*
-        Задаёт начальное состояние змейки
+        Задаёт начальное состояние игры
         */
         void Init()
         {
@@ -218,7 +218,7 @@ namespace Games
             {
                 if (!snakeDead)
                 {
-                    // Не ставить на паузу если змейка срезалась и
+                    // Не ставить на паузу если змейка врезалась и
                     // пользователь выбирает действие
                     isPaused = !isPaused;
                 }

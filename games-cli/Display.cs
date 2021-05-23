@@ -20,8 +20,9 @@ namespace Games
                 return game.DelayBetweenFrames;
             }
         }
+        // Игра закончилась, то есть игрок вышел из нее
         public bool IsGameOver => game.IsGameOver;
-        // Пользователь вышел
+        // Пользователь вышел из приложения
         public bool Exited { get; private set; } = false;
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
@@ -35,6 +36,7 @@ namespace Games
         Random rnd = new Random();
         // Список объектов, которым отправлять нажатые клавиши
         List<IInteractive> keyHandlers = new List<IInteractive>();
+        // Отступы от краев консоли
         Padding p = new Padding(1, 1, 3, 5);
         public Display()
         {
@@ -45,12 +47,15 @@ namespace Games
 
             drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
 
-            Console.Title = "snake-cli";
+            Console.Title = "games-cli";
             Console.CursorVisible = false;
 
             drawer.RedrawAll();
         }
 
+        /*
+        Нарисовать окно с выбором игры и ждать пока пользователь выберет
+        */
         public void SelectGame()
         {
             SelectionMenu sm = new SelectionMenu(new string[]{

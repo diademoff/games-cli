@@ -14,11 +14,12 @@ namespace Games
         Позиция, начиная с которой будет напечатан текст слева направо
         */
         private Point startLocation;
+        // Максимальная длина текстового поля
         public int length { get; private set; }
 
         public TextField(Point startLocation, int length, string text = "")
         {
-            // позиция с которой начинать писать
+            // Позиция с которой начинать писать строку
             this.startLocation = startLocation;
             this.length = length;
             this.Text = text;

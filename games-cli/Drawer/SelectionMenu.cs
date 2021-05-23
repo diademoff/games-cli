@@ -1,3 +1,6 @@
+/*
+Меню с вариантами выбора
+*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,8 +11,10 @@ namespace Games
     class SelectionMenu : IDrawableElement, IInteractive
     {
         public IDrawable[] ElementContent => getContent();
+        // Выбран ли како-нибудь вариант
         public bool IsSelected = false;
         public bool IsFocused { get => isFocused; set => isFocused = value; }
+        // Выбраный вариант
         public int SelectedIndex { get; private set; }
 
         bool isFocused = true;

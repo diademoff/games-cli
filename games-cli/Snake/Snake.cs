@@ -6,8 +6,13 @@ namespace Games
 {
     public class Snake : IDrawableElement, IInteractive
     {
+        /*
+        Змейка состоит за блоков
+        */
         public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
+        // Направление, в котором будет сделано следующее движение
         public Direction Direction { get; private set; }
+        // Символ, которым рисуется змейка
         public char SnakeChar { get; set; }
         public Point InitPosition => new Point(1, 1);
         /*
@@ -21,7 +26,7 @@ namespace Games
 
         /*
         В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
-        направление может сменится два раза.
+        направление может сменится несколько раз.
         */
         Direction actual_direction;
         public Snake(char c, Padding p)
@@ -89,7 +94,8 @@ namespace Games
 
             if (addBlockQueue > 0)
             {
-                // Вместо добавления, не удаляется
+                // Вместо добавления нового блока, просто
+                // не удалять старый.
                 addBlockQueue -= 1;
             }
             else

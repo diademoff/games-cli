@@ -11,7 +11,7 @@ namespace Games
 
         int delay()
         {
-            if(speedUp)
+            if (speedUp)
             {
                 speedUp = false;
                 return 50;
@@ -21,35 +21,36 @@ namespace Games
 
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;
+        // Информация справа
         RightInfo rf;
+        // Игровое поле, в котором падают блоки
         TetrisPlayGround playGround;
+        // Сообщение о том что игра преостановлена
         MessageBox paused_msgbx;
+        // Выбор действия после переполнения игрового поля
         SelectionMenu game_over_menu;
         Border border;
         int left_border_playground;
         int right_border_playground;
         bool isPaused = false;
+        // Если нажата кнопка для ускорения, то следующий кадр
+        // будет отрисован быстрей
         bool speedUp = false;
-        int left_border;
-        int right_border;
 
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
             int playGroundWidth = 20;
-            this.left_border = padding.Left + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2);
-            this.right_border = FIELD_SIZE_WIDTH - (padding.Right + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2));
+            this.left_border_playground = padding.Left + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2);
+            this.right_border_playground = FIELD_SIZE_WIDTH - (padding.Right + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2));
 
             Init();
         }
 
         void Init()
         {
-            playGround = new TetrisPlayGround(left_border, right_border, new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT), padding);
+            playGround = new TetrisPlayGround(left_border_playground, right_border_playground, new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT), padding);
 
-            this.left_border_playground = left_border;
-            this.right_border_playground = right_border;
-
-            this.rf = new RightInfo(right_border, playGround.NextTetromino, padding);
+            this.rf = new RightInfo(right_border_playground, playGround.NextTetromino, padding);
             this.paused_msgbx = new MessageBox("Press ESC to resume",
                 25, 4, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
             this.game_over_menu = new SelectionMenu(new string[]{
@@ -58,13 +59,16 @@ namespace Games
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
         }
 
+        /*
+        Обработка нажатых клавиш
+        */
         public override void HandleKey(ConsoleKey key)
         {
             if (key == ConsoleKey.Escape)
             {
                 isPaused = !isPaused;
             }
-            if(key == ConsoleKey.Spacebar ||
+            if (key == ConsoleKey.Spacebar ||
                 key == ConsoleKey.S ||
                 key == ConsoleKey.DownArrow)
             {
@@ -79,6 +83,7 @@ namespace Games
                 game_over_menu.HandleKey(key);
             }
         }
+
         public override void NextFrame(Drawer d)
         {
             if (isPaused)
@@ -113,10 +118,15 @@ namespace Games
             playGroundDrawn = playGround.ElementContent;
         }
 
+        /*
+        После переполнения игрового поля будет вызваться этот
+        метод до тех пор пока игрок не выберет что сделать.
+        */
         void UserSelectionOnPlaygroundFilled(Drawer d)
         {
             if (game_over_menu.IsSelected)
             {
+                // Игрок выбрал что делать
                 d.Remove(playGround);
                 d.Remove(rf);
                 d.Remove(game_over_menu);
@@ -124,11 +134,12 @@ namespace Games
 
                 if (game_over_menu.SelectedIndex == 0)
                 {
-                    // restart
+                    // Перезапустить игру
                     Init();
                 }
                 else if (game_over_menu.SelectedIndex == 1)
                 {
+                    // Выйти из игры
                     this.isGameOver = true;
                 }
             }
@@ -145,7 +156,7 @@ namespace Games
         {
             d.Remove(playGroundDrawn);
             d.Remove(rf);
-            if(border != null)
+            if (border != null)
                 d.Remove(border);
         }
     }

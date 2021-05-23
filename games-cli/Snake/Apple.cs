@@ -19,6 +19,7 @@ namespace Games
         }
     }
 
+    // Apple generator
     public struct AppleGen
     {
         public int Field_width;
