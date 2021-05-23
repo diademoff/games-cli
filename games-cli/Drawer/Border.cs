@@ -1,11 +1,11 @@
-/*
-Граница/обводка чего-либо
-*/
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Граница/обводка чего-либо
+    */
     public class Border : IDrawableElement
     {
         public IDrawable[] ElementContent => getContent();

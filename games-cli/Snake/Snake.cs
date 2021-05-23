@@ -6,16 +6,16 @@ namespace Games
 {
     public class Snake : IDrawableElement, IInteractive
     {
-        /*
+        /**
         Змейка состоит за блоков
         */
         public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
-        // Направление, в котором будет сделано следующее движение
+        /// Направление, в котором будет сделано следующее движение
         public Direction Direction { get; private set; }
-        // Символ, которым рисуется змейка
+        /// Символ, которым рисуется змейка
         public char SnakeChar { get; set; }
         public Point InitPosition => new Point(1, 1);
-        /*
+        /**
         Добавление нового блока к змейки происходит во время движения. Значение
         переменной показывает сколько еще блоков нужно добавить к змейке.
         */
@@ -24,7 +24,7 @@ namespace Games
 
         public bool IsFocused { get => true; set => throw new NotImplementedException(); }
 
-        /*
+        /**
         В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
         направление может сменится несколько раз.
         */
@@ -37,7 +37,7 @@ namespace Games
             this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
         }
 
-        /*
+        /**
         Пересекает ли змейка границы
         */
         public bool BorderIntersect(int field_width, int field_height, Padding p)
@@ -52,7 +52,7 @@ namespace Games
             return false;
         }
 
-        // Изменить направление змейки
+        /// Изменить направление змейки
         public void ChangeDirection(Direction dir)
         {
             // Проверить чтобы змейка не въехала в себя
@@ -86,7 +86,7 @@ namespace Games
             }
         }
 
-        // Сдвинуть змейку по направлению
+        /// Сдвинуть змейку по направлению
         public void Move()
         {
             // Первый (ведущий) блок змейки
@@ -117,7 +117,7 @@ namespace Games
             Blocks.Insert(0, blockToAdd);
         }
 
-        /*
+        /**
         Пересекает ли змейка сама себя в данный момент
         */
         public bool SelfIntersect()
@@ -136,14 +136,14 @@ namespace Games
             return false;
         }
 
-        // Находится ли голова змейки на яблоке
+        /// Находится ли голова змейки на яблоке
         public bool IsEaten(Apple apple)
         {
             return Blocks[0].Location.X == apple.Location.X &&
                     Blocks[0].Location.Y == apple.Location.Y;
         }
 
-        /*
+        /**
         Добавить блок к змейке
         */
         public void AddBlock()
@@ -171,7 +171,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
         IDrawableElement
         */
@@ -185,7 +185,7 @@ namespace Games
             return r;
         }
 
-        /*
+        /**
         Получить координаты левее/правее/ниже/выше на 1 чем заданная
         */
         private Point GetPosFollowingDirection(Point point, Direction dir)

@@ -1,20 +1,20 @@
-/*
-Текстовое сообщение в рамке.
-*/
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Текстовое сообщение в рамке. Состоит из рамки (Border) и текстового поля (TextField)
+    */
     public class MessageBox : IDrawableElement
     {
         public IDrawable[] ElementContent => getContent();
-        /*
-        Состоит из рамки (Border) и текстового поля (TextField)
+        /**
+        Рамка
         */
         Border border;
+        /// Текстовое поле
         TextField textField;
-
         public string Text { get; set; }
 
         public MessageBox(string text, int width, int height, int field_width, int field_height, Padding p)

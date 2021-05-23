@@ -1,29 +1,29 @@
-/*
-Класс для рисования в консоли. Добавляете в очередь
-элементы и выводите их в консоль.
-*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Класс для рисования в консоли. Добавляете в очередь
+    элементы и выводите их в консоль.
+    */
     public class Drawer
     {
-        /*
+        /**
         Массив содержит симолы которые отображены в консоли. Вместо
         изменения массива используйте очередь на отрисовку.
         */
         public char[,] Content { get; private set; }
 
-        /*
+        /**
         В целях оптимизации вместо полной переотрисовки всего массива Content
         используется очередь на отрисовку. При следующей отрисовке символы
         отобразятся в консоли, а список будет очищен.
         */
         private List<DrawableChar> drawQueue = new List<DrawableChar>();
 
-        /*
+        /**
         Высота и ширина. Этими значениями ограничится поле на
         котором можно рисовать.
         */
@@ -38,7 +38,7 @@ namespace Games
             this.Height = height;
         }
 
-        /*
+        /**
         Отрисовать очередь
         */
         public void DrawToConsole()
@@ -54,7 +54,7 @@ namespace Games
             DrawNecessary();
         }
 
-        /*
+        /**
         Оптимизировать запросы. Например, если один элемент сначала
         стирается, а потом снова рисуется
         */
@@ -65,7 +65,7 @@ namespace Games
             {
                 for (int j = i + 1; j < drawQueue.Count; j++)
                 {
-                    if(drawQueue[i].Location == drawQueue[j].Location)
+                    if (drawQueue[i].Location == drawQueue[j].Location)
                     {
                         badRequests.Add(drawQueue[i]);
                         break;
@@ -88,7 +88,7 @@ namespace Games
             drawQueue.Clear();
         }
 
-        /*
+        /**
         Вывести на экран только те символы, которых нет
         */
         void DrawNecessary()
@@ -104,7 +104,7 @@ namespace Games
             drawQueue.Clear();
         }
 
-        // Перерисовать всё содержимое (High CPU usage)
+        /// Перерисовать всё содержимое (High CPU usage)
         public void RedrawAll()
         {
             for (int i = 0; i < Content.GetLength(0); i++)
@@ -118,7 +118,7 @@ namespace Games
             }
         }
 
-        // Отрисовать один символ в консоль
+        /// Отрисовать один символ в консоль
         private void DrawCharToConsole(char c, Point p)
         {
             c = c == (char)0 ? ' ' : c; // заменить пустой символ пробелом
@@ -127,7 +127,7 @@ namespace Games
             Console.Write(c);
         }
 
-        // Нарисовать границу из символов по краям с отступами
+        /// Нарисовать границу из символов по краям с отступами
         public Border CreateBorder(char c, Padding p)
         {
             Border b = new Border(c, Width, Height, p);
@@ -135,7 +135,7 @@ namespace Games
             return b;
         }
 
-        /*
+        /**
         Добавить элемент в очередь на отрисовку
         */
         public void Create(IDrawableElement element)
@@ -146,7 +146,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Добавить символ в очередь на отрисовку
         */
         public void Create(char c, int x, int y)
@@ -154,7 +154,7 @@ namespace Games
             drawQueue.Add(new DrawableChar(c, new Point(x, y)));
         }
 
-        /*
+        /**
         Добавить в очередь на отрисовку.
         */
         public void Create(IDrawable drawable)
@@ -170,7 +170,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Запросить затирание пробелами элемента. Запрос будет
         добавлен в очередь и удовлетворен во время следующей отрисовки.
         */

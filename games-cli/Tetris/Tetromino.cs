@@ -1,22 +1,22 @@
-/*
-Тетромино - это блок, который падает в игре "Тетрис"
-*/
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Тетромино - это блок, который падает в игре "Тетрис"
+    */
     public abstract class Tetromino : IDrawableElement
     {
         public Point[] structure => structure_rotate[CurrentRotationState];
         protected int offset_x, offset_y = 0;
         protected char Symbol = '*';
-        /*
+        /**
         Текущий поворот. Определяется массивом из списка
         structure_rotate
         */
         protected int CurrentRotationState = 0;
-        /*
+        /**
         Каждый массив содержит информацию о расположении блоков из
         которых состоит элемент. Каждый следующий массив в списке описывает
         положение элемента повернутого на 90 градусов относительного положения,
@@ -71,7 +71,7 @@ namespace Games
             return Try(1, 0);
         }
 
-        /*
+        /**
         Сдвинуть блок на X вправо и на Y вниз. Текущий
         объект не изменится.
 
@@ -122,7 +122,7 @@ namespace Games
             return with_offsets;
         }
 
-        /*
+        /**
         Сбросить все смещения, поместить элемент в левый
         верхний угол
         */

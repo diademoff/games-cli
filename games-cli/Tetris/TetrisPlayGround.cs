@@ -1,31 +1,30 @@
-/*
-Поле, в котором появляются и падают блоки
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Поле, в котором появляются и падают блоки
+    */
     class TetrisPlayGround : IDrawableElement, IInteractive
     {
         public Tetromino NextTetromino => next_tetromino;
         public bool GameOver = false;
-        // Координата левого края
+        /// Координата левого края
         int left_border;
-        // Координата правого края
+        /// Координата правого края
         int right_border;
-        /*
+        /**
         Блок, который падает в данный момент
         */
         int buttom_border;
         Tetromino falling_tetromino;
-        /*
+        /**
         Следующий блок после текущего
         */
         Tetromino next_tetromino;
-        /*
+        /**
         Упавшие блоки
         */
         List<IDrawable> tetromino_fallen = new List<IDrawable>();
@@ -71,7 +70,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Сместить упавшие блоки, которые находятся выше
         удаленного ряда вниз
         */
@@ -89,7 +88,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Удалить упавшие блоки с заданным Y
         */
         void RemoveRow(int y)
@@ -100,7 +99,7 @@ namespace Games
             });
         }
 
-        /*
+        /**
         Получить массив с координатами заполненных рядов
         */
         int[] GetFilledRaws()
@@ -126,7 +125,7 @@ namespace Games
             return r.ToArray();
         }
 
-        /*
+        /**
         Находится ли какой-нибудь упавший блок на
         заданной точке
         */
@@ -142,11 +141,10 @@ namespace Games
             return false;
         }
 
-        /*
+        /**
         Перед сдвигом или поворотом блока будет выполнена проверка
         не нарушает ли это действие правила.
         */
-
         void MoveFallingLeft()
         {
             Point[] theory_tetromino = falling_tetromino.TryMoveLeft();
@@ -243,7 +241,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Падающий блок не должен выходить за границы и
         пересекаться с другими блоками
         */
@@ -264,7 +262,7 @@ namespace Games
             return false;
         }
 
-        /*
+        /**
         Пересекается ли текущий блок с упавшими
         */
         bool IsIntersectsWithFallen(Point[] t)

@@ -1,12 +1,12 @@
-/*
-Управление содержимым экрана. Выбор игр.
-*/
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace Games
 {
+    /*
+    Управление содержимым экрана. Выбор игр.
+    */
     public class Display : IInteractive
     {
         public int FrameDelay
@@ -20,23 +20,23 @@ namespace Games
                 return game.DelayBetweenFrames;
             }
         }
-        // Игра закончилась, то есть игрок вышел из нее
+        /// Игра закончилась, то есть игрок вышел из нее
         public bool IsGameOver => game.IsGameOver;
-        // Пользователь вышел из приложения
+        /// Пользователь вышел из приложения
         public bool Exited { get; private set; } = false;
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
         Game game;
 
-        /*
+        /**
         Для отрисовки используется класс Drawer. Он предоставляет
         возможность отрисовать IDrawable.
         */
         Drawer drawer;
         Random rnd = new Random();
-        // Список объектов, которым отправлять нажатые клавиши
+        /// Список объектов, которым отправлять нажатые клавиши
         List<IInteractive> keyHandlers = new List<IInteractive>();
-        // Отступы от краев консоли
+        /// Отступы от краев консоли
         Padding p = new Padding(1, 1, 3, 5);
         public Display()
         {
@@ -53,7 +53,7 @@ namespace Games
             drawer.RedrawAll();
         }
 
-        /*
+        /**
         Нарисовать окно с выбором игры и ждать пока пользователь выберет
         */
         public void SelectGame()
@@ -130,7 +130,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Запустить поток, который читает нажатые клавиши
         */
         void InitKeyReading()
@@ -140,7 +140,7 @@ namespace Games
             keyReading.Start();
         }
 
-        /*
+        /**
         Бесконечный цикл, который читает нажатые клавиши
         */
         void ReadKeysThread()

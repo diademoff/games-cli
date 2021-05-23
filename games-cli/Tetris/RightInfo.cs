@@ -1,20 +1,21 @@
-/*
-Информация справа в игре Тетрис
-*/
-
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Информация справа в игре Тетрис
+    */
     class RightInfo : IDrawableElement
     {
         public IDrawable[] ElementContent => getContent();
 
-        // Отображать следующий блок, который будет создан
-        // после того как упадет текущий.
+        /**
+        Отображать следующий блок, который будет создан
+        после того как упадет текущий.
+        */
         Tetromino nextTetromino;
-        // Место в котором нарисовать информацию о следующем блоке
+        /// Место в котором нарисовать информацию о следующем блоке
         Point nextTetrominoLocation;
         public RightInfo(int rightBorder, Tetromino nextTetromino, Padding p)
         {

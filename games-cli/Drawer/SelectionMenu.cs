@@ -1,6 +1,3 @@
-/*
-Меню с вариантами выбора
-*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,13 +5,16 @@ using System.Linq;
 
 namespace Games
 {
+    /**
+    Меню с вариантами выбора
+    */
     class SelectionMenu : IDrawableElement, IInteractive
     {
         public IDrawable[] ElementContent => getContent();
-        // Выбран ли како-нибудь вариант
+        /// Выбран ли како-нибудь вариант
         public bool IsSelected = false;
         public bool IsFocused { get => isFocused; set => isFocused = value; }
-        // Выбраный вариант
+        /// Выбраный вариант
         public int SelectedIndex { get; private set; }
 
         bool isFocused = true;
@@ -22,8 +22,8 @@ namespace Games
         TextField[] Variants => GetTextFields(str_variants, SelectedIndex);
 
         string[] str_variants;
-        int padding_topbuttom; // Отступ сверху и снизу (отступы одинаковы)
-        int padding_leftright; // Отступ слева и справа
+        int padding_topbuttom; /// Отступ сверху и снизу (отступы одинаковы)
+        int padding_leftright; /// Отступ слева и справа
 
         int field_width;
         int field_height;

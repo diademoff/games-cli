@@ -1,17 +1,20 @@
-/*
-Реализация отрисовки линии
-*/
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Горизонтальная или вертикальная линия
+    */
     public class Line : IDrawableElement
     {
         public IDrawable[] ElementContent => line_chars.ToArray();
         List<DrawableChar> line_chars = new List<DrawableChar>();
 
+        /**
+        Создать линию по двум точкам
+        */
         public Line(char c, Point p1, Point p2)
         {
             if (!(p1.X == p2.X || p1.Y == p2.Y))

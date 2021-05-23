@@ -21,20 +21,22 @@ namespace Games
 
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;
-        // Информация справа
+        /// Информация справа
         RightInfo rf;
-        // Игровое поле, в котором падают блоки
+        /// Игровое поле, в котором падают блоки
         TetrisPlayGround playGround;
-        // Сообщение о том что игра преостановлена
+        /// Сообщение о том что игра преостановлена
         MessageBox paused_msgbx;
-        // Выбор действия после переполнения игрового поля
+        /// Выбор действия после переполнения игрового поля
         SelectionMenu game_over_menu;
         Border border;
         int left_border_playground;
         int right_border_playground;
         bool isPaused = false;
-        // Если нажата кнопка для ускорения, то следующий кадр
-        // будет отрисован быстрей
+        /**
+        Если нажата кнопка для ускорения, то следующий кадр
+        будет отрисован быстрей
+        */
         bool speedUp = false;
 
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
@@ -118,7 +120,7 @@ namespace Games
             playGroundDrawn = playGround.ElementContent;
         }
 
-        /*
+        /**
         После переполнения игрового поля будет вызваться этот
         метод до тех пор пока игрок не выберет что сделать.
         */
@@ -145,7 +147,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Между кадрами из другого потока может поменяться
         состояние игрового поля, поэтому сохраняется
         фактически нарисованное поле, чтобы потом именно его

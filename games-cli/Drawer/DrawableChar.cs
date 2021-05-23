@@ -1,10 +1,10 @@
-/*
-Простая реализация IDrawable - символ
-*/
 using System.Drawing;
 
 namespace Games
 {
+    /**
+    Простая реализация IDrawable - символ
+    */
     public class DrawableChar : IDrawable
     {
         public char Char => c;

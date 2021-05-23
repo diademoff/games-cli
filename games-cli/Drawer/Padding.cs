@@ -1,18 +1,17 @@
-/*
-Класс задет отступы, которые можно передать в качестве аргумента
-*/
-
 namespace Games
 {
+    /**
+    Класс задет отступы, которые можно передать в качестве аргумента
+    */
     public struct Padding
     {
-        // Отступ слева
+        /// Отступ слева
         public int Left { get; set; }
-        // Отступ справа
+        /// Отступ справа
         public int Right { get; set; }
-        // Отступ сверху
+        /// Отступ сверху
         public int Top { get; set; }
-        // Отступ снизу
+        /// Отступ снизу
         public int Buttom { get; set; }
 
         public Padding(int left, int right, int top, int buttom)

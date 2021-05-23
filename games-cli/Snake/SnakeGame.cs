@@ -30,23 +30,23 @@ namespace Games
 
         public override int DelayBetweenFrames => frameDelay();
 
-        /*
+        /**
         Игра заканчивается когда змейка столкнулась с чем-либо и пользователь
         отказался перезапускать игру
         */
         public override bool IsGameOver => isGameOver;
-        /*
+        /**
         Чтобы выйти из игры сделайте эту переменную true, чтобы сообщить
         классу, который вызвал эту игру о том что игра закончена.
         */
         bool isGameOver = false;
-        /*
+        /**
         Столкнулась ли змейка с собой или с краем.
         */
         bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
         int delay;
 
-        /*
+        /**
         Высчитать задержку между кадрами исходя из текущего прогресса и
         ускорения.
         */
@@ -61,12 +61,12 @@ namespace Games
         }
 
         bool isFocused = true;
-        /*
+        /**
         Яблоко, которое ест змейка
         */
         Apple apple;
         Snake snake;
-        /*
+        /**
         Ускорение
         */
         bool speedUp = false;
@@ -75,13 +75,15 @@ namespace Games
         MessageBox info_paused;
         bool isPaused = false;
 
-        /*
+        /**
         Сохраняет очки, набранные змейкой и выводит их в StatusBar
         */
         SnakeProgress progress;
         SelectionMenu gameOverAction;
-        bool drawBorder; // Нужно ли отрисовать границу
-        Border border; // Нарисованная граница
+        /// Нужно ли отрисовать границу
+        bool drawBorder;
+        /// Нарисованная граница
+        Border border;
 
         public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
@@ -91,7 +93,7 @@ namespace Games
             Init();
         }
 
-        /*
+        /**
         Задаёт начальное состояние игры
         */
         void Init()
@@ -120,7 +122,7 @@ namespace Games
             d.Remove(apple);
         }
 
-        /*
+        /**
         Следующий кадр
         */
         public override void NextFrame(Drawer d)
@@ -166,7 +168,7 @@ namespace Games
             }
         }
 
-        /*
+        /**
         Окно выбора что делать после столкновения змейки с чем-либо
         */
         void selectGameOverAction(Drawer d)
@@ -189,7 +191,7 @@ namespace Games
             gameOverAction.IsFocused = true;
         }
 
-        /*
+        /**
         Стереть не нужное содержимое и перезапустить игру
         */
         void RestartGame(Drawer d)
@@ -199,7 +201,7 @@ namespace Games
             Init();
         }
 
-        /*
+        /**
         Стереть ненужное содержимое и выйти из игры
         */
         void ExitGame(Drawer d)

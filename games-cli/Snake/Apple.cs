@@ -1,30 +1,34 @@
-/*
-Яблоко, которое змейка должна съесть
-*/
 using System;
 using System.Drawing;
 using System.Linq;
 
 namespace Games
 {
+    /**
+    Яблоко, которое змейка должна съесть
+    */
     public class Apple : IDrawable
     {
         public Point Location { get; private set; }
         public char Char { get; set; } = '☼';
 
-        // Создать яблоко в поле с случайным расположением
+        /// Создать яблоко в поле с случайным расположением
         public Apple(AppleGen applegen, ref Random rnd)
         {
             this.Location = applegen.GetRandomPoint(ref rnd);
         }
     }
 
-    // Apple generator
+    /// Apple generator
     public struct AppleGen
     {
         public int Field_width;
         public int Field_height;
-        public Point[] Avoid; // Не генерировать в заданных точках
+        /**
+        Не генерировать в заданных точках (на теле змейки)
+        */
+        public Point[] Avoid;
+        /// Учитывать отступы
         public Padding Padding;
 
         public AppleGen(int field_width, int field_height, Snake snake)
@@ -46,7 +50,7 @@ namespace Games
             this.Padding = p;
         }
 
-        /*
+        /**
         Сгенерировать место в соответствии с заданными параметрами.
         */
         public Point GetRandomPoint(ref Random rnd)
