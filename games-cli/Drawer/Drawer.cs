@@ -29,6 +29,7 @@ namespace Games
         */
         public int Width { get; private set; }
         public int Height { get; private set; }
+        bool first_draw = true;
 
         public Drawer(int width, int height)
         {
@@ -42,10 +43,63 @@ namespace Games
         */
         public void DrawToConsole()
         {
+            OptimizeQueue();
+            if (first_draw)
+            {
+                DrawAll();
+                first_draw = false;
+                return;
+            }
+
+            DrawNecessary();
+        }
+
+        /*
+        Оптимизировать запросы. Например, если один элемент сначала
+        стирается, а потом снова рисуется
+        */
+        void OptimizeQueue()
+        {
+            List<DrawableChar> badRequests = new List<DrawableChar>();
+            for (int i = 0; i < drawQueue.Count - 1; i++)
+            {
+                for (int j = i + 1; j < drawQueue.Count; j++)
+                {
+                    if(drawQueue[i].Location == drawQueue[j].Location)
+                    {
+                        badRequests.Add(drawQueue[i]);
+                        break;
+                    }
+                }
+            }
+            foreach (var i in badRequests)
+            {
+                drawQueue.Remove(i);
+            }
+        }
+
+        void DrawAll()
+        {
             foreach (var p in drawQueue)
             {
                 Content[p.Location.X, p.Location.Y] = p.Char;
                 DrawCharToConsole(p.Char, p.Location);
+            }
+            drawQueue.Clear();
+        }
+
+        /*
+        Вывести на экран только те символы, которых нет
+        */
+        void DrawNecessary()
+        {
+            foreach (var p in drawQueue)
+            {
+                if (Content[p.Location.X, p.Location.Y] != p.Char)
+                {
+                    Content[p.Location.X, p.Location.Y] = p.Char;
+                    DrawCharToConsole(p.Char, p.Location);
+                }
             }
             drawQueue.Clear();
         }

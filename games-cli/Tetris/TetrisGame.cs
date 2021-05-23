@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace Games
@@ -122,7 +121,6 @@ namespace Games
                 d.Remove(rf);
                 d.Remove(game_over_menu);
                 d.Remove(border);
-
 
                 if (game_over_menu.SelectedIndex == 0)
                 {
