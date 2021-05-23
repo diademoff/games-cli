@@ -17,10 +17,19 @@ namespace Games
         Tetromino nextTetromino;
         /// Место в котором нарисовать информацию о следующем блоке
         Point nextTetrominoLocation;
+        /// Текстовое поле в котором написано кол-во набранных очков
+        TextField score_field;
+        /// Счетчик очков
+        int scoreCount = 0;
         public RightInfo(int rightBorder, Tetromino nextTetromino, Padding p)
         {
             this.nextTetrominoLocation = new Point(rightBorder + 3, p.Top + 3);
             this.nextTetromino = nextTetromino;
+        }
+
+        public void SetScore(int score)
+        {
+            scoreCount = score;
         }
 
         public void ChangeNextTetromino(Tetromino t)
@@ -40,6 +49,10 @@ namespace Games
 
                 r.Add(new DrawableChar(c, location));
             }
+
+            this.score_field = new TextField(new Point(nextTetrominoLocation.X, nextTetrominoLocation.Y + 7), 8,
+                                    $"Score: {this.scoreCount}");
+            r.AddRange(score_field.ElementContent);
 
             return r.ToArray();
         }

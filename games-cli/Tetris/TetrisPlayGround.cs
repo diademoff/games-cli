@@ -11,6 +11,9 @@ namespace Games
     {
         public Tetromino NextTetromino => next_tetromino;
         public bool GameOver = false;
+        /// Набранные очки
+        public int Score => score;
+        int score = 0;
         /// Координата левого края
         int left_border;
         /// Координата правого края
@@ -30,7 +33,6 @@ namespace Games
         List<IDrawable> tetromino_fallen = new List<IDrawable>();
         Random rnd = new Random();
         public IDrawable[] ElementContent => getContent();
-
         public bool IsFocused { get => isFocused; set => isFocused = value; }
         bool isFocused = true;
         Size field_size;
@@ -61,6 +63,7 @@ namespace Games
                     {
                         RemoveRow(row_y);
                         ShiftBlocksAfterRowRemoved(row_y);
+                        this.score += 1;
                     }
                 }
             }

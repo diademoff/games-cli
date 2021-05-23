@@ -114,6 +114,7 @@ namespace Games
 
             playGround.NextFrame();
             rf.ChangeNextTetromino(playGround.NextTetromino);
+            rf.SetScore(playGround.Score);
 
             d.Create(rf);
             d.Create(playGround);
