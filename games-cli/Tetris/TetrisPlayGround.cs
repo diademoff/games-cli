@@ -12,7 +12,6 @@ namespace Games
     {
         public Tetromino NextTetromino => next_tetromino;
         public bool GameOver = false;
-        int falling_blocks_field_width = 20;
         // Координата левого края
         int left_border;
         // Координата правого края
@@ -203,7 +202,6 @@ namespace Games
             throw new Exception("Unreal exception GetRandomTetromino");
         }
 
-        bool drawBorder = true;
         private IDrawable[] getContent()
         {
             List<IDrawable> r = new List<IDrawable>();
