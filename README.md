@@ -1,32 +1,34 @@
-# About
+games-cli
+=========
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/diademoff/games-cli)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/games-cli)
 ![GitHub](https://img.shields.io/github/license/diademoff/games-cli)
 
-Play your favorite games in console. Install `dotnet-runtime` to run app.
+Играй в классические игры в терминале. Установите `dotnet-runtime` чтобы запустить приложение.
 
-<img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="400"/>
+<img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="500"/>
 
-<img src="https://i.imgur.com/Iw6sc5V.png" alt="drawing" height="250"/>
+<img src="https://i.imgur.com/Iw6sc5V.png" alt="drawing" height="300"/>
 
-Platforms:
+Платформы:
 * Windows
 * Gnu Linux
 
 Snake:
-* Use `W`, `A`, `S`, `D` or arrows or vim-keys for moving
-* Use `Escape` for pause
-* Use `Space` for speedup
+* Управление `W`, `A`, `S`, `D`, стрелочки или vim
+* `Escape` пауза
+* `Space` ускорение
 
 Tetris:
-* User `W`, `A`, `S`, `D` or arrows to move tetromino
-* Use `Escape` for pause
-* Use `Space` or `S` or arrow down for speedup
+* `W`, `A`, `S`, `D` или стрелочки
+* `Escape` пауза
+* `Пробел` или `S` или стрелка для ускорения
 
-[Download](https://github.com/diademoff/games-cli/releases)
+[Скачать бинарные файлы](https://github.com/diademoff/games-cli/releases)
 
-# Build
-Install `dotnet-sdk` to build.
+# Сборка из исходников
+Установите `dotnet-sdk` для сборки.
 
 ## Linux
 
@@ -34,17 +36,30 @@ Install `dotnet-sdk` to build.
 git clone https://github.com/diademoff/games-cli && cd games-cli/games-cli
 ```
 
-Build and install
+Сборка и установка:
 ```
 make && sudo make install
 ```
 
-Run
+Запуск:
 ```
 games-cli
 ```
 
 ## Windows
 ```
+git clone https://github.com/diademoff/games-cli && cd games-cli/games-cli
+```
+```
 dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
 ```
+
+# Документация
+Сгенерируйте документацию с помощью [`doxygen`](https://github.com/doxygen/doxygen)
+
+В папке репозитория выполните:
+```
+doxygen doxygen.conf
+```
+
+Документация сгенерирована по пути: `./docs/html/index.html`
