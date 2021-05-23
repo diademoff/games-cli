@@ -11,6 +11,7 @@ namespace Games
     class TetrisPlayGround : IDrawableElement, IInteractive
     {
         public Tetromino NextTetromino => next_tetromino;
+        public bool GameOver = false;
         int falling_blocks_field_width = 20;
         // Координата левого края
         int left_border;
@@ -32,8 +33,8 @@ namespace Games
         Random rnd = new Random();
         public IDrawable[] ElementContent => getContent();
 
-        public bool IsFocused { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+        public bool IsFocused { get => isFocused; set => isFocused = value; }
+        bool isFocused = true;
         Size field_size;
         Padding padding;
 
@@ -228,6 +229,12 @@ namespace Games
             AddCurrentTetrominoToFallen();
             falling_tetromino = next_tetromino;
             next_tetromino = GetRandomTetromino();
+            if(AnyIntersects(falling_tetromino.TryMoveDown()))
+            {
+                // Если под появившимся блоком есть другие блоки
+                // значит поле заполнено
+                GameOver = true;
+            }
         }
 
         void AddCurrentTetrominoToFallen()
