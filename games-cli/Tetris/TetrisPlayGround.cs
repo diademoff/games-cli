@@ -178,10 +178,11 @@ namespace Games
             falling_tetromino.Rotate();
         }
 
+        /// Сгенерировать новый тетромино
         Tetromino GetRandomTetromino()
         {
             int field_width = field_size.Width;
-            int init_y_location = 5;
+            int init_y_location = padding.Top;
 
             switch (rnd.Next(1, 8))
             {
