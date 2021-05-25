@@ -7,18 +7,7 @@ namespace Games
     {
         public override bool IsFocused { get => true; set => throw new NotImplementedException(); }
 
-        public override int DelayBetweenFrames => delay();
-
-        int delay()
-        {
-            if (speedUp)
-            {
-                speedUp = false;
-                return 50;
-            }
-            return 200;
-        }
-
+        public override int DelayBetweenFrames => playGround.DelayBetweenFrames;
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;
         /// Информация справа
@@ -33,11 +22,6 @@ namespace Games
         int left_border_playground;
         int right_border_playground;
         bool isPaused = false;
-        /**
-        Если нажата кнопка для ускорения, то следующий кадр
-        будет отрисован быстрей
-        */
-        bool speedUp = false;
 
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
@@ -69,12 +53,6 @@ namespace Games
             if (key == ConsoleKey.Escape)
             {
                 isPaused = !isPaused;
-            }
-            if (key == ConsoleKey.Spacebar ||
-                key == ConsoleKey.S ||
-                key == ConsoleKey.DownArrow)
-            {
-                speedUp = true;
             }
             if (!isPaused)
             {

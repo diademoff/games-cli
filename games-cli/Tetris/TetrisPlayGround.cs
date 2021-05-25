@@ -37,6 +37,32 @@ namespace Games
         bool isFocused = true;
         Size field_size;
         Padding padding;
+        /// Какая задержка должна быть между кадрами
+        public int DelayBetweenFrames => getDelay();
+        int getDelay()
+        {
+            if (speedUp)
+            {
+                speedUp = false;
+                return 50;
+            }
+            return 200;
+        }
+        /**
+        Если нажата кнопка для ускорения, то следующий кадр
+        будет отрисован быстрей
+        */
+        bool speedUp = false;
+        /**
+        Когда пользователь передвигает падающий блок он перестает падать на некоторое
+        время. Это свойство хранит время когда было сделано последнее перемещение блока
+        */
+        DateTime lastAction;
+        /**
+        Время в миллисекундах которое падающий блок заморожен после
+        перемещения/поворота пользователем.
+        */
+        int freezeTime = 200;
 
         public TetrisPlayGround(int left_border, int right_border, Size field_size, Padding p)
         {
@@ -69,8 +95,21 @@ namespace Games
             }
             else
             {
-                falling_tetromino.MoveDown();
+                MoveFallingTetrominoDown();
             }
+        }
+
+        void MoveFallingTetrominoDown()
+        {
+            if ((DateTime.Now - lastAction).Milliseconds < freezeTime)
+            {
+                /*
+                Не перемещать блок вниз если после последнего перемещение
+                не прошло достаточно времени
+                */
+                return;
+            }
+            falling_tetromino.MoveDown();
         }
 
         /**
@@ -146,7 +185,8 @@ namespace Games
 
         /**
         Перед сдвигом или поворотом блока будет выполнена проверка
-        не нарушает ли это действие правила.
+        не нарушает ли это действие правила и сохранено время
+        когда этот сдвиг был сделан.
         */
         void MoveFallingLeft()
         {
@@ -156,6 +196,7 @@ namespace Games
                 return;
             }
             falling_tetromino.MoveLeft();
+            lastAction = DateTime.Now;
         }
 
         void MoveFallingRight()
@@ -166,6 +207,7 @@ namespace Games
                 return;
             }
             falling_tetromino.MoveRight();
+            lastAction = DateTime.Now;
         }
 
         void RotateFalling()
@@ -176,6 +218,7 @@ namespace Games
                 return;
             }
             falling_tetromino.Rotate();
+            lastAction = DateTime.Now;
         }
 
         /// Сгенерировать новый тетромино
@@ -229,7 +272,7 @@ namespace Games
             AddCurrentTetrominoToFallen();
             falling_tetromino = next_tetromino;
             next_tetromino = GetRandomTetromino();
-            if(AnyIntersects(falling_tetromino.TryMoveDown()))
+            if (AnyIntersects(falling_tetromino.TryMoveDown()))
             {
                 // Если под появившимся блоком есть другие блоки
                 // значит поле заполнено
@@ -299,6 +342,13 @@ namespace Games
 
         public void HandleKey(ConsoleKey key)
         {
+            if (key == ConsoleKey.Spacebar ||
+                key == ConsoleKey.S ||
+                key == ConsoleKey.DownArrow)
+            {
+                speedUp = true;
+            }
+
             if (key == ConsoleKey.A || key == ConsoleKey.LeftArrow)
             {
                 MoveFallingLeft();
