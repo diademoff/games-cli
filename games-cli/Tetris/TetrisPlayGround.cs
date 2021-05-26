@@ -37,17 +37,10 @@ namespace Games
         bool isFocused = true;
         Size field_size;
         Padding padding;
-        /// Какая задержка должна быть между кадрами
-        public int DelayBetweenFrames => getDelay();
-        int getDelay()
-        {
-            if (speedUp)
-            {
-                speedUp = false;
-                return 50;
-            }
-            return 200;
-        }
+        /**
+        Какая задержка должна быть между кадрами. 100 мс = 60 FPS
+        */
+        public int DelayBetweenFrames => 100;
         /**
         Если нажата кнопка для ускорения, то следующий кадр
         будет отрисован быстрей
@@ -63,6 +56,15 @@ namespace Games
         перемещения/поворота пользователем.
         */
         int freezeTime = 200;
+        /**
+        Время когда было сделано последнее перемещение вниз
+        падающего блока
+        */
+        DateTime lastFall;
+        /**
+        Время в миллисекундах за которое падающий блок перемещается вниз
+        */
+        int fallingInterval => speedUp ? 50 : 200;
 
         public TetrisPlayGround(int left_border, int right_border, Size field_size, Padding p)
         {
@@ -109,7 +111,16 @@ namespace Games
                 */
                 return;
             }
+            if((DateTime.Now - lastFall).Milliseconds < fallingInterval)
+            {
+                /*
+                Падать нужно с заданым интервалом
+                */
+                return;
+            }
             falling_tetromino.MoveDown();
+            lastFall = DateTime.Now;
+            speedUp = false; // сброс ускорения
         }
 
         /**
