@@ -10,6 +10,7 @@ namespace Games
     class TetrisPlayGround : IDrawableElement, IInteractive
     {
         public Tetromino NextTetromino => next_tetromino;
+        /// Заполнено ли поле
         public bool GameOver = false;
         /// Набранные очки
         public int Score => score;

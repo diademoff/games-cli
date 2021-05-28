@@ -54,7 +54,12 @@ namespace Games
         {
             if (key == ConsoleKey.Escape)
             {
-                isPaused = !isPaused;
+                if (!playGround.GameOver)
+                {
+                    // Не показывать меню паузы когда
+                    // игра закончилась
+                    isPaused = !isPaused;
+                }
             }
             if (isPaused)
             {
