@@ -5,7 +5,7 @@ games-cli
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/diademoff/games-cli)
 ![GitHub](https://img.shields.io/github/license/diademoff/games-cli)
 
-Играй в классические игры в терминале. Установите `dotnet-runtime` чтобы запустить приложение.
+Играй в классические игры в терминале.
 
 <img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="500"/>
 
@@ -23,19 +23,18 @@ Snake:
 Tetris:
 * `W`, `A`, `S`, `D` или стрелочки
 * `Escape` пауза
-* `Пробел` или `S` или стрелка для ускорения
+* `Пробел` или `S` или стрелка вниз для ускорения
 
 [Скачать бинарные файлы](https://github.com/diademoff/games-cli/releases)
 
 # Сборка из исходников
 Установите `dotnet-sdk` для сборки.
 
-## Linux
-
 ```
 git clone https://github.com/diademoff/games-cli && cd games-cli/games-cli
 ```
 
+## Linux
 Сборка и установка:
 ```
 make && sudo make install
@@ -47,11 +46,9 @@ games-cli
 ```
 
 ## Windows
+Сборка:
 ```
-git clone https://github.com/diademoff/games-cli && cd games-cli/games-cli
-```
-```
-dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true
+dotnet publish -r win-x64 -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
 ```
 
 # Документация
