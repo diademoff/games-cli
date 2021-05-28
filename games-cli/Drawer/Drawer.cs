@@ -17,11 +17,11 @@ namespace Games
         public char[,] Content { get; private set; }
 
         /**
-        В целях оптимизации вместо полной переотрисовки всего массива Content
+        В целях оптимизации вместо полной переотрисовки всего массива Content каждый кадр
         используется очередь на отрисовку. При следующей отрисовке символы
-        отобразятся в консоли, а список будет очищен.
+        отобразятся в консоли, а список с очередью будет очищен.
         */
-        private List<DrawableChar> drawQueue = new List<DrawableChar>();
+        private Dictionary<Point, DrawableChar> drawQueue = new Dictionary<Point, DrawableChar>();
 
         /**
         Высота и ширина. Этими значениями ограничится поле на
@@ -29,7 +29,6 @@ namespace Games
         */
         public int Width { get; private set; }
         public int Height { get; private set; }
-        bool first_draw = true;
 
         public Drawer(int width, int height)
         {
@@ -39,67 +38,14 @@ namespace Games
         }
 
         /**
-        Отрисовать очередь
+        Отрисовать очередь. Вывести симолы в очереди
         */
         public void DrawToConsole()
         {
-            OptimizeQueue();
-            if (first_draw)
+            foreach (KeyValuePair<Point, DrawableChar> p in drawQueue)
             {
-                DrawAll();
-                first_draw = false;
-                return;
-            }
-
-            DrawNecessary();
-        }
-
-        /**
-        Оптимизировать запросы. Например, если один элемент сначала
-        стирается, а потом снова рисуется
-        */
-        void OptimizeQueue()
-        {
-            List<DrawableChar> badRequests = new List<DrawableChar>();
-            for (int i = 0; i < drawQueue.Count - 1; i++)
-            {
-                for (int j = i + 1; j < drawQueue.Count; j++)
-                {
-                    if (drawQueue[i].Location == drawQueue[j].Location)
-                    {
-                        badRequests.Add(drawQueue[i]);
-                        break;
-                    }
-                }
-            }
-            foreach (var i in badRequests)
-            {
-                drawQueue.Remove(i);
-            }
-        }
-
-        void DrawAll()
-        {
-            foreach (var p in drawQueue)
-            {
-                Content[p.Location.X, p.Location.Y] = p.Char;
-                DrawCharToConsole(p.Char, p.Location);
-            }
-            drawQueue.Clear();
-        }
-
-        /**
-        Вывести на экран только те символы, которых нет
-        */
-        void DrawNecessary()
-        {
-            foreach (var p in drawQueue)
-            {
-                if (Content[p.Location.X, p.Location.Y] != p.Char)
-                {
-                    Content[p.Location.X, p.Location.Y] = p.Char;
-                    DrawCharToConsole(p.Char, p.Location);
-                }
+                Content[p.Key.X, p.Key.Y] = p.Value.Char;
+                DrawCharToConsole(p.Value.Char, p.Key);
             }
             drawQueue.Clear();
         }
@@ -151,18 +97,27 @@ namespace Games
         */
         public void Create(char c, int x, int y)
         {
-            drawQueue.Add(new DrawableChar(c, new Point(x, y)));
+            var p = new Point(x, y);
+            var dc = new DrawableChar(c, new Point(x, y));
+            if (!drawQueue.TryAdd(p, dc))
+            {
+                // Перезаписать значение если есть символ на этих координатах
+                drawQueue[p] = dc;
+            }
         }
 
         /**
-        Добавить в очередь на отрисовку.
+        Добавить символ в очередь на отрисовку
         */
         public void Create(IDrawable drawable)
         {
             Create(drawable.Char, drawable.Location.X, drawable.Location.Y);
         }
 
-        public void Create(IDrawable[] drawables)
+        /**
+        Добавить символы в очередь на отрисовку
+        */
+        public void Create(IEnumerable<IDrawable> drawables)
         {
             foreach (var item in drawables)
             {
@@ -182,12 +137,18 @@ namespace Games
             }
         }
 
+        /**
+        Затереть пробелами символ
+        */
         public void Remove(IDrawable drawable)
         {
             Remove(drawable.Location.X, drawable.Location.Y);
         }
 
-        public void Remove(IDrawable[] drawables)
+        /**
+        Затереть пробелами символы
+        */
+        public void Remove(IEnumerable<IDrawable> drawables)
         {
             foreach (var item in drawables)
             {
@@ -195,9 +156,12 @@ namespace Games
             }
         }
 
+        /**
+        Удалить символ по заданным координатам
+        */
         public void Remove(int x, int y)
         {
-            drawQueue.Add(new DrawableChar(' ', new Point(x, y)));
+            Create(' ', x, y);
         }
     }
 }
