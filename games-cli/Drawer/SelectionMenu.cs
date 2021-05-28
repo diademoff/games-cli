@@ -29,6 +29,8 @@ namespace Games
         int field_width;
         int field_height;
 
+        int default_selected;
+
         int menu_height;
         int menu_width;
 
@@ -38,6 +40,7 @@ namespace Games
             this.field_width = field_width;
             this.field_height = field_height;
             this.str_variants = str_variants;
+            this.default_selected = defaultSelected;
 
             field_width -= (p.Left + p.Right);
             field_height -= (p.Buttom + p.Top);
@@ -58,6 +61,13 @@ namespace Games
                                 padding_topbuttom, padding_topbuttom);
 
             this.Border = new Border('+', field_width, field_height, p_border);
+        }
+
+        /// Сбросить сделанный выбор, вернуть в начальное состояние
+        public void Reuse()
+        {
+            this.SelectedIndex = default_selected;
+            this.IsSelected = false;
         }
 
         public void HandleKey(ConsoleKey key)

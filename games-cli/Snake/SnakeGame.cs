@@ -71,8 +71,8 @@ namespace Games
         */
         bool speedUp = false;
         Random rnd = new Random();
-
-        MessageBox info_paused;
+        /// Меню паузы с выбором действия
+        SelectionMenu menu_paused;
         bool isPaused = false;
 
         /**
@@ -87,9 +87,6 @@ namespace Games
 
         public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            info_paused = new MessageBox("Press ESC to resume", 30, 5,
-                            FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-
             Init();
         }
 
@@ -105,6 +102,10 @@ namespace Games
                     "Restart",
                     "Exit"
                 }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
+            menu_paused = new SelectionMenu(new string[]{
+                "Resume",
+                "Exit"
+            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
             RegenerateApple();
             gameOverAction.IsFocused = false;
             delay = 100;
@@ -115,7 +116,7 @@ namespace Games
         {
             if (!isPaused)
             {
-                d.Remove(info_paused);
+                d.Remove(menu_paused);
             }
 
             d.Remove(snake.ElementContent[snake.ElementContent.Length - 1]);
@@ -141,16 +142,40 @@ namespace Games
 
             if (isPaused)
             {
-                d.Create(info_paused);
+                d.Create(menu_paused);
+                CheckPausedMenuSomethingSelected(d);
             }
-            else
+
+            if (!isPaused)
             {
                 MoveSnake();
             }
 
-            d.Create(snake);
-            d.Create(apple);
-            d.Create(progress.StatusBar);
+            if (!isGameOver)
+            {
+                d.Create(snake);
+                d.Create(apple);
+                d.Create(progress.StatusBar);
+            }
+        }
+
+        void CheckPausedMenuSomethingSelected(Drawer d)
+        {
+            if (!menu_paused.IsSelected)
+            {
+                return;
+            }
+
+            if (menu_paused.SelectedIndex == 0)
+            {
+                isPaused = false;
+                menu_paused.Reuse();
+            }
+            else if (menu_paused.SelectedIndex == 1)
+            {
+                RemoveGame(d);
+                isGameOver = true;
+            }
         }
 
         void MoveSnake()
@@ -207,6 +232,12 @@ namespace Games
         void ExitGame(Drawer d)
         {
             this.isGameOver = true;
+            RemoveGame(d);
+        }
+
+        /// Стереть элементы игры
+        void RemoveGame(Drawer d)
+        {
             d.Remove(snake);
             d.Remove(apple);
             d.Remove(progress.StatusBar);
@@ -238,6 +269,11 @@ namespace Games
             if (gameOverAction.IsFocused)
             {
                 gameOverAction.HandleKey(key);
+            }
+
+            if (isPaused)
+            {
+                menu_paused.HandleKey(key);
             }
         }
 

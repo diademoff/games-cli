@@ -14,8 +14,8 @@ namespace Games
         RightInfo rf;
         /// Игровое поле, в котором падают блоки
         TetrisPlayGround playGround;
-        /// Сообщение о том что игра преостановлена
-        MessageBox paused_msgbx;
+        /// Меню паузы
+        SelectionMenu paused_menu;
         /// Выбор действия после переполнения игрового поля
         SelectionMenu game_over_menu;
         Border border;
@@ -37,8 +37,10 @@ namespace Games
             playGround = new TetrisPlayGround(left_border_playground, right_border_playground, new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT), padding);
 
             this.rf = new RightInfo(right_border_playground, playGround.NextTetromino, padding);
-            this.paused_msgbx = new MessageBox("Press ESC to resume",
-                25, 4, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
+            this.paused_menu = new SelectionMenu(new string[]{
+                "Resume",
+                "Exit"
+            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
             this.game_over_menu = new SelectionMenu(new string[]{
                 "Restart",
                 "Exit"
@@ -54,26 +56,28 @@ namespace Games
             {
                 isPaused = !isPaused;
             }
-            if (!isPaused)
+            if (isPaused)
             {
-                playGround.HandleKey(key);
+                paused_menu.HandleKey(key);
             }
             if (playGround.GameOver)
             {
                 game_over_menu.HandleKey(key);
             }
+            playGround.HandleKey(key);
         }
 
         public override void NextFrame(Drawer d)
         {
             if (isPaused)
             {
-                d.Create(paused_msgbx);
+                d.Create(paused_menu);
+                CheckPauseMenuSomethingSelected(d);
                 return;
             }
             else
             {
-                d.Remove(paused_msgbx);
+                d.Remove(paused_menu);
             }
 
             if (playGround.GameOver)
@@ -100,6 +104,29 @@ namespace Games
         }
 
         /**
+        Проверить не выбрал ли пользователь действие в меню паузы и
+        выполнить это действие
+        */
+        void CheckPauseMenuSomethingSelected(Drawer d)
+        {
+            if (!paused_menu.IsSelected)
+            {
+                return;
+            }
+
+            if (paused_menu.SelectedIndex == 0)
+            {
+                isPaused = false;
+                paused_menu.Reuse();
+            }
+            else if (paused_menu.SelectedIndex == 1)
+            {
+                RemoveGame(d);
+                isGameOver = true;
+            }
+        }
+
+        /**
         После переполнения игрового поля будет вызваться этот
         метод до тех пор пока игрок не выберет что сделать.
         */
@@ -108,10 +135,7 @@ namespace Games
             if (game_over_menu.IsSelected)
             {
                 // Игрок выбрал что делать
-                d.Remove(playGround);
-                d.Remove(rf);
-                d.Remove(game_over_menu);
-                d.Remove(border);
+                RemoveGame(d);
 
                 if (game_over_menu.SelectedIndex == 0)
                 {
@@ -124,6 +148,15 @@ namespace Games
                     this.isGameOver = true;
                 }
             }
+        }
+
+        /// Стереть, нарисованные объекты
+        void RemoveGame(Drawer d)
+        {
+            d.Remove(playGround);
+            d.Remove(rf);
+            d.Remove(game_over_menu);
+            d.Remove(border);
         }
 
         /**
