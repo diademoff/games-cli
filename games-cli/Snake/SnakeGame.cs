@@ -242,6 +242,7 @@ namespace Games
             d.Remove(apple);
             d.Remove(progress.StatusBar);
             d.Remove(gameOverAction);
+            d.Remove(menu_paused);
             d.Remove(border);
         }
 

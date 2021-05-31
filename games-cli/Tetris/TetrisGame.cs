@@ -160,6 +160,7 @@ namespace Games
         {
             d.Remove(playGround);
             d.Remove(rf);
+            d.Remove(paused_menu);
             d.Remove(game_over_menu);
             d.Remove(border);
         }
