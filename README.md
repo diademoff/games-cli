@@ -9,21 +9,27 @@ games-cli
 
 <img src="https://i.imgur.com/Yovm1S1.png" alt="drawing" width="500"/>
 
-<img src="https://i.imgur.com/Iw6sc5V.png" alt="drawing" height="300"/>
+<img src="https://i.imgur.com/Iw6sc5V.png" alt="drawing" height="330"/>
+
+<img src="https://i.imgur.com/FJ8BFtk.png" alt="drawing" width="500"/>
+
 
 Платформы:
 * Windows
 * Gnu Linux
 
 Snake:
-* Управление `W`, `A`, `S`, `D`, стрелочки или vim
-* `Escape` пауза
-* `Space` ускорение
+* Управление <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> или <kbd>↑</kbd>, <kbd>←</kbd>, <kbd>↓</kbd>, <kbd>→</kbd> или <kbd>K</kbd>, <kbd>H</kbd>, <kbd>J</kbd>, <kbd>L</kbd>
+* <kbd>Escape</kbd> пауза
+* <kbd>Пробел</kbd> ускорение
 
 Tetris:
-* `W`, `A`, `S`, `D` или стрелочки
-* `Escape` пауза
-* `Пробел` или `S` или стрелка вниз для ускорения
+* <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> или <kbd>↑</kbd>, <kbd>←</kbd>, <kbd>↓</kbd>, <kbd>→</kbd>
+* <kbd>Escape</kbd> пауза
+* <kbd>Пробел</kbd>, <kbd>S</kbd> или <kbd>↓</kbd> для ускорения
+
+Flappy bird
+* <kbd>W</kbd>, <kbd>K</kbd>, <kbd>Пробел</kbd> или <kbd>↑</kbd>
 
 [Скачать бинарные файлы](https://github.com/diademoff/games-cli/releases)
 
