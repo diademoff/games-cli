@@ -97,7 +97,7 @@ namespace Games
                 left_border_playground,
                 FIELD_SIZE_WIDTH - right_border_playground,
                 padding.Top,
-                padding.Buttom));
+                padding.Bottom));
 
             playGround.NextFrame();
             rf.ChangeNextTetromino(playGround.NextTetromino);

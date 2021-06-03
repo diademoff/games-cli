@@ -12,14 +12,14 @@ namespace Games
         /// Отступ сверху
         public int Top { get; set; }
         /// Отступ снизу
-        public int Buttom { get; set; }
+        public int Bottom { get; set; }
 
-        public Padding(int left, int right, int top, int buttom)
+        public Padding(int left, int right, int top, int bottom)
         {
             Left = left;
             Right = right;
             Top = top;
-            Buttom = buttom;
+            Bottom = bottom;
         }
     }
 }

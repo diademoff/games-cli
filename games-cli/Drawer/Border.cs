@@ -24,8 +24,8 @@ namespace Games
 
             var lt = new Point(p.Left, p.Top); // left top
             var rt = new Point(width - p.Right - 1, p.Top); // right top
-            var lb = new Point(p.Left, height - p.Buttom - 1); // left buttom
-            var rb = new Point(width - p.Right - 1, height - p.Buttom - 1); // right buttom
+            var lb = new Point(p.Left, height - p.Bottom - 1); // left bottom
+            var rb = new Point(width - p.Right - 1, height - p.Bottom - 1); // right bottom
 
             fromPoints(c, lt, rt, lb, rb);
         }

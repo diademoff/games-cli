@@ -95,7 +95,7 @@ namespace Games
         */
         void Init()
         {
-            progress = new SnakeProgress(delay, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding.Buttom - 2);
+            progress = new SnakeProgress(delay, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding.Bottom - 2);
             snake = new Snake('*', padding);
             // Пересоздать окно выбора действия чтобы сбросить предыдущий выбор
             gameOverAction = new SelectionMenu(new string[]{

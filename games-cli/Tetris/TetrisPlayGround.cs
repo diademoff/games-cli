@@ -22,7 +22,7 @@ namespace Games
         /**
         Блок, который падает в данный момент
         */
-        int buttom_border;
+        int bottom_border;
         Tetromino falling_tetromino;
         /**
         Следующий блок после текущего
@@ -73,7 +73,7 @@ namespace Games
             this.right_border = right_border;
             this.field_size = field_size;
             this.padding = p;
-            this.buttom_border = field_size.Height - padding.Buttom - 2;
+            this.bottom_border = field_size.Height - padding.Bottom - 2;
 
             falling_tetromino = GetRandomTetromino();
             next_tetromino = GetRandomTetromino();
@@ -81,7 +81,7 @@ namespace Games
 
         public void NextFrame()
         {
-            if (IsOnButtom(falling_tetromino) ||
+            if (IsOnBottom(falling_tetromino) ||
                 IsIntersectsWithFallen(falling_tetromino.TryMoveDown()))
             {
                 SwitchToNextTetromino();
@@ -159,7 +159,7 @@ namespace Games
         int[] GetFilledRaws()
         {
             List<int> r = new List<int>();
-            for (int i = buttom_border; i >= padding.Top; i--)
+            for (int i = bottom_border; i >= padding.Top; i--)
             {
                 bool line_filled = true;
                 for (int j = left_border + 1; j < right_border - 1; j++)
@@ -267,11 +267,11 @@ namespace Games
             return r.ToArray();
         }
 
-        bool IsOnButtom(Tetromino t)
+        bool IsOnBottom(Tetromino t)
         {
             foreach (IDrawable i in t.ElementContent)
             {
-                if (i.Location.Y >= buttom_border)
+                if (i.Location.Y >= bottom_border)
                 {
                     return true;
                 }

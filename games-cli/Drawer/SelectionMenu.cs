@@ -23,7 +23,7 @@ namespace Games
 
         string[] str_variants;
         /// Отступ сверху и снизу (отступы одинаковы)
-        int padding_topbuttom;
+        int padding_topbottom;
         /// Отступ слева и справа
         int padding_leftright;
         int field_width;
@@ -43,7 +43,7 @@ namespace Games
             this.default_selected = defaultSelected;
 
             field_width -= (p.Left + p.Right);
-            field_height -= (p.Buttom + p.Top);
+            field_height -= (p.Bottom + p.Top);
 
             // Длина самого длинного слова
             int max_variant_length = str_variants.OrderByDescending(n => n.Length).First().Length + 2;
@@ -51,14 +51,14 @@ namespace Games
             this.menu_height = (str_variants.Length * 2) + 2;
             this.menu_width = max_variant_length + 4;
 
-            this.padding_topbuttom = (field_height - menu_height) / 2;
+            this.padding_topbottom = (field_height - menu_height) / 2;
             this.padding_leftright = (field_width - menu_width) / 2;
 
             /*
             Расчитать отступы таким образом чтобы меню было по середине
             */
             Padding p_border = new Padding(padding_leftright, padding_leftright,
-                                padding_topbuttom, padding_topbuttom);
+                                padding_topbottom, padding_topbottom);
 
             this.Border = new Border('+', field_width, field_height, p_border);
         }
@@ -113,7 +113,7 @@ namespace Games
                 }
 
                 Point textStartLocation = new Point((field_width / 2) - (text.Length / 2) - 1,
-                                    padding_topbuttom + (i * 2) + 2);
+                                    padding_topbottom + (i * 2) + 2);
 
                 TextField text_field = new TextField(textStartLocation, text.Length, text);
                 fields[i] = text_field;

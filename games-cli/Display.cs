@@ -61,6 +61,7 @@ namespace Games
             SelectionMenu sm = new SelectionMenu(new string[]{
                 "Snake game",
                 "Tetris",
+                "Flappy bird",
                 "Exit"
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, p);
 
@@ -85,6 +86,10 @@ namespace Games
                 game = new TetrisGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
             }
             else if (sm.SelectedIndex == 2)
+            {
+                game = new FlappyBirdGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
+            }
+            else if (sm.SelectedIndex == 3)
             {
                 Exited = true;
             }

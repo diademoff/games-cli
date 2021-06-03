@@ -45,7 +45,7 @@ namespace Games
             var h = this.Blocks[0].Location;
 
             if (h.X <= p.Left || h.X >= field_width - p.Right - 1 ||
-                h.Y <= p.Top || h.Y >= field_height - p.Buttom - 1)
+                h.Y <= p.Top || h.Y >= field_height - p.Bottom - 1)
             {
                 return true;
             }

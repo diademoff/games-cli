@@ -20,23 +20,23 @@ namespace Games
         public MessageBox(string text, int width, int height, int field_width, int field_height, Padding p)
         {
             field_width -= (p.Left + p.Right);
-            field_height -= (p.Buttom + p.Top);
+            field_height -= (p.Bottom + p.Top);
 
             this.Text = text;
-            int padding_topbuttom = (field_height - height) / 2;
+            int padding_topbottom = (field_height - height) / 2;
             int padding_leftright = (field_width - width) / 2;
 
             /*
             Расчитать отступы таким образом сообщение было по середине
             */
             Padding p_border = new Padding(padding_leftright, padding_leftright,
-                                padding_topbuttom, padding_topbuttom);
+                                padding_topbottom, padding_topbottom);
 
             /*
             Расчитать координаты текста так чтобы он был в центе обводки
             */
             Point textStartLocation = new Point((field_width / 2) - (text.Length / 2),
-                                    padding_topbuttom + (height / 2));
+                                    padding_topbottom + (height / 2));
 
             this.border = new Border('+', field_width, field_height, p_border);
             this.textField = new TextField(textStartLocation, text.Length);

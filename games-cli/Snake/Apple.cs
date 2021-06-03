@@ -60,7 +60,7 @@ namespace Games
             do
             {
                 int x = rnd.Next(Padding.Left + 1, this.Field_width - Padding.Right - 1);
-                int y = rnd.Next(Padding.Top + 1, this.Field_height - Padding.Buttom - 1);
+                int y = rnd.Next(Padding.Top + 1, this.Field_height - Padding.Bottom - 1);
                 point = new Point(x, y);
             } while (Avoid.ToList().Contains(point));
 
