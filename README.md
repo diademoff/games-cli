@@ -48,15 +48,5 @@ games-cli
 ## Windows
 Сборка:
 ```
-dotnet publish -r win-x64 -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
+dotnet publish -r win-x64 -c Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
 ```
-
-# Документация
-Сгенерируйте документацию с помощью [`doxygen`](https://github.com/doxygen/doxygen)
-
-В папке репозитория выполните:
-```
-doxygen doxygen.conf
-```
-
-Документация сгенерирована по пути: `./docs/html/index.html`
