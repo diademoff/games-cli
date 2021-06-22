@@ -28,7 +28,7 @@ Tetris:
 * <kbd>Escape</kbd> пауза
 * <kbd>Пробел</kbd>, <kbd>S</kbd> или <kbd>↓</kbd> для ускорения
 
-Flappy bird
+Flappy bird:
 * <kbd>W</kbd>, <kbd>K</kbd>, <kbd>Пробел</kbd> или <kbd>↑</kbd>
 
 [Скачать бинарные файлы](https://github.com/diademoff/games-cli/releases)
