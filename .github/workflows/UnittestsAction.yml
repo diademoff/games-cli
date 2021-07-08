@@ -1,0 +1,22 @@
+name: Dotnet test
+
+on:
+  push:
+    branches:
+        - main
+        - dev
+  pull_request:
+    branches:
+        - main
+        - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: zyborg/dotnet-tests-report@v1
+        with:
+          project_path: unittests/
+          report_name: Unittests
+          report_title: Unit tests
