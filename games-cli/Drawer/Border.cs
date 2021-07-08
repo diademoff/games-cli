@@ -13,7 +13,7 @@ namespace Games
 
         public Border(char c, Point lt, Point rt, Point lb, Point rb)
         {
-            fromPoints(c, lt, rt, lb, rb);
+            FromPoints(c, lt, rt, lb, rb);
         }
 
         public Border(char c, int width, int height, Padding p)
@@ -22,15 +22,56 @@ namespace Games
             Создать ключевые точки с учетом отступов
             */
 
-            var lt = new Point(p.Left, p.Top); // left top
-            var rt = new Point(width - p.Right - 1, p.Top); // right top
-            var lb = new Point(p.Left, height - p.Bottom - 1); // left bottom
-            var rb = new Point(width - p.Right - 1, height - p.Bottom - 1); // right bottom
+            // Convert to location index
+            width -= 1;
+            height -= 1;
 
-            fromPoints(c, lt, rt, lb, rb);
+            var lt = new Point(0, 0); // left top
+            var rt = new Point(width, 0); // right top
+            var lb = new Point(0, height); // left bottom
+            var rb = new Point(width, height); // right bottom
+
+            ApplyPaddings(p, ref lt, ref rt, ref lb, ref rb);
+
+            FromPoints(c, lt, rt, lb, rb);
         }
 
-        private void fromPoints(char c, Point lt, Point rt, Point lb, Point rb)
+        /**Как работают отступы:
+         - Создается контейнер нужного размера, например если граница 8x4,
+           то создается контейнер 8 на 4.
+
+         - Если отступ 1 сверху, то верхняя граница смещается:
+            ********
+            *      *  ->  ********
+            *      *  ->  *      *
+            ********      ********
+
+         - Если отступ сверху 1 и слева 3:
+            ********
+            *      *  ->     *****
+            *      *  ->     *   *
+            ********         *****
+
+         - Отступ справа 4:
+            ********      ****
+            *      *  ->  *  *
+            *      *  ->  *  *
+            ********      ****
+        */
+        private void ApplyPaddings(Padding p, ref Point lt, ref Point rt, ref Point lb, ref Point rb)
+        {
+            lt.X += p.Left;
+            rt.X -= p.Right;
+            lb.X += p.Left;
+            rb.X -= p.Right;
+
+            lt.Y += p.Top;
+            rt.Y += p.Top;
+            lb.Y -= p.Bottom;
+            rb.Y -= p.Bottom;
+        }
+
+        private void FromPoints(char c, Point lt, Point rt, Point lb, Point rb)
         {
             Line top = new Line(c, lt, rt);
             Line left = new Line(c, lt, lb);
@@ -47,12 +88,8 @@ namespace Games
         {
             List<DrawableChar> r = new List<DrawableChar>();
             foreach (Line line in border_lines)
-            {
                 foreach (DrawableChar c in line.ElementContent)
-                {
                     r.Add(c);
-                }
-            }
             return r.ToArray();
         }
     }
