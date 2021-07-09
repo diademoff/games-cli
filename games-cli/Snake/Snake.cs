@@ -9,7 +9,7 @@ namespace Games
         /**
         Змейка состоит за блоков
         */
-        public List<SnakeBlock> Blocks { get; private set; } = new List<SnakeBlock>();
+        public List<DrawableChar> Blocks { get; private set; } = new List<DrawableChar>();
         /// Направление, в котором будет сделано следующее движение
         public Direction Direction { get; private set; }
         /// Символ, которым рисуется змейка
@@ -34,7 +34,7 @@ namespace Games
             this.SnakeChar = c;
             this.Direction = Direction.Right;
             this.actual_direction = Direction.Right;
-            this.Blocks.Add(new SnakeBlock(c, new Point(p.Left + 1, p.Top + 1)));
+            this.Blocks.Add(new DrawableChar(c, new Point(p.Left + 1, p.Top + 1)));
         }
 
         /**
@@ -90,7 +90,7 @@ namespace Games
         public void Move()
         {
             // Первый (ведущий) блок змейки
-            SnakeBlock head = Blocks[0];
+            DrawableChar head = Blocks[0];
 
             if (addBlockQueue > 0)
             {
@@ -113,7 +113,7 @@ namespace Games
             newBlockLocation = GetPosFollowingDirection(newBlockLocation, this.Direction);
             actual_direction = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
 
-            SnakeBlock blockToAdd = new SnakeBlock(SnakeChar, newBlockLocation);
+            DrawableChar blockToAdd = new DrawableChar(SnakeChar, newBlockLocation);
             Blocks.Insert(0, blockToAdd);
         }
 
