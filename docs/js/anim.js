@@ -5,7 +5,7 @@ function ShowButton() {
 const typingTitleDelay = 130;
 const listDelay = 500;
 
-var typed = new Typed('#typed-title', {
+new Typed('#typed-title', {
     stringsElement: '#typing-title',
     typeSpeed: typingTitleDelay
 });
