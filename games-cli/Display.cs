@@ -104,12 +104,6 @@ namespace Games
                 return;
             }
 
-            if (game.IsGameOver)
-            {
-                SelectGame();
-                return;
-            }
-
             /*
             Создать запросы на отрисовку
             */

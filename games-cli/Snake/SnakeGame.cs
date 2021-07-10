@@ -3,18 +3,6 @@ using System.Drawing;
 
 namespace Games
 {
-    public struct SnakeBlock : IDrawable
-    {
-        public Point Location { get; private set; }
-        public char Char { get; private set; }
-
-        public SnakeBlock(char c, Point p)
-        {
-            this.Location = p;
-            this.Char = c;
-        }
-    }
-
     public enum Direction
     {
         Up,

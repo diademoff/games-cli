@@ -1,0 +1,130 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+p,
+span,
+li,
+a {
+    /* Не выделять текст */
+    user-select: none;
+    /* Для эксплорера */
+    -ms-user-select: none;
+    /* Для мозилы */
+    -moz-user-select: none;
+    /* Для конкверора */
+    -khtml-user-select: none;
+    /* Для Сафари и Хрома */
+    -webkit-user-select: none;
+}
+
+@font-face {
+    font-family: 'PT Mono';
+    src: url('../fonts/ptmono.ttf') format('truetype');
+}
+
+.preview {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.preview div {
+    display: inline-block;
+    position: relative;
+    top: 35%;
+}
+
+#title * {
+    color: white;
+    position: relative;
+    font-size: 5em;
+    font-family: 'PT Mono', sans-serif;
+}
+
+#subtitle * {
+    color: white;
+    opacity: 0;
+    transition-duration: 1s;
+    transition-timing-function: ease-in;
+}
+
+#description {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    position: absolute;
+    left: 20%;
+    top: 55%;
+    opacity: 0;
+    transition-duration: 2s;
+}
+
+#description span {
+    color: #7b7dbc;
+    font-size: 32px;
+    text-transform: uppercase;
+    font-family: 'PT Mono', sans-serif;
+    margin: 5px -0.5em;
+    transition-duration: 3s;
+}
+
+#description ul * {
+    color: white;
+    font-family: 'PT Mono', sans-serif;
+    font-size: 16px;
+    list-style: none;
+    opacity: 0;
+    transition-duration: 0.8s;
+    margin: 2px 0;
+}
+
+.link {
+    opacity: 0;
+    transition: 2s;
+}
+
+.link button {
+    margin-top: 50px;
+    background-color: transparent;
+    padding: 5px 10px;
+    font-size: 20px;
+    font-family: 'PT Mono', Arial, sans-serif;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: 0.8s;
+}
+
+.link button:hover {
+    border: 1px solid white;
+}
+
+.link button a {
+    color: white;
+}
+
+.typed-cursor {
+    color: white;
+}
+
+@media screen and (max-width: 800px) {
+    #title * {
+        font-size: 3em;
+    }
+
+    #description span {
+        font-size: large;
+    }
+
+    #description ul * {
+        font-size: 12px;
+    }
+}
