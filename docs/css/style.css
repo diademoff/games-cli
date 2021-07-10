@@ -120,6 +120,10 @@ a {
         font-size: 3em;
     }
 
+    #description {
+        top: 65%;
+    }
+
     #description span {
         font-size: large;
     }
