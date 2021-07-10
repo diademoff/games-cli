@@ -120,10 +120,6 @@ a {
         font-size: 3em;
     }
 
-    #description ul * {
-        font-size: medium;
-    }
-
     #description span {
         font-size: large;
     }
