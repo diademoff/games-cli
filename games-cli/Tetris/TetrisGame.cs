@@ -26,7 +26,7 @@ namespace Games
 
         public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
         {
-            int playGroundWidth = 20;
+            int playGroundWidth = ConfigStorage.Current.TetrisPlayGroundWidth.Value;
             this.left_border_playground = padding.Left + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2);
             this.right_border_playground = FIELD_SIZE_WIDTH - (padding.Right + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2));
 
@@ -94,7 +94,7 @@ namespace Games
                 return;
             }
 
-            this.border = d.CreateBorder('·', new Padding(
+            this.border = d.CreateBorder(ConfigStorage.Current.TetrisBorderChar.Value, new Padding(
                 left_border_playground,
                 FIELD_SIZE_WIDTH - right_border_playground,
                 padding.Top,

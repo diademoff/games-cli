@@ -10,6 +10,11 @@ namespace Games
 
         public static ScreenCaller Call(Screen screen, Drawer d, int delay)
         {
+            return Call(screen, d, () => delay);
+        }
+
+        public static ScreenCaller Call(Screen screen, Drawer d, Func<int> delay)
+        {
             var output = new ScreenCaller();
 
             screen.OnExit += (o) => { output.prevScreenResult = o; };
@@ -19,7 +24,7 @@ namespace Games
                 d.Create(screen);
                 d.DrawToConsole();
 
-                Thread.Sleep(delay);
+                Thread.Sleep(delay());
             } while (!screen.Exited);
 
             d.Remove(screen);

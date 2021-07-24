@@ -8,6 +8,9 @@ namespace Games
         public ConfigIntValue SnakeSpeedUp;
         public ConfigCharValue SnakeGameAppleChar;
 
+        public ConfigCharValue TetrisBorderChar;
+        public ConfigIntValue TetrisPlayGroundWidth;
+
         private ConfigStorage() { }
 
         static ConfigStorage()
@@ -17,8 +20,11 @@ namespace Games
             {
                 SnakeChar = new ConfigCharValue('*'),
                 SnakeGameBorderChar = new ConfigCharValue('·'),
-                SnakeSpeedUp = new ConfigIntValue(10),
-                SnakeGameAppleChar = new ConfigCharValue('☼')
+                SnakeSpeedUp = new ConfigIntValue(25),
+                SnakeGameAppleChar = new ConfigCharValue('☼'),
+
+                TetrisBorderChar = new ConfigCharValue('·'),
+                TetrisPlayGroundWidth = new ConfigIntValue(20)
             };
         }
 
@@ -36,10 +42,17 @@ namespace Games
                 }).BindTo(this.SnakeGameBorderChar),
                 new ConfigParam("Сила ускорения в змейке", new string[]{
                     "15", "20", "25", "30", "50"
-                }).BindTo(this.SnakeSpeedUp).DefaultSelected(1),
+                }).BindTo(this.SnakeSpeedUp),
                 new ConfigParam("Символ яблока", new string[]{
-                    "☼", "ȯ"
-                }).BindTo(this.SnakeGameAppleChar)
+                    "☼", "ȯ", "a"
+                }).BindTo(this.SnakeGameAppleChar),
+
+                new ConfigParam("Символ обводки в игре тетрис", new string[]{
+                    "·", "*", "x", "ο"
+                }).BindTo(this.TetrisBorderChar),
+                new ConfigParam("Ширина игрового поля тетриса", new string[]{
+                    "15", "20", "25", "30", "35", "40"
+                }).BindTo(this.TetrisPlayGroundWidth)
             };
         }
     }

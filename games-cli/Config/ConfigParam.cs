@@ -18,9 +18,9 @@ namespace Games
             }
             set
             {
-                _selectedValue = value;
                 if (value < 0 || value >= PossibleValues.Length)
                     throw new IndexOutOfRangeException();
+                _selectedValue = value;
                 OnValueChanged?.Invoke(PossibleValues[value]);
             }
         }
@@ -34,20 +34,14 @@ namespace Games
             this.SelectedValueIndex = 0;
         }
 
-        public ConfigParam(string title, string[] values, int defaultSelected) : this(title, values)
-        {
-            this.SelectedValueIndex = defaultSelected;
-        }
-
         public ConfigParam BindTo<T>(IConfigValue<T> v)
         {
-            this.OnValueChanged += (s) => v.ChangeValueTo(s);
-            return this;
-        }
+            // Выбрать пункт, который сейчас находится в конфиге
+            var i = Array.IndexOf(PossibleValues, v.Value.ToString());
+            i = i == -1 ? 0 : i;
 
-        public ConfigParam DefaultSelected(int index)
-        {
-            this.SelectedValueIndex = index;
+            this.SelectedValueIndex = i;
+            this.OnValueChanged += (s) => v.ChangeValueTo(s);
             return this;
         }
 

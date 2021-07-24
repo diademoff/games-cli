@@ -80,7 +80,7 @@ namespace Games
         {
             currentScreen = new GameScreen(game, windowSize);
 
-            ScreenCaller.Call(currentScreen, drawer, game.DelayBetweenFrames).OnExit((o) =>
+            ScreenCaller.Call(currentScreen, drawer, () => game.DelayBetweenFrames).OnExit((o) =>
             {
                 StartScreen();
             });
