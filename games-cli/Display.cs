@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Games
 {
@@ -27,6 +29,7 @@ namespace Games
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
         Game game;
+        SelectionMenu sm;
 
         /**
         Для отрисовки используется класс Drawer. Он предоставляет
@@ -41,14 +44,27 @@ namespace Games
         public Display()
         {
             InitKeyReading();
+            WindowSizeChangedHandle((w, h) => SetWindowSize(w, h));
 
+            SetWindowSize(Console.WindowWidth, Console.WindowHeight);
+
+            Console.Title = "games-cli";
+            Console.CursorVisible = false;
+        }
+
+        void SetWindowSize(int width, int height)
+        {
             FIELD_SIZE_WIDTH = Console.WindowWidth;
             FIELD_SIZE_HEIGHT = Console.WindowHeight;
 
             drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
 
-            Console.Title = "games-cli";
-            Console.CursorVisible = false;
+            sm = new SelectionMenu(new string[]{
+                "Snake game",
+                "Tetris",
+                "Flappy bird",
+                "Exit"
+            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, defaultSelected: 0, p);
 
             drawer.RedrawAll();
         }
@@ -58,17 +74,11 @@ namespace Games
         */
         public void SelectGame()
         {
-            SelectionMenu sm = new SelectionMenu(new string[]{
-                "Snake game",
-                "Tetris",
-                "Flappy bird",
-                "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, p);
-
-            keyHandlers.Add(sm);
-
+            sm.IsSelected = false;
             do
             {
+                if (!keyHandlers.Contains(sm))
+                    keyHandlers.Add(sm);
                 drawer.Create(sm);
                 drawer.DrawToConsole();
                 Thread.Sleep(100);
@@ -148,6 +158,28 @@ namespace Games
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
                 this.HandleKey(keyPressed);
+            }
+        }
+
+        /**
+        Вызывает функцию при изменении размера консоли.
+        */
+        async void WindowSizeChangedHandle(Action<int, int> onWindowSizeChanged)
+        {
+            Size currentSize = new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+
+            while (true)
+            {
+                int w = Console.WindowWidth;
+                int h = Console.WindowHeight;
+
+                if (w != currentSize.Width || h != currentSize.Height)
+                {
+                    onWindowSizeChanged.Invoke(w, h);
+                    currentSize = new Size(w, h);
+                }
+
+                await Task.Delay(100);
             }
         }
     }
