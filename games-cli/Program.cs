@@ -18,8 +18,9 @@ namespace Games
 
                 Thread.Sleep(display.FrameDelay);
 
-                if (display.IsGameOver)
-                    display.SelectGame();
+                if (!display.ShowingConfigurationMenu)
+                    if (display.IsGameOver)
+                        display.SelectGame();
             } while (!display.Exited);
 
             Console.CursorVisible = true;

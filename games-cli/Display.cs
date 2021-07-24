@@ -28,8 +28,11 @@ namespace Games
         public bool Exited { get; private set; } = false;
         int FIELD_SIZE_WIDTH;
         int FIELD_SIZE_HEIGHT;
+        public bool ShowingConfigurationMenu { get; private set; } = false;
         Game game;
         SelectionMenu sm;
+        ConfigMenu cm;
+        ConfigStorage cs;
 
         /**
         Для отрисовки используется класс Drawer. Он предоставляет
@@ -43,13 +46,14 @@ namespace Games
         Padding p = new Padding(1, 1, 3, 5);
         public Display()
         {
+            cs = ConfigStorage.Current;
+            Console.Title = "games-cli";
+            Console.CursorVisible = false;
+
             InitKeyReading();
             WindowSizeChangedHandle((w, h) => SetWindowSize(w, h));
 
             SetWindowSize(Console.WindowWidth, Console.WindowHeight);
-
-            Console.Title = "games-cli";
-            Console.CursorVisible = false;
         }
 
         void SetWindowSize(int width, int height)
@@ -63,8 +67,18 @@ namespace Games
                 "Snake game",
                 "Tetris",
                 "Flappy bird",
+                "Settings",
                 "Exit"
             }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, defaultSelected: 0, p);
+
+            cm = new ConfigMenu(
+                cs.GetConfigParams(),
+                new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT),
+                p
+            );
+
+            keyHandlers.Add(sm);
+            keyHandlers.Add(cm);
 
             drawer.RedrawAll();
         }
@@ -74,17 +88,15 @@ namespace Games
         */
         public void SelectGame()
         {
-            sm.IsSelected = false;
+            sm.Reuse();
             do
             {
-                if (!keyHandlers.Contains(sm))
-                    keyHandlers.Add(sm);
+                sm.IsFocused = true;
                 drawer.Create(sm);
                 drawer.DrawToConsole();
                 Thread.Sleep(100);
             } while (!sm.IsSelected);
 
-            keyHandlers.Remove(sm);
             drawer.Remove(sm);
 
             if (sm.SelectedIndex == 0)
@@ -101,7 +113,13 @@ namespace Games
             }
             else if (sm.SelectedIndex == 3)
             {
+                ShowingConfigurationMenu = true;
+                return;
+            }
+            else if (sm.SelectedIndex == 4)
+            {
                 Exited = true;
+                return;
             }
 
             keyHandlers.Add(game);
@@ -109,6 +127,13 @@ namespace Games
 
         public void NextFrame()
         {
+            if (ShowingConfigurationMenu)
+            {
+                ShowConfigurationMenu();
+                SelectGame();
+                return;
+            }
+
             if (game == null || Exited)
             {
                 return;
@@ -126,16 +151,31 @@ namespace Games
             drawer.DrawToConsole();
         }
 
+        void ShowConfigurationMenu()
+        {
+            cm.Reuse();
+            cm.IsFocused = true;
+            do
+            {
+                drawer.Create(cm);
+                drawer.DrawToConsole();
+                Thread.Sleep(100);
+            } while (!cm.IsDone);
+            cm.IsFocused = false;
+            drawer.Remove(cm);
+            ShowingConfigurationMenu = false;
+        }
+
         public bool IsFocused { get => true; set => throw new NotImplementedException(); }
 
         public void HandleKey(ConsoleKey key)
         {
-            foreach (IInteractive handler in keyHandlers)
+            for (int i = 0; i < keyHandlers.Count; i++)
             {
-                if (handler.IsFocused)
-                {
-                    handler.HandleKey(key);
-                }
+                IInteractive handler = keyHandlers[i];
+                if (handler != null)
+                    if (handler.IsFocused)
+                        handler.HandleKey(key);
             }
         }
 
