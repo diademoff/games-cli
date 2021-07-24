@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Games
 {
@@ -10,18 +11,7 @@ namespace Games
         {
             display = new Display();
 
-            display.SelectGame();
-
-            do
-            {
-                display.NextFrame();
-
-                Thread.Sleep(display.FrameDelay);
-
-                if (!display.ShowingConfigurationMenu)
-                    if (display.IsGameOver)
-                        display.SelectGame();
-            } while (!display.Exited);
+            display.StartScreen();
 
             Console.CursorVisible = true;
         }

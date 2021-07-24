@@ -10,14 +10,19 @@ namespace Games
 
         private ConfigStorage() { }
 
-        public static readonly ConfigStorage Current = new ConfigStorage()
+        static ConfigStorage()
         {
             // Default settings
-            SnakeChar = new ConfigCharValue('*'),
-            SnakeGameBorderChar = new ConfigCharValue('·'),
-            SnakeSpeedUp = new ConfigIntValue(10),
-            SnakeGameAppleChar = new ConfigCharValue('☼')
-        };
+            Current = new ConfigStorage()
+            {
+                SnakeChar = new ConfigCharValue('*'),
+                SnakeGameBorderChar = new ConfigCharValue('·'),
+                SnakeSpeedUp = new ConfigIntValue(10),
+                SnakeGameAppleChar = new ConfigCharValue('☼')
+            };
+        }
+
+        public static ConfigStorage Current;
 
         public ConfigParam[] GetConfigParams()
         {
