@@ -10,7 +10,7 @@ namespace Games
     public class Apple : IDrawable
     {
         public Point Location { get; private set; }
-        public char Char { get; set; } = '☼';
+        public char Char => ConfigStorage.Current.SnakeGameAppleChar.Value;
 
         /// Создать яблоко в поле с случайным расположением
         public Apple(AppleGen applegen, ref Random rnd)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Games
 {
@@ -22,6 +23,7 @@ namespace Games
         отобразятся в консоли, а список с очередью будет очищен.
         */
         private Dictionary<Point, DrawableChar> drawQueue = new Dictionary<Point, DrawableChar>();
+        public IDrawable[] QueueForDrawing => drawQueue.Select(x => x.Value).ToArray();
 
         /**
         Высота и ширина. Этими значениями ограничится поле на
