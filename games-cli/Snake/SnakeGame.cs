@@ -43,7 +43,8 @@ namespace Games
             if (speedUp)
             {
                 speedUp = false;
-                return delay / 4;
+                var percent = ((double)ConfigStorage.Current.SnakeSpeedUp.Value) / 100.0;
+                return (int)((double)delay * percent);
             }
             return delay;
         }
@@ -84,7 +85,7 @@ namespace Games
         void Init()
         {
             progress = new SnakeProgress(delay, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding.Bottom - 2);
-            snake = new Snake('*', padding);
+            snake = new Snake(ConfigStorage.Current.SnakeChar.Value, padding);
             // Пересоздать окно выбора действия чтобы сбросить предыдущий выбор
             gameOverAction = new SelectionMenu(new string[]{
                     "Restart",
@@ -118,7 +119,7 @@ namespace Games
         {
             if (drawBorder)
             {
-                this.border = d.CreateBorder('·', padding);
+                this.border = d.CreateBorder(ConfigStorage.Current.SnakeGameBorderChar.Value, padding);
                 drawBorder = false;
             }
 

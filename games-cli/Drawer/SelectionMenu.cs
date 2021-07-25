@@ -17,7 +17,7 @@ namespace Games
         /// Выбранный вариант
         public int SelectedIndex { get; private set; }
 
-        bool isFocused = true;
+        bool isFocused = false;
         Border Border;
         TextField[] Variants => GetTextFields(str_variants, SelectedIndex);
 
@@ -63,6 +63,13 @@ namespace Games
             this.Border = new Border('+', field_width, field_height, p_border);
         }
 
+        public void ChangeVariantText(int index, string value)
+        {
+            if (index < 0 || index >= str_variants.Length)
+                throw new IndexOutOfRangeException();
+            this.str_variants[index] = value;
+        }
+
         /// Сбросить сделанный выбор, вернуть в начальное состояние
         public void Reuse()
         {
@@ -103,13 +110,19 @@ namespace Games
             {
                 string text = variants[i];
 
+                // добавить пробелы чтобы затереть старые символы
                 if (i == selectedIndex)
                 {
-                    text = $">{text}<";
+                    int l = ((this.menu_width - text.Length - 2) / 2) + 1;
+                    l = l < 0 ? 0 : l; // length is not less than zero
+                    string whiteSpace = new string(' ', l);
+                    text = $"{whiteSpace}>{text}<{whiteSpace}";
                 }
                 else
                 {
-                    text = $" {text} "; // добавить пробелы чтобы затереть старые > <
+                    int l = (this.menu_width - text.Length - 2) / 2;
+                    string whiteSpace = new string(' ', l);
+                    text = $"{whiteSpace}{text}{whiteSpace}";
                 }
 
                 Point textStartLocation = new Point((field_width / 2) - (text.Length / 2) - 1,
@@ -126,17 +139,17 @@ namespace Games
         {
             List<DrawableChar> chars = new List<DrawableChar>();
 
-            foreach (DrawableChar c in Border.ElementContent)
-            {
-                chars.Add(c);
-            }
-
             foreach (TextField variant_field in Variants)
             {
                 foreach (DrawableChar c in variant_field.ElementContent)
                 {
                     chars.Add(c);
                 }
+            }
+
+            foreach (DrawableChar c in Border.ElementContent)
+            {
+                chars.Add(c);
             }
 
             return chars.ToArray();

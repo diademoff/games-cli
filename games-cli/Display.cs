@@ -1,142 +1,101 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Games
 {
-    /*
-    Управление содержимым экрана. Выбор игр.
+    /**
+    Screen management
     */
-    public class Display : IInteractive
+    public class Display
     {
-        public int FrameDelay
-        {
-            get
-            {
-                if (game == null)
-                {
-                    return 0;
-                }
-                return game.DelayBetweenFrames;
-            }
-        }
-        /// Игра закончилась, то есть игрок вышел из нее
-        public bool IsGameOver => game.IsGameOver;
         /// Пользователь вышел из приложения
         public bool Exited { get; private set; } = false;
-        int FIELD_SIZE_WIDTH;
-        int FIELD_SIZE_HEIGHT;
-        Game game;
-        SelectionMenu sm;
-
+        Size windowSize;
         /**
         Для отрисовки используется класс Drawer. Он предоставляет
         возможность отрисовать IDrawable.
         */
         Drawer drawer;
-        Random rnd = new Random();
-        /// Список объектов, которым отправлять нажатые клавиши
-        List<IInteractive> keyHandlers = new List<IInteractive>();
+        Screen currentScreen;
         /// Отступы от краев консоли
         Padding p = new Padding(1, 1, 3, 5);
+
         public Display()
         {
-            InitKeyReading();
-            WindowSizeChangedHandle((w, h) => SetWindowSize(w, h));
+            Console.Title = "games-cli";
+            Console.CursorVisible = false;
 
             SetWindowSize(Console.WindowWidth, Console.WindowHeight);
 
-            Console.Title = "games-cli";
-            Console.CursorVisible = false;
+            InitKeyReading();
+            WindowSizeChangedHandle();
+
+            drawer.RedrawAll();
         }
 
         void SetWindowSize(int width, int height)
         {
-            FIELD_SIZE_WIDTH = Console.WindowWidth;
-            FIELD_SIZE_HEIGHT = Console.WindowHeight;
-
-            drawer = new Drawer(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
-
-            sm = new SelectionMenu(new string[]{
-                "Snake game",
-                "Tetris",
-                "Flappy bird",
-                "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, defaultSelected: 0, p);
-
-            drawer.RedrawAll();
+            windowSize = new Size(Console.WindowWidth, Console.WindowHeight);
+            drawer = new Drawer(windowSize.Width, windowSize.Height);
         }
 
         /**
         Нарисовать окно с выбором игры и ждать пока пользователь выберет
         */
-        public void SelectGame()
+        public void StartScreen()
         {
-            sm.IsSelected = false;
-            do
+            currentScreen = new SelectGameScreen(new string[]{
+                "Snake game",
+                "Tetris",
+                "Flappy bird",
+                "Settings",
+                "Exit"
+            }, windowSize, p);
+
+            ScreenCaller.Call(currentScreen, drawer, 60).OnExit((i) =>
             {
-                if (!keyHandlers.Contains(sm))
-                    keyHandlers.Add(sm);
-                drawer.Create(sm);
-                drawer.DrawToConsole();
-                Thread.Sleep(100);
-            } while (!sm.IsSelected);
-
-            keyHandlers.Remove(sm);
-            drawer.Remove(sm);
-
-            if (sm.SelectedIndex == 0)
-            {
-                game = new SnakeGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-            }
-            else if (sm.SelectedIndex == 1)
-            {
-                game = new TetrisGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-            }
-            else if (sm.SelectedIndex == 2)
-            {
-                game = new FlappyBirdGame(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p);
-            }
-            else if (sm.SelectedIndex == 3)
-            {
-                Exited = true;
-            }
-
-            keyHandlers.Add(game);
-        }
-
-        public void NextFrame()
-        {
-            if (game == null || Exited)
-            {
-                return;
-            }
-
-            /*
-            Создать запросы на отрисовку
-            */
-            game.PrepareForNextFrame(drawer);
-            game.NextFrame(drawer);
-
-            /*
-            Удовлетворить запросы на отрисовку
-            */
-            drawer.DrawToConsole();
-        }
-
-        public bool IsFocused { get => true; set => throw new NotImplementedException(); }
-
-        public void HandleKey(ConsoleKey key)
-        {
-            foreach (IInteractive handler in keyHandlers)
-            {
-                if (handler.IsFocused)
+                int selectedIndex = (int)i;
+                if (selectedIndex <= 2)
                 {
-                    handler.HandleKey(key);
+                    if (selectedIndex == 0)
+                        GameScreen(new SnakeGame(windowSize.Width, windowSize.Height, p));
+                    else if (selectedIndex == 1)
+                        GameScreen(new TetrisGame(windowSize.Width, windowSize.Height, p));
+                    else if (selectedIndex == 2)
+                        GameScreen(new FlappyBirdGame(windowSize.Width, windowSize.Height, p));
                 }
-            }
+                else
+                {
+                    if (selectedIndex == 3)
+                        ConfigurationScreen();
+                    else if (selectedIndex == 4)
+                        Exited = true;
+                }
+            });
+        }
+
+        void GameScreen(Game game)
+        {
+            currentScreen = new GameScreen(game, windowSize);
+
+            ScreenCaller.Call(currentScreen, drawer, () => game.DelayBetweenFrames).OnExit((o) =>
+            {
+                StartScreen();
+            });
+        }
+
+        void ConfigurationScreen()
+        {
+            currentScreen = new ConfigurationScreen(windowSize, p);
+
+            ScreenCaller.Call(currentScreen, drawer, 60).OnExit((newConfig) =>
+            {
+                var a = ConfigStorage.Current;
+                ConfigStorage.Current = (ConfigStorage)newConfig;
+                StartScreen();
+            });
         }
 
         /**
@@ -157,16 +116,16 @@ namespace Games
             while (true)
             {
                 ConsoleKey keyPressed = Console.ReadKey(true).Key;
-                this.HandleKey(keyPressed);
+                currentScreen.HandleKey(keyPressed);
             }
         }
 
         /**
         Вызывает функцию при изменении размера консоли.
         */
-        async void WindowSizeChangedHandle(Action<int, int> onWindowSizeChanged)
+        async void WindowSizeChangedHandle()
         {
-            Size currentSize = new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT);
+            Size currentSize = windowSize;
 
             while (true)
             {
@@ -175,7 +134,8 @@ namespace Games
 
                 if (w != currentSize.Width || h != currentSize.Height)
                 {
-                    onWindowSizeChanged.Invoke(w, h);
+                    if (currentScreen != null)
+                        currentScreen.OnWindowSizeChanged(w, h);
                     currentSize = new Size(w, h);
                 }
 
