@@ -7,7 +7,7 @@ namespace Games
     */
     public interface IInteractive
     {
-        /// Есть ли фокус
+        /// Включена ли обработка нажатий
         bool IsFocused { get; set; }
         /// Обработать нажатие
         void HandleKey(ConsoleKey key);

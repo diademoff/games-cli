@@ -3,9 +3,17 @@ using System.Threading;
 
 namespace Games
 {
+    /**
+    Обертка для удобного вызова экранов и обработки выхода из них
+    */
     class ScreenCaller
     {
         object prevScreenResult;
+
+        /**
+        Единственный способ создать объект ScreenCaller это вызвать какой-либо
+        экран
+        */
         private ScreenCaller() { }
 
         public static ScreenCaller Call(Screen screen, Drawer d, int delay)

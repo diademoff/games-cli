@@ -9,11 +9,7 @@ namespace Games
     public class MessageBox : IDrawableElement
     {
         public IDrawable[] ElementContent => getContent();
-        /**
-        Рамка
-        */
         Border border;
-        /// Текстовое поле
         TextField textField;
         public string Text { get; set; }
 

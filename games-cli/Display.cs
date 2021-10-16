@@ -47,32 +47,27 @@ namespace Games
         public void StartScreen()
         {
             currentScreen = new SelectGameScreen(new string[]{
-                "Snake game",
-                "Tetris",
-                "Flappy bird",
-                "Settings",
-                "Exit"
+                "Snake game",  // 0
+                "Tetris",      // 1
+                "Flappy bird", // 2
+                "Settings",    // 3
+                "Exit"         // 4
             }, windowSize, p);
 
             ScreenCaller.Call(currentScreen, drawer, 60).OnExit((i) =>
             {
                 int selectedIndex = (int)i;
-                if (selectedIndex <= 2)
-                {
-                    if (selectedIndex == 0)
-                        GameScreen(new SnakeGame(windowSize.Width, windowSize.Height, p));
-                    else if (selectedIndex == 1)
-                        GameScreen(new TetrisGame(windowSize.Width, windowSize.Height, p));
-                    else if (selectedIndex == 2)
-                        GameScreen(new FlappyBirdGame(windowSize.Width, windowSize.Height, p));
-                }
-                else
-                {
-                    if (selectedIndex == 3)
-                        ConfigurationScreen();
-                    else if (selectedIndex == 4)
-                        Exited = true;
-                }
+
+                if (selectedIndex == 0)
+                    GameScreen(new SnakeGame(windowSize.Width, windowSize.Height, p));
+                else if (selectedIndex == 1)
+                    GameScreen(new TetrisGame(windowSize.Width, windowSize.Height, p));
+                else if (selectedIndex == 2)
+                    GameScreen(new FlappyBirdGame(windowSize.Width, windowSize.Height, p));
+                else if (selectedIndex == 3)
+                    ConfigurationScreen();
+                else if (selectedIndex == 4)
+                    Exited = true;
             });
         }
 
@@ -92,14 +87,13 @@ namespace Games
 
             ScreenCaller.Call(currentScreen, drawer, 60).OnExit((newConfig) =>
             {
-                var a = ConfigStorage.Current;
                 ConfigStorage.Current = (ConfigStorage)newConfig;
                 StartScreen();
             });
         }
 
         /**
-        Запустить поток, который читает нажатые клавиши
+        Запустить поток который читает нажатые клавиши
         */
         void InitKeyReading()
         {
@@ -109,7 +103,7 @@ namespace Games
         }
 
         /**
-        Бесконечный цикл, который читает нажатые клавиши
+        Бесконечный цикл который читает нажатые клавиши
         */
         void ReadKeysThread()
         {

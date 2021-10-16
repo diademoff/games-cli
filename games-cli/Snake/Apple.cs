@@ -27,7 +27,7 @@ namespace Games
         /**
         Не генерировать в заданных точках (на теле змейки)
         */
-        public Point[] Avoid;
+        private Point[] Avoid;
         /// Учитывать отступы
         public Padding Padding;
 

@@ -50,18 +50,16 @@ namespace Games
         }
 
         bool isFocused = true;
-        /**
-        Яблоко, которое ест змейка
-        */
         Apple apple;
         Snake snake;
         /**
-        Ускорение
+        Отрисовать следующий кадр быстрее (ускорить змейку)
         */
         bool speedUp = false;
         Random rnd = new Random();
         /// Меню паузы с выбором действия
         SelectionMenu menu_paused;
+        /// Пользователь поставил игру на паузу
         bool isPaused = false;
 
         /**
@@ -112,9 +110,6 @@ namespace Games
             d.Remove(apple);
         }
 
-        /**
-        Следующий кадр
-        */
         public override void NextFrame(Drawer d)
         {
             if (drawBorder)
@@ -177,13 +172,17 @@ namespace Games
                 RegenerateApple();
                 if (delay > 50)
                 {
+                    /*
+                    Уменьшить интервал между кадрами, то есть
+                    увеличить скорость змейки. Миниматьный интервал между кадрами: 50
+                    */
                     delay -= 5;
                 }
             }
         }
 
         /**
-        Окно выбора что делать после столкновения змейки с чем-либо
+        Окно выбора действия после столкновения змейки с чем-либо
         */
         void selectGameOverAction(Drawer d)
         {

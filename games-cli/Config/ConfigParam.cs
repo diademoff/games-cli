@@ -34,6 +34,10 @@ namespace Games
             this.SelectedValueIndex = 0;
         }
 
+        /**
+        IConfigValue - это ссылочный тип, поэтому возможно изменение
+        конфигурации при вызове OnValueChanged
+        */
         public ConfigParam BindTo<T>(IConfigValue<T> v)
         {
             // Выбрать пункт, который сейчас находится в конфиге

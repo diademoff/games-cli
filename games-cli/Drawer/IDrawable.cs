@@ -3,7 +3,7 @@ using System.Drawing;
 namespace Games
 {
     /**
-    Символ, который можно вывеси в консоль
+    Символ который можно вывеси в консоль
     */
     public interface IDrawable
     {

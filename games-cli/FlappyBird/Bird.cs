@@ -37,7 +37,7 @@ namespace Games
         */
         bool falling = true;
         /**
-        Высота, на которую взлетает птичка
+        Высота на которую взлетает птичка
         */
         int jumpSize;
         /*
