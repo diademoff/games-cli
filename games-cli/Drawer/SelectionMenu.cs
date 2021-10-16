@@ -19,61 +19,61 @@ namespace Games
 
         bool isFocused = false;
         Border Border;
-        TextField[] Variants => GetTextFields(str_variants, SelectedIndex);
+        TextField[] Variants => GetTextFields(strVariants, SelectedIndex);
 
-        string[] str_variants;
+        string[] strVariants;
         /// Отступ сверху и снизу (отступы одинаковы)
-        int padding_topbottom;
+        int paddingTopBottom;
         /// Отступ слева и справа
-        int padding_leftright;
-        int field_width;
-        int field_height;
+        int paddingLeftRight;
+        int fieldWidth;
+        int fieldHeight;
 
-        int default_selected;
+        int defaultSelected;
 
-        int menu_height;
-        int menu_width;
+        int menuHeight;
+        int menuWidth;
 
-        public SelectionMenu(string[] str_variants, int field_width, int field_height, int defaultSelected, Padding p)
+        public SelectionMenu(string[] strVariants, Size fieldSize, int defaultSelected, Padding p)
         {
             this.SelectedIndex = defaultSelected;
-            this.field_width = field_width;
-            this.field_height = field_height;
-            this.str_variants = str_variants;
-            this.default_selected = defaultSelected;
+            this.fieldWidth = fieldSize.Width;
+            this.fieldHeight = fieldSize.Height;
+            this.strVariants = strVariants;
+            this.defaultSelected = defaultSelected;
 
-            field_width -= (p.Left + p.Right);
-            field_height -= (p.Bottom + p.Top);
+            fieldWidth -= (p.Left + p.Right);
+            fieldHeight -= (p.Bottom + p.Top);
 
             // Длина самого длинного слова
-            int max_variant_length = str_variants.OrderByDescending(n => n.Length).First().Length + 2;
+            int maxVariantLength = strVariants.OrderByDescending(n => n.Length).First().Length + 2;
 
-            this.menu_height = (str_variants.Length * 2) + 2;
-            this.menu_width = max_variant_length + 4;
+            this.menuHeight = (strVariants.Length * 2) + 2;
+            this.menuWidth = maxVariantLength + 4;
 
-            this.padding_topbottom = (field_height - menu_height) / 2;
-            this.padding_leftright = (field_width - menu_width) / 2;
+            this.paddingTopBottom = (fieldHeight - menuHeight) / 2;
+            this.paddingLeftRight = (fieldWidth - menuWidth) / 2;
 
             /*
             Расчитать отступы таким образом чтобы меню было по середине
             */
-            Padding p_border = new Padding(padding_leftright, padding_leftright,
-                                padding_topbottom, padding_topbottom);
+            Padding paddingBorder = new Padding(paddingLeftRight, paddingLeftRight,
+                                paddingTopBottom, paddingTopBottom);
 
-            this.Border = new Border('+', field_width, field_height, p_border);
+            this.Border = new Border('+', fieldWidth, fieldHeight, paddingBorder);
         }
 
         public void ChangeVariantText(int index, string value)
         {
-            if (index < 0 || index >= str_variants.Length)
+            if (index < 0 || index >= strVariants.Length)
                 throw new IndexOutOfRangeException();
-            this.str_variants[index] = value;
+            this.strVariants[index] = value;
         }
 
         /// Сбросить сделанный выбор, вернуть в начальное состояние
         public void Reuse()
         {
-            this.SelectedIndex = default_selected;
+            this.SelectedIndex = defaultSelected;
             this.IsSelected = false;
         }
 
@@ -83,14 +83,14 @@ namespace Games
             {
                 if (SelectedIndex == 0)
                 {
-                    SelectedIndex = str_variants.Length - 1;
+                    SelectedIndex = strVariants.Length - 1;
                     return;
                 }
                 SelectedIndex -= 1;
             }
             else if (key == ConsoleKey.S || key == ConsoleKey.J || key == ConsoleKey.DownArrow)
             {
-                if (SelectedIndex == str_variants.Length - 1)
+                if (SelectedIndex == strVariants.Length - 1)
                 {
                     SelectedIndex = 0;
                     return;
@@ -113,23 +113,23 @@ namespace Games
                 // добавить пробелы чтобы затереть старые символы
                 if (i == selectedIndex)
                 {
-                    int l = ((this.menu_width - text.Length - 2) / 2) + 1;
+                    int l = ((this.menuWidth - text.Length - 2) / 2) + 1;
                     l = l < 0 ? 0 : l; // length is not less than zero
                     string whiteSpace = new string(' ', l);
                     text = $"{whiteSpace}>{text}<{whiteSpace}";
                 }
                 else
                 {
-                    int l = (this.menu_width - text.Length - 2) / 2;
+                    int l = (this.menuWidth - text.Length - 2) / 2;
                     string whiteSpace = new string(' ', l);
                     text = $"{whiteSpace}{text}{whiteSpace}";
                 }
 
-                Point textStartLocation = new Point((field_width / 2) - (text.Length / 2) - 1,
-                                    padding_topbottom + (i * 2) + 2);
+                Point textStartLocation = new Point((fieldWidth / 2) - (text.Length / 2),
+                                    paddingTopBottom + (i * 2) + 2);
 
-                TextField text_field = new TextField(textStartLocation, text.Length, text);
-                fields[i] = text_field;
+                TextField textField = new TextField(textStartLocation, text.Length, text);
+                fields[i] = textField;
             }
 
             return fields;
@@ -139,9 +139,9 @@ namespace Games
         {
             List<DrawableChar> chars = new List<DrawableChar>();
 
-            foreach (TextField variant_field in Variants)
+            foreach (TextField variantField in Variants)
             {
-                foreach (DrawableChar c in variant_field.ElementContent)
+                foreach (DrawableChar c in variantField.ElementContent)
                 {
                     chars.Add(c);
                 }

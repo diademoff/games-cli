@@ -25,7 +25,7 @@ namespace Games
         Line buttonLine;
         Line topLine;
         int score = 0;
-        TextField scoreCounter => new TextField(new Point(2, FIELD_SIZE_HEIGHT - padding.Bottom + 2), 15, $"Score: {score}");
+        TextField scoreCounter => new TextField(new Point(2, FieldSize.Height - padding.Bottom + 2), 15, $"Score: {score}");
         SelectionMenu gameOverMenu;
         SelectionMenu pauseMenu;
 
@@ -34,28 +34,28 @@ namespace Games
         const int birdJumpOffset = 7;
         const int columnWidth = 5;
         int blockInterval;
-        public FlappyBirdGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
+        public FlappyBirdGame(Size FieldSize, Padding p) : base(FieldSize, p)
         {
             Init();
         }
 
         void Init()
         {
-            int birdInitLocation_Y = (FIELD_SIZE_HEIGHT - padding.Top - padding.Bottom) / 2;
+            int birdInitLocation_Y = (FieldSize.Height - padding.Top - padding.Bottom) / 2;
             this.bird = new Bird(jumpSize: birdJumpOffset, new Point(20, birdInitLocation_Y));
-            this.buttonLine = new Line('-', new Point(padding.Left, FIELD_SIZE_HEIGHT - padding.Bottom), new Point(FIELD_SIZE_WIDTH - padding.Right, FIELD_SIZE_HEIGHT - padding.Bottom));
-            this.topLine = new Line('-', new Point(padding.Left, padding.Top), new Point(FIELD_SIZE_WIDTH - padding.Right, padding.Top));
+            this.buttonLine = new Line('-', new Point(padding.Left, FieldSize.Height - padding.Bottom), new Point(FieldSize.Width - padding.Right, FieldSize.Height - padding.Bottom));
+            this.topLine = new Line('-', new Point(padding.Left, padding.Top), new Point(FieldSize.Width - padding.Right, padding.Top));
             this.drawnColumns = new List<IEnumerable<IDrawable>>();
             this.score = 0;
             this.gameOverMenu = new SelectionMenu(new string[]{
                 "Restart",
                 "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
+            }, FieldSize, 0, padding);
             this.gameOverMenu.IsFocused = false;
             this.pauseMenu = new SelectionMenu(new string[]{
                 "Resume",
                 "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
+            }, FieldSize, 0, padding);
             this.pauseMenu.IsFocused = false;
 
             InitColumns();
@@ -64,14 +64,14 @@ namespace Games
         void InitColumns()
         {
             // Чтобы птичка успела долететь
-            this.blockInterval = FIELD_SIZE_HEIGHT / birdFallOffset;
+            this.blockInterval = FieldSize.Height / birdFallOffset;
             // Чтобы весь экран был заполнен кононнами
-            int col_count = (FIELD_SIZE_WIDTH / blockInterval) + 3;
-            this.columns = new Column[col_count];
-            for (int i = 0; i < col_count; i++)
+            int colСount = (FieldSize.Width / blockInterval) + 3;
+            this.columns = new Column[colСount];
+            for (int i = 0; i < colСount; i++)
             {
                 int n = i + 1; // number in order
-                columns[i] = GetColumn(FIELD_SIZE_WIDTH + (blockInterval * n));
+                columns[i] = GetColumn(FieldSize.Width + (blockInterval * n));
             }
         }
 
@@ -175,14 +175,14 @@ namespace Games
 
         bool IsBirdIntersectsWithColumn(IEnumerable<IDrawable> birdContent)
         {
-            foreach (var bird_pixel in birdContent)
+            foreach (var birdPixel in birdContent)
             {
                 foreach (var column in columns)
                 {
-                    var col_content = column.ElementContent;
-                    foreach (var col_pixel in col_content)
+                    var colContent = column.ElementContent;
+                    foreach (var colPixel in colContent)
                     {
-                        if (col_pixel.Location == bird_pixel.Location)
+                        if (colPixel.Location == birdPixel.Location)
                         {
                             return true;
                         }
@@ -201,15 +201,15 @@ namespace Games
 
                 c.MoveLeft(columnMoveOffset);
                 var content = c.ElementContent;
-                var content_cut = CutContentVertical(content);
-                d.Create(content_cut);
-                drawnColumns.Add(content_cut);
+                var contentCuttted = CutContentVertical(content);
+                d.Create(contentCuttted);
+                drawnColumns.Add(contentCuttted);
 
                 if (IsGoneLeft(content))
                 {
                     // Получить координаты самой правой колонки
-                    int right_col = columns.OrderBy(x => x.ElementContent.OrderBy(y => y.Location.X).Last().Location.X).Last().ElementContent.OrderBy(z => z.Location.X).Last().Location.X;
-                    columns[i] = GetColumn(right_col + blockInterval);
+                    int rightCol = columns.OrderBy(x => x.ElementContent.OrderBy(y => y.Location.X).Last().Location.X).Last().ElementContent.OrderBy(z => z.Location.X).Last().Location.X;
+                    columns[i] = GetColumn(rightCol + blockInterval);
                     score += 1;
                 }
             }
@@ -239,7 +239,7 @@ namespace Games
             foreach (var c in content)
             {
                 if (c.Location.X < padding.Left ||
-                    c.Location.X > FIELD_SIZE_WIDTH - padding.Right)
+                    c.Location.X > FieldSize.Width - padding.Right)
                 {
                     continue;
                 }
@@ -251,7 +251,7 @@ namespace Games
         Random random = new Random();
         Column GetColumn(int verticalLocation)
         {
-            return new Column(verticalLocation, intervalHeight: random.Next(13, 15), columnWidth, new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT), random, padding);
+            return new Column(verticalLocation, intervalHeight: random.Next(13, 15), columnWidth, FieldSize, random, padding);
         }
 
         bool BirdIntersectsBorder(IDrawable[] birdContent)
@@ -259,7 +259,7 @@ namespace Games
             foreach (IDrawable i in birdContent)
             {
                 if (i.Location.Y <= padding.Top ||
-                    i.Location.Y >= FIELD_SIZE_HEIGHT - padding.Bottom)
+                    i.Location.Y >= FieldSize.Height - padding.Bottom)
                 {
                     return true;
                 }

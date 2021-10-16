@@ -8,12 +8,12 @@ namespace Games
     */
     public abstract class Tetromino : IDrawableElement
     {
-        public Point[] structure => structure_rotate[CurrentRotationState];
-        protected int offset_x, offset_y = 0;
+        public Point[] structure => structureRotate[CurrentRotationState];
+        protected int offsetX, offsetY = 0;
         protected char Symbol = '*';
         /**
         Текущий поворот. Определяется массивом из списка
-        structure_rotate
+        structureRotate
         */
         protected int CurrentRotationState = 0;
         /**
@@ -28,22 +28,22 @@ namespace Games
         Координаты блока, который на 1 правее левого верхнего угла: (1, 0)
         и т.д.
         */
-        protected abstract List<Point[]> structure_rotate { get; }
+        protected abstract List<Point[]> structureRotate { get; }
         public IDrawable[] ElementContent
         {
             get
             {
                 List<IDrawable> r = new List<IDrawable>(4);
-                foreach (var s in structure_rotate[CurrentRotationState])
+                foreach (var s in structureRotate[CurrentRotationState])
                 {
-                    r.Add(new DrawableChar(Symbol, new Point(s.X + offset_x, s.Y + offset_y)));
+                    r.Add(new DrawableChar(Symbol, new Point(s.X + offsetX, s.Y + offsetY)));
                 }
                 return r.ToArray();
             }
         }
         public void MoveDown()
         {
-            this.offset_y += 1;
+            this.offsetY += 1;
         }
 
         public Point[] TryMoveDown()
@@ -53,7 +53,7 @@ namespace Games
 
         public void MoveLeft()
         {
-            this.offset_x -= 1;
+            this.offsetX -= 1;
         }
 
         public Point[] TryMoveLeft()
@@ -63,7 +63,7 @@ namespace Games
 
         public void MoveRight()
         {
-            this.offset_x += 1;
+            this.offsetX += 1;
         }
 
         public Point[] TryMoveRight()
@@ -79,14 +79,14 @@ namespace Games
         направлении. Своего рода гипотетическое действие, которое не
         изменяет текущий элемент.
         */
-        private Point[] Try(int plus_x, int plus_y)
+        private Point[] Try(int plusX, int plusY)
         {
             Point[] r = new Point[structure.Length];
-            Point[] curr = structure_rotate[CurrentRotationState];
+            Point[] curr = structureRotate[CurrentRotationState];
 
             for (int i = 0; i < structure.Length; i++)
             {
-                r[i] = new Point(curr[i].X + offset_x + plus_x, curr[i].Y + offset_y + plus_y);
+                r[i] = new Point(curr[i].X + offsetX + plusX, curr[i].Y + offsetY + plusY);
             }
 
             return r;
@@ -99,7 +99,7 @@ namespace Games
 
         private int GetNextRotateIndex()
         {
-            if (CurrentRotationState == structure_rotate.Count - 1)
+            if (CurrentRotationState == structureRotate.Count - 1)
             {
                 return 0;
             }
@@ -111,15 +111,15 @@ namespace Games
 
         public Point[] TryRotate()
         {
-            Point[] s =  structure_rotate[GetNextRotateIndex()];
-            Point[] with_offsets = new Point[s.Length];
+            Point[] s =  structureRotate[GetNextRotateIndex()];
+            Point[] withOffsets = new Point[s.Length];
 
             for (int i = 0; i < s.Length; i++)
             {
-                with_offsets[i] = new Point(s[i].X + offset_x, s[i].Y + offset_y);
+                withOffsets[i] = new Point(s[i].X + offsetX, s[i].Y + offsetY);
             }
 
-            return with_offsets;
+            return withOffsets;
         }
 
         /**
@@ -128,13 +128,13 @@ namespace Games
         */
         public void ResetOffsets()
         {
-            offset_x = offset_y = 0;
+            offsetX = offsetY = 0;
         }
 
-        public Tetromino(int field_width, int init_y_location)
+        public Tetromino(int fieldWidth, int initYAxisLocation)
         {
-            this.offset_x = field_width / 2;
-            this.offset_y = init_y_location;
+            this.offsetX = fieldWidth / 2;
+            this.offsetY = initYAxisLocation;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace Games
@@ -15,7 +16,7 @@ namespace Games
         }
         public bool IsFocused { get => true; set => throw new Exception("Screen is always focused"); }
         public abstract IDrawable[] ElementContent { get; }
-        public abstract void OnWindowSizeChanged(int width, int height);
+        public abstract void OnWindowSizeChanged(Size fieldSize);
         public async Task WaitForExit()
         {
             do

@@ -16,13 +16,12 @@ namespace Games
         public IDrawable[] ElementContent => configMenu.ElementContent;
         public ConfigParam[] ConfigParams { get; private set; }
 
-        public ConfigMenu(ConfigParam[] configParams, Size windowSize, Padding p)
+        public ConfigMenu(ConfigParam[] configParams, Size fieldSize, Padding p)
         {
             this.ConfigParams = configParams;
             configMenu = new SelectionMenu(
                 configParams.Select(x => x.ToString()).ToArray(),
-                windowSize.Width,
-                windowSize.Height,
+                fieldSize,
                 defaultSelected: 0,
                 p
             );

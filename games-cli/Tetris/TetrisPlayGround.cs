@@ -9,34 +9,34 @@ namespace Games
     */
     class TetrisPlayGround : IDrawableElement, IInteractive
     {
-        public Tetromino NextTetromino => next_tetromino;
+        public Tetromino NextTetromino => nextTetromino;
         /// Заполнено ли поле
         public bool GameOver = false;
         /// Набранные очки
         public int Score => score;
         int score = 0;
         /// Координата левого края
-        int left_border;
+        int leftBorder;
         /// Координата правого края
-        int right_border;
+        int rightBorder;
         /**
         Блок, который падает в данный момент
         */
-        int bottom_border;
-        Tetromino falling_tetromino;
+        int bottomBorder;
+        Tetromino fallingTetromino;
         /**
         Следующий блок после текущего
         */
-        Tetromino next_tetromino;
+        Tetromino nextTetromino;
         /**
         Упавшие блоки
         */
-        List<IDrawable> tetromino_fallen = new List<IDrawable>();
+        List<IDrawable> tetrominoFallen = new List<IDrawable>();
         Random rnd = new Random();
         public IDrawable[] ElementContent => getContent();
         public bool IsFocused { get => isFocused; set => isFocused = value; }
         bool isFocused = true;
-        Size field_size;
+        Size fieldSize;
         Padding padding;
         /**
         Какая задержка должна быть между кадрами. 100 мс = 60 FPS
@@ -67,31 +67,31 @@ namespace Games
         */
         int fallingInterval => speedUp ? 50 : 200;
 
-        public TetrisPlayGround(int left_border, int right_border, Size field_size, Padding p)
+        public TetrisPlayGround(int leftBorder, int rightBorder, Size fieldSize, Padding p)
         {
-            this.left_border = left_border;
-            this.right_border = right_border;
-            this.field_size = field_size;
+            this.leftBorder = leftBorder;
+            this.rightBorder = rightBorder;
+            this.fieldSize = fieldSize;
             this.padding = p;
-            this.bottom_border = field_size.Height - padding.Bottom - 2;
+            this.bottomBorder = fieldSize.Height - padding.Bottom - 2;
 
-            falling_tetromino = GetRandomTetromino();
-            next_tetromino = GetRandomTetromino();
+            fallingTetromino = GetRandomTetromino();
+            nextTetromino = GetRandomTetromino();
         }
 
         public void NextFrame()
         {
-            if (IsOnBottom(falling_tetromino) ||
-                IsIntersectsWithFallen(falling_tetromino.TryMoveDown()))
+            if (IsOnBottom(fallingTetromino) ||
+                IsIntersectsWithFallen(fallingTetromino.TryMoveDown()))
             {
                 SwitchToNextTetromino();
                 int[] filledRaws = GetFilledRaws();
                 if (filledRaws.Length > 0)
                 {
-                    foreach (var row_y in filledRaws)
+                    foreach (var rowY in filledRaws)
                     {
-                        RemoveRow(row_y);
-                        ShiftBlocksAfterRowRemoved(row_y);
+                        RemoveRow(rowY);
+                        ShiftBlocksAfterRowRemoved(rowY);
                         this.score += 1;
                     }
                 }
@@ -119,7 +119,7 @@ namespace Games
                 */
                 return;
             }
-            falling_tetromino.MoveDown();
+            fallingTetromino.MoveDown();
             lastFall = DateTime.Now;
             speedUp = false; // сброс ускорения
         }
@@ -128,16 +128,16 @@ namespace Games
         Сместить упавшие блоки, которые находятся выше
         удаленного ряда вниз
         */
-        void ShiftBlocksAfterRowRemoved(int row_removed)
+        void ShiftBlocksAfterRowRemoved(int rowRemoved)
         {
-            for (int i = 0; i < tetromino_fallen.Count; i++)
+            for (int i = 0; i < tetrominoFallen.Count; i++)
             {
-                IDrawable symbol = tetromino_fallen[i];
-                if (symbol.Location.Y < row_removed)
+                IDrawable symbol = tetrominoFallen[i];
+                if (symbol.Location.Y < rowRemoved)
                 {
                     symbol = new DrawableChar(symbol.Char,
                         new Point(symbol.Location.X, symbol.Location.Y + 1));
-                    tetromino_fallen[i] = symbol;
+                    tetrominoFallen[i] = symbol;
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace Games
         */
         void RemoveRow(int y)
         {
-            tetromino_fallen.RemoveAll((IDrawable x) =>
+            tetrominoFallen.RemoveAll((IDrawable x) =>
             {
                 return x.Location.Y == y;
             });
@@ -159,19 +159,19 @@ namespace Games
         int[] GetFilledRaws()
         {
             List<int> r = new List<int>();
-            for (int i = bottom_border; i >= padding.Top; i--)
+            for (int i = bottomBorder; i >= padding.Top; i--)
             {
-                bool line_filled = true;
-                for (int j = left_border + 1; j < right_border - 1; j++)
+                bool lineFilled = true;
+                for (int j = leftBorder + 1; j < rightBorder - 1; j++)
                 {
                     Point p = new Point(j, i);
                     if (!isPointInFallen(p))
                     {
-                        line_filled = false;
+                        lineFilled = false;
                         break;
                     }
                 }
-                if (line_filled)
+                if (lineFilled)
                 {
                     r.Add(i);
                 }
@@ -185,7 +185,7 @@ namespace Games
         */
         bool isPointInFallen(Point p)
         {
-            foreach (var i in tetromino_fallen)
+            foreach (var i in tetrominoFallen)
             {
                 if (p.X == i.Location.X && p.Y == i.Location.Y)
                 {
@@ -202,59 +202,59 @@ namespace Games
         */
         void MoveFallingLeft()
         {
-            Point[] theory_tetromino = falling_tetromino.TryMoveLeft();
-            if (AnyIntersects(theory_tetromino))
+            Point[] theoryTetromino = fallingTetromino.TryMoveLeft();
+            if (AnyIntersects(theoryTetromino))
             {
                 return;
             }
-            falling_tetromino.MoveLeft();
+            fallingTetromino.MoveLeft();
             lastAction = DateTime.Now;
         }
 
         void MoveFallingRight()
         {
-            Point[] theory_tetromino = falling_tetromino.TryMoveRight();
-            if (AnyIntersects(theory_tetromino))
+            Point[] theoryTetromino = fallingTetromino.TryMoveRight();
+            if (AnyIntersects(theoryTetromino))
             {
                 return;
             }
-            falling_tetromino.MoveRight();
+            fallingTetromino.MoveRight();
             lastAction = DateTime.Now;
         }
 
         void RotateFalling()
         {
-            Point[] theory_tetromino = falling_tetromino.TryRotate();
-            if (AnyIntersects(theory_tetromino))
+            Point[] theoryTetromino = fallingTetromino.TryRotate();
+            if (AnyIntersects(theoryTetromino))
             {
                 return;
             }
-            falling_tetromino.Rotate();
+            fallingTetromino.Rotate();
             lastAction = DateTime.Now;
         }
 
         /// Сгенерировать новый тетромино
         Tetromino GetRandomTetromino()
         {
-            int field_width = field_size.Width;
-            int init_y_location = padding.Top;
+            int fieldWidth = fieldSize.Width;
+            int initYAxisLocation = padding.Top;
 
             switch (rnd.Next(1, 8))
             {
                 case 1:
-                    return new TetrominoI(field_width, init_y_location);
+                    return new TetrominoI(fieldWidth, initYAxisLocation);
                 case 2:
-                    return new TetrominoJ(field_width, init_y_location);
+                    return new TetrominoJ(fieldWidth, initYAxisLocation);
                 case 3:
-                    return new TetrominoL(field_width, init_y_location);
+                    return new TetrominoL(fieldWidth, initYAxisLocation);
                 case 4:
-                    return new TetrominoO(field_width, init_y_location);
+                    return new TetrominoO(fieldWidth, initYAxisLocation);
                 case 5:
-                    return new TetrominoS(field_width, init_y_location);
+                    return new TetrominoS(fieldWidth, initYAxisLocation);
                 case 6:
-                    return new TetrominoT(field_width, init_y_location);
+                    return new TetrominoT(fieldWidth, initYAxisLocation);
                 case 7:
-                    return new TetrominoZ(field_width, init_y_location);
+                    return new TetrominoZ(fieldWidth, initYAxisLocation);
             }
             throw new Exception("Unreal exception GetRandomTetromino");
         }
@@ -262,8 +262,8 @@ namespace Games
         private IDrawable[] getContent()
         {
             List<IDrawable> r = new List<IDrawable>();
-            r.AddRange(falling_tetromino.ElementContent);
-            r.AddRange(tetromino_fallen);
+            r.AddRange(fallingTetromino.ElementContent);
+            r.AddRange(tetrominoFallen);
             return r.ToArray();
         }
 
@@ -271,7 +271,7 @@ namespace Games
         {
             foreach (IDrawable i in t.ElementContent)
             {
-                if (i.Location.Y >= bottom_border)
+                if (i.Location.Y >= bottomBorder)
                 {
                     return true;
                 }
@@ -282,9 +282,9 @@ namespace Games
         void SwitchToNextTetromino()
         {
             AddCurrentTetrominoToFallen();
-            falling_tetromino = next_tetromino;
-            next_tetromino = GetRandomTetromino();
-            if (AnyIntersects(falling_tetromino.TryMoveDown()))
+            fallingTetromino = nextTetromino;
+            nextTetromino = GetRandomTetromino();
+            if (AnyIntersects(fallingTetromino.TryMoveDown()))
             {
                 // Если под появившимся блоком есть другие блоки
                 // значит поле заполнено
@@ -294,9 +294,9 @@ namespace Games
 
         void AddCurrentTetrominoToFallen()
         {
-            foreach (IDrawable i in falling_tetromino.ElementContent)
+            foreach (IDrawable i in fallingTetromino.ElementContent)
             {
-                tetromino_fallen.Add(i);
+                tetrominoFallen.Add(i);
             }
         }
 
@@ -313,7 +313,7 @@ namespace Games
         {
             foreach (var i in t)
             {
-                if (i.X <= left_border || i.X >= right_border - 1)
+                if (i.X <= leftBorder || i.X >= rightBorder - 1)
                 {
                     return true;
                 }
@@ -326,7 +326,7 @@ namespace Games
         */
         bool IsIntersectsWithFallen(Point[] t)
         {
-            foreach (var i in tetromino_fallen)
+            foreach (var i in tetrominoFallen)
             {
                 foreach (var j in t)
                 {
@@ -344,7 +344,7 @@ namespace Games
         {
             foreach (IDrawable i in t.ElementContent)
             {
-                if (i.Location.X <= left_border || i.Location.X >= right_border)
+                if (i.Location.X <= leftBorder || i.Location.X >= rightBorder)
                 {
                     return true;
                 }

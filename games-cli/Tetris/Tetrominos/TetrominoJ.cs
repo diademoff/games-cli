@@ -9,7 +9,7 @@ namespace Games
         {
         }
 
-        protected override List<Point[]> structure_rotate => new List<Point[]>{
+        protected override List<Point[]> structureRotate => new List<Point[]>{
             //*
             //***
             //

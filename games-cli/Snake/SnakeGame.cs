@@ -31,7 +31,7 @@ namespace Games
         /**
         Столкнулась ли змейка с собой или с краем.
         */
-        bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding);
+        bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FieldSize, padding);
         int delay;
 
         /**
@@ -58,7 +58,7 @@ namespace Games
         bool speedUp = false;
         Random rnd = new Random();
         /// Меню паузы с выбором действия
-        SelectionMenu menu_paused;
+        SelectionMenu menuPaused;
         /// Пользователь поставил игру на паузу
         bool isPaused = false;
 
@@ -72,7 +72,7 @@ namespace Games
         /// Нарисованная граница
         Border border;
 
-        public SnakeGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
+        public SnakeGame(Size fieldSize, Padding p) : base(fieldSize, p)
         {
             Init();
         }
@@ -82,17 +82,17 @@ namespace Games
         */
         void Init()
         {
-            progress = new SnakeProgress(delay, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, padding.Bottom - 2);
+            progress = new SnakeProgress(delay, FieldSize, padding.Bottom - 2);
             snake = new Snake(ConfigStorage.Current.SnakeChar.Value, padding);
             // Пересоздать окно выбора действия чтобы сбросить предыдущий выбор
             gameOverAction = new SelectionMenu(new string[]{
                     "Restart",
                     "Exit"
-                }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
-            menu_paused = new SelectionMenu(new string[]{
+                }, FieldSize, 0, padding);
+            menuPaused = new SelectionMenu(new string[]{
                 "Resume",
                 "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
+            }, FieldSize, 0, padding);
             RegenerateApple();
             gameOverAction.IsFocused = false;
             delay = 100;
@@ -103,7 +103,7 @@ namespace Games
         {
             if (!isPaused)
             {
-                d.Remove(menu_paused);
+                d.Remove(menuPaused);
             }
 
             d.Remove(snake.ElementContent[snake.ElementContent.Length - 1]);
@@ -126,7 +126,7 @@ namespace Games
 
             if (isPaused)
             {
-                d.Create(menu_paused);
+                d.Create(menuPaused);
                 CheckPausedMenuSomethingSelected(d);
             }
 
@@ -145,17 +145,17 @@ namespace Games
 
         void CheckPausedMenuSomethingSelected(Drawer d)
         {
-            if (!menu_paused.IsSelected)
+            if (!menuPaused.IsSelected)
             {
                 return;
             }
 
-            if (menu_paused.SelectedIndex == 0)
+            if (menuPaused.SelectedIndex == 0)
             {
                 isPaused = false;
-                menu_paused.Reuse();
+                menuPaused.Reuse();
             }
-            else if (menu_paused.SelectedIndex == 1)
+            else if (menuPaused.SelectedIndex == 1)
             {
                 RemoveGame(d);
                 isGameOver = true;
@@ -230,7 +230,7 @@ namespace Games
             d.Remove(apple);
             d.Remove(progress.StatusBar);
             d.Remove(gameOverAction);
-            d.Remove(menu_paused);
+            d.Remove(menuPaused);
             d.Remove(border);
         }
 
@@ -262,13 +262,13 @@ namespace Games
 
             if (isPaused)
             {
-                menu_paused.HandleKey(key);
+                menuPaused.HandleKey(key);
             }
         }
 
         void RegenerateApple()
         {
-            apple = new Apple(new AppleGen(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, snake, padding), ref rnd);
+            apple = new Apple(new AppleGen(FieldSize, snake, padding), ref rnd);
         }
     }
 }

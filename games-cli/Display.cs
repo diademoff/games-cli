@@ -12,7 +12,7 @@ namespace Games
     {
         /// Пользователь вышел из приложения
         public bool Exited { get; private set; } = false;
-        Size windowSize;
+        Size fieldSize;
         /**
         Для отрисовки используется класс Drawer. Он предоставляет
         возможность отрисовать IDrawable.
@@ -37,8 +37,8 @@ namespace Games
 
         void SetWindowSize(int width, int height)
         {
-            windowSize = new Size(Console.WindowWidth, Console.WindowHeight);
-            drawer = new Drawer(windowSize.Width, windowSize.Height);
+            fieldSize = new Size(Console.WindowWidth, Console.WindowHeight);
+            drawer = new Drawer(fieldSize.Width, fieldSize.Height);
         }
 
         /**
@@ -52,18 +52,18 @@ namespace Games
                 "Flappy bird", // 2
                 "Settings",    // 3
                 "Exit"         // 4
-            }, windowSize, p);
+            }, fieldSize, p);
 
             ScreenCaller.Call(currentScreen, drawer, 60).OnExit((i) =>
             {
                 int selectedIndex = (int)i;
 
                 if (selectedIndex == 0)
-                    GameScreen(new SnakeGame(windowSize.Width, windowSize.Height, p));
+                    GameScreen(new SnakeGame(fieldSize, p));
                 else if (selectedIndex == 1)
-                    GameScreen(new TetrisGame(windowSize.Width, windowSize.Height, p));
+                    GameScreen(new TetrisGame(fieldSize, p));
                 else if (selectedIndex == 2)
-                    GameScreen(new FlappyBirdGame(windowSize.Width, windowSize.Height, p));
+                    GameScreen(new FlappyBirdGame(fieldSize, p));
                 else if (selectedIndex == 3)
                     ConfigurationScreen();
                 else if (selectedIndex == 4)
@@ -73,7 +73,7 @@ namespace Games
 
         void GameScreen(Game game)
         {
-            currentScreen = new GameScreen(game, windowSize);
+            currentScreen = new GameScreen(game, fieldSize);
 
             ScreenCaller.Call(currentScreen, drawer, () => game.DelayBetweenFrames).OnExit((o) =>
             {
@@ -83,7 +83,7 @@ namespace Games
 
         void ConfigurationScreen()
         {
-            currentScreen = new ConfigurationScreen(windowSize, p);
+            currentScreen = new ConfigurationScreen(fieldSize, p);
 
             ScreenCaller.Call(currentScreen, drawer, 60).OnExit((newConfig) =>
             {
@@ -119,18 +119,18 @@ namespace Games
         */
         async void WindowSizeChangedHandle()
         {
-            Size currentSize = windowSize;
+            Size currentFieldSize = fieldSize;
 
             while (true)
             {
                 int w = Console.WindowWidth;
                 int h = Console.WindowHeight;
 
-                if (w != currentSize.Width || h != currentSize.Height)
+                if (w != currentFieldSize.Width || h != currentFieldSize.Height)
                 {
                     if (currentScreen != null)
-                        currentScreen.OnWindowSizeChanged(w, h);
-                    currentSize = new Size(w, h);
+                        currentScreen.OnWindowSizeChanged(fieldSize);
+                    currentFieldSize = fieldSize;
                 }
 
                 await Task.Delay(100);

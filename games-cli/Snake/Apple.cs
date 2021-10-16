@@ -22,8 +22,8 @@ namespace Games
     /// Apple generator
     public struct AppleGen
     {
-        public int Field_width;
-        public int Field_height;
+        public int FieldWidth;
+        public int FieldHeight;
         /**
         Не генерировать в заданных точках (на теле змейки)
         */
@@ -31,10 +31,10 @@ namespace Games
         /// Учитывать отступы
         public Padding Padding;
 
-        public AppleGen(int field_width, int field_height, Snake snake)
+        public AppleGen(Size fieldSize, Snake snake)
         {
-            Field_width = field_width;
-            Field_height = field_height;
+            FieldWidth = fieldSize.Width;
+            FieldHeight = fieldSize.Height;
             Padding = new Padding(0, 0, 0, 0);
 
             Avoid = new Point[snake.Blocks.Count];
@@ -45,7 +45,7 @@ namespace Games
             }
         }
 
-        public AppleGen(int field_width, int field_height, Snake snake, Padding p) : this(field_width, field_height, snake)
+        public AppleGen(Size fieldSize, Snake snake, Padding p) : this(fieldSize, snake)
         {
             this.Padding = p;
         }
@@ -59,8 +59,8 @@ namespace Games
 
             do
             {
-                int x = rnd.Next(Padding.Left + 1, this.Field_width - Padding.Right - 1);
-                int y = rnd.Next(Padding.Top + 1, this.Field_height - Padding.Bottom - 1);
+                int x = rnd.Next(Padding.Left + 1, this.FieldWidth - Padding.Right - 1);
+                int y = rnd.Next(Padding.Top + 1, this.FieldHeight - Padding.Bottom - 1);
                 point = new Point(x, y);
             } while (Avoid.ToList().Contains(point));
 

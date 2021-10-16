@@ -14,17 +14,17 @@ namespace Games
         {
             get
             {
-                return _selectedValue;
+                return selectedValue;
             }
             set
             {
                 if (value < 0 || value >= PossibleValues.Length)
                     throw new IndexOutOfRangeException();
-                _selectedValue = value;
+                selectedValue = value;
                 OnValueChanged?.Invoke(PossibleValues[value]);
             }
         }
-        int _selectedValue;
+        int selectedValue;
         public Action<string> OnValueChanged;
 
         public ConfigParam(string title, string[] values)

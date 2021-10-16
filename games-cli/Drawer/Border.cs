@@ -9,7 +9,7 @@ namespace Games
     public class Border : IDrawableElement
     {
         public IDrawable[] ElementContent => getContent();
-        List<Line> border_lines = new List<Line>();
+        List<Line> borderLines = new List<Line>();
 
         public Border(char c, Point lt, Point rt, Point lb, Point rb)
         {
@@ -78,16 +78,16 @@ namespace Games
             Line right = new Line(c, rt, rb);
             Line button = new Line(c, lb, rb);
 
-            border_lines.Add(top);
-            border_lines.Add(left);
-            border_lines.Add(right);
-            border_lines.Add(button);
+            borderLines.Add(top);
+            borderLines.Add(left);
+            borderLines.Add(right);
+            borderLines.Add(button);
         }
 
         private IDrawable[] getContent()
         {
             List<DrawableChar> r = new List<DrawableChar>();
-            foreach (Line line in border_lines)
+            foreach (Line line in borderLines)
                 foreach (DrawableChar c in line.ElementContent)
                     r.Add(c);
             return r.ToArray();

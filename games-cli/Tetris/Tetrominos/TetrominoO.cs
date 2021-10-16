@@ -13,7 +13,7 @@ namespace Games
         {
         }
 
-        protected override List<Point[]> structure_rotate
+        protected override List<Point[]> structureRotate
         {
             get
             {

@@ -6,13 +6,13 @@ namespace Games
     class GameScreen : Screen
     {
         Game game;
-        Size windowSize;
+        Size FieldSize;
         public override IDrawable[] ElementContent => getContent();
 
         public GameScreen(Game game, Size windowSize)
         {
             this.game = game;
-            this.windowSize = windowSize;
+            this.FieldSize = windowSize;
             game.IsFocused = true;
         }
 
@@ -24,11 +24,11 @@ namespace Games
                 return new IDrawable[0];
             }
 
-            var temp_drawer = new Drawer(windowSize.Width, windowSize.Height);
-            game.PrepareForNextFrame(temp_drawer);
-            game.NextFrame(temp_drawer);
+            var tempDrawer = new Drawer(FieldSize.Width, FieldSize.Height);
+            game.PrepareForNextFrame(tempDrawer);
+            game.NextFrame(tempDrawer);
 
-            return temp_drawer.QueueForDrawing;
+            return tempDrawer.QueueForDrawing;
         }
 
         public override void HandleKey(ConsoleKey key)
@@ -36,9 +36,9 @@ namespace Games
             game.HandleKey(key);
         }
 
-        public override void OnWindowSizeChanged(int width, int height)
+        public override void OnWindowSizeChanged(Size fieldSize)
         {
-            this.windowSize = new Size(width, height);
+            this.FieldSize = fieldSize;
         }
     }
 }

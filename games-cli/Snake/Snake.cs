@@ -28,24 +28,24 @@ namespace Games
         В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
         направление может сменится несколько раз.
         */
-        Direction actual_direction;
+        Direction actualDirection;
         public Snake(char c, Padding p)
         {
             this.SnakeChar = c;
             this.Direction = Direction.Right;
-            this.actual_direction = Direction.Right;
+            this.actualDirection = Direction.Right;
             this.Blocks.Add(new DrawableChar(c, new Point(p.Left + 1, p.Top + 1)));
         }
 
         /**
         Пересекает ли змейка границы
         */
-        public bool BorderIntersect(int field_width, int field_height, Padding p)
+        public bool BorderIntersect(Size fieldSize, Padding p)
         {
             var h = this.Blocks[0].Location;
 
-            if (h.X <= p.Left || h.X >= field_width - p.Right - 1 ||
-                h.Y <= p.Top || h.Y >= field_height - p.Bottom - 1)
+            if (h.X <= p.Left || h.X >= fieldSize.Width - p.Right - 1 ||
+                h.Y <= p.Top || h.Y >= fieldSize.Height - p.Bottom - 1)
             {
                 return true;
             }
@@ -58,28 +58,28 @@ namespace Games
             // Проверить чтобы змейка не въехала в себя
             if (dir == Direction.Up)
             {
-                if (actual_direction != Direction.Down)
+                if (actualDirection != Direction.Down)
                 {
                     this.Direction = Direction.Up;
                 }
             }
             else if (dir == Direction.Left)
             {
-                if (actual_direction != Direction.Right)
+                if (actualDirection != Direction.Right)
                 {
                     this.Direction = Direction.Left;
                 }
             }
             else if (dir == Direction.Right)
             {
-                if (actual_direction != Direction.Left)
+                if (actualDirection != Direction.Left)
                 {
                     this.Direction = Direction.Right;
                 }
             }
             else if (dir == Direction.Down)
             {
-                if (actual_direction != Direction.Up)
+                if (actualDirection != Direction.Up)
                 {
                     this.Direction = Direction.Down;
                 }
@@ -111,7 +111,7 @@ namespace Games
             Point newBlockLocation = head.Location; // Координаты нового ведущего блока
 
             newBlockLocation = GetPosFollowingDirection(newBlockLocation, this.Direction);
-            actual_direction = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
+            actualDirection = this.Direction; // зафиксировать в каком направлении фактически двигается змейка
 
             DrawableChar blockToAdd = new DrawableChar(SnakeChar, newBlockLocation);
             Blocks.Insert(0, blockToAdd);

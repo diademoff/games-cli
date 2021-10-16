@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Games
 {
     /**
@@ -10,13 +12,13 @@ namespace Games
         public int Delay { get; set; }
         public int Score { get; set; }
 
-        public SnakeProgress(int delay, int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, int buttonShift)
+        public SnakeProgress(int delay, Size fieldSize, int buttonShift)
         {
             this.Score = 0;
             this.Delay = delay;
 
-            this.StatusBar = new TextField(new System.Drawing.Point(0, FIELD_SIZE_HEIGHT - buttonShift),
-                                FIELD_SIZE_WIDTH);
+            this.StatusBar = new TextField(new System.Drawing.Point(0, fieldSize.Height - buttonShift),
+                                fieldSize.Width);
             ChangeStatusBarText();
         }
 

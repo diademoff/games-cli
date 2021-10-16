@@ -9,8 +9,8 @@ namespace Games
     */
     public class Line : IDrawableElement
     {
-        public IDrawable[] ElementContent => line_chars.ToArray();
-        List<DrawableChar> line_chars = new List<DrawableChar>();
+        public IDrawable[] ElementContent => lineChars.ToArray();
+        List<DrawableChar> lineChars = new List<DrawableChar>();
 
         /**
         Создать линию по двум точкам
@@ -31,7 +31,7 @@ namespace Games
 
                 for (int i = from; i <= to; i++)
                 {
-                    line_chars.Add(new DrawableChar(c, new Point(p1.X, i)));
+                    lineChars.Add(new DrawableChar(c, new Point(p1.X, i)));
                 }
             }
             else
@@ -42,7 +42,7 @@ namespace Games
 
                 for (int i = from; i <= to; i++)
                 {
-                    line_chars.Add(new DrawableChar(c, new Point(i, p1.Y)));
+                    lineChars.Add(new DrawableChar(c, new Point(i, p1.Y)));
                 }
             }
         }

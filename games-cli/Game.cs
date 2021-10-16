@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 
 namespace Games
 {
@@ -17,13 +18,12 @@ namespace Games
         public abstract void NextFrame(Drawer d);
         public abstract void HandleKey(ConsoleKey key);
 
-        protected int FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT;
+        protected Size FieldSize;
         protected Padding padding;
 
-        public Game(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p)
+        public Game(Size fieldSize, Padding p)
         {
-            this.FIELD_SIZE_HEIGHT = FIELD_SIZE_HEIGHT;
-            this.FIELD_SIZE_WIDTH = FIELD_SIZE_WIDTH;
+            this.FieldSize = fieldSize;
             this.padding = p;
         }
     }

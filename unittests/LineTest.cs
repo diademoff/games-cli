@@ -10,16 +10,16 @@ namespace unittests
         [Fact]
         public void CreateLine()
         {
-            Line line_horizontal = new Line('*', new Point(0, 0), new Point(0, 3));
-            Line line_vertical = new Line('+', new Point(0, 0), new Point(3, 0));
+            Line lineHorizontal = new Line('*', new Point(0, 0), new Point(0, 3));
+            Line lineVertical = new Line('+', new Point(0, 0), new Point(3, 0));
 
             for (int i = 0; i < 4; i++)
             {
-                Assert.True(line_horizontal.ElementContent[i].Char == '*');
-                Assert.True(line_horizontal.ElementContent[i].Location == new Point(0, i));
+                Assert.True(lineHorizontal.ElementContent[i].Char == '*');
+                Assert.True(lineHorizontal.ElementContent[i].Location == new Point(0, i));
 
-                Assert.True(line_vertical.ElementContent[i].Char == '+');
-                Assert.True(line_vertical.ElementContent[i].Location == new Point(i, 0));
+                Assert.True(lineVertical.ElementContent[i].Char == '+');
+                Assert.True(lineVertical.ElementContent[i].Location == new Point(i, 0));
             }
         }
 

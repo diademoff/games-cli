@@ -12,11 +12,11 @@ namespace Games
         SelectionMenu sm;
         Padding p;
 
-        public SelectGameScreen(string[] variants, Size windowSize, Padding p)
+        public SelectGameScreen(string[] variants, Size fieldSize, Padding p)
         {
             this.p = p;
             this.variants = variants;
-            OnWindowSizeChanged(windowSize.Width, windowSize.Height);
+            OnWindowSizeChanged(fieldSize);
         }
 
         public override void HandleKey(ConsoleKey key)
@@ -26,12 +26,12 @@ namespace Games
                 Exit(sm.SelectedIndex);
         }
 
-        public override void OnWindowSizeChanged(int width, int height)
+        public override void OnWindowSizeChanged(Size fieldSize)
         {
             if (keyHandlers.Contains(sm))
                 keyHandlers.Remove(sm);
 
-            sm = new SelectionMenu(variants, width, height, defaultSelected: 0, p);
+            sm = new SelectionMenu(variants, fieldSize, defaultSelected: 0, p);
             sm.IsFocused = true;
             keyHandlers.Add(sm);
         }

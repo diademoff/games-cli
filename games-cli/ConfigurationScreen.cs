@@ -10,10 +10,10 @@ namespace Games
         ConfigStorage newConfig;
         public override IDrawable[] ElementContent => cm.ElementContent;
 
-        public ConfigurationScreen(Size windowSize, Padding p)
+        public ConfigurationScreen(Size fieldSize, Padding p)
         {
             newConfig = ConfigStorage.Current;
-            OnWindowSizeChanged(windowSize.Width, windowSize.Height);
+            OnWindowSizeChanged(fieldSize);
             this.p = p;
             this.cm.IsFocused = true;
         }
@@ -26,11 +26,11 @@ namespace Games
                 Exit(newConfig);
         }
 
-        public override void OnWindowSizeChanged(int width, int height)
+        public override void OnWindowSizeChanged(Size fieldSize)
         {
             cm = new ConfigMenu(
                 newConfig.GetConfigParams(),
-                new Size(width, height),
+                fieldSize,
                 p
             );
         }

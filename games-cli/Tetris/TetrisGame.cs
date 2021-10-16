@@ -5,8 +5,8 @@ namespace Games
 {
     public class TetrisGame : Game
     {
-        public override bool IsFocused { get => _isFocused; set => _isFocused = value; }
-        bool _isFocused = true;
+        public override bool IsFocused { get => isFocused; set => isFocused = value; }
+        bool isFocused = true;
 
         public override int DelayBetweenFrames => playGround.DelayBetweenFrames;
         public override bool IsGameOver => isGameOver;
@@ -16,36 +16,36 @@ namespace Games
         /// Игровое поле, в котором падают блоки
         TetrisPlayGround playGround;
         /// Меню паузы
-        SelectionMenu paused_menu;
+        SelectionMenu pausedMenu;
         /// Выбор действия после переполнения игрового поля
-        SelectionMenu game_over_menu;
+        SelectionMenu gameOverMenu;
         Border border;
-        int left_border_playground;
-        int right_border_playground;
+        int leftBorderPlayground;
+        int rightBorderPlayground;
         bool isPaused = false;
 
-        public TetrisGame(int FIELD_SIZE_WIDTH, int FIELD_SIZE_HEIGHT, Padding p) : base(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, p)
+        public TetrisGame(Size fieldSize, Padding p) : base(fieldSize, p)
         {
             int playGroundWidth = ConfigStorage.Current.TetrisPlayGroundWidth.Value;
-            this.left_border_playground = padding.Left + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2);
-            this.right_border_playground = FIELD_SIZE_WIDTH - (padding.Right + (FIELD_SIZE_WIDTH / 2) - (playGroundWidth / 2));
+            this.leftBorderPlayground = padding.Left + (fieldSize.Width / 2) - (playGroundWidth / 2);
+            this.rightBorderPlayground = fieldSize.Width - (padding.Right + (fieldSize.Width / 2) - (playGroundWidth / 2));
 
             Init();
         }
 
         void Init()
         {
-            playGround = new TetrisPlayGround(left_border_playground, right_border_playground, new Size(FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT), padding);
+            playGround = new TetrisPlayGround(leftBorderPlayground, rightBorderPlayground, FieldSize, padding);
 
-            this.rf = new RightInfo(right_border_playground, playGround.NextTetromino, padding);
-            this.paused_menu = new SelectionMenu(new string[]{
+            this.rf = new RightInfo(rightBorderPlayground, playGround.NextTetromino, padding);
+            this.pausedMenu = new SelectionMenu(new string[]{
                 "Resume",
                 "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
-            this.game_over_menu = new SelectionMenu(new string[]{
+            }, FieldSize, 0, padding);
+            this.gameOverMenu = new SelectionMenu(new string[]{
                 "Restart",
                 "Exit"
-            }, FIELD_SIZE_WIDTH, FIELD_SIZE_HEIGHT, 0, padding);
+            }, FieldSize, 0, padding);
         }
 
         /*
@@ -64,11 +64,11 @@ namespace Games
             }
             if (isPaused)
             {
-                paused_menu.HandleKey(key);
+                pausedMenu.HandleKey(key);
             }
             if (playGround.GameOver)
             {
-                game_over_menu.HandleKey(key);
+                gameOverMenu.HandleKey(key);
             }
             playGround.HandleKey(key);
         }
@@ -77,26 +77,26 @@ namespace Games
         {
             if (isPaused)
             {
-                d.Create(paused_menu);
+                d.Create(pausedMenu);
                 CheckPauseMenuSomethingSelected(d);
                 return;
             }
             else
             {
-                d.Remove(paused_menu);
+                d.Remove(pausedMenu);
             }
 
             if (playGround.GameOver)
             {
                 playGround.IsFocused = false;
-                d.Create(game_over_menu);
+                d.Create(gameOverMenu);
                 UserSelectionOnPlaygroundFilled(d);
                 return;
             }
 
             this.border = d.CreateBorder(ConfigStorage.Current.TetrisBorderChar.Value, new Padding(
-                left_border_playground,
-                FIELD_SIZE_WIDTH - right_border_playground,
+                leftBorderPlayground,
+                FieldSize.Width - rightBorderPlayground,
                 padding.Top,
                 padding.Bottom));
 
@@ -115,17 +115,17 @@ namespace Games
         */
         void CheckPauseMenuSomethingSelected(Drawer d)
         {
-            if (!paused_menu.IsSelected)
+            if (!pausedMenu.IsSelected)
             {
                 return;
             }
 
-            if (paused_menu.SelectedIndex == 0)
+            if (pausedMenu.SelectedIndex == 0)
             {
                 isPaused = false;
-                paused_menu.Reuse();
+                pausedMenu.Reuse();
             }
-            else if (paused_menu.SelectedIndex == 1)
+            else if (pausedMenu.SelectedIndex == 1)
             {
                 RemoveGame(d);
                 isGameOver = true;
@@ -138,17 +138,17 @@ namespace Games
         */
         void UserSelectionOnPlaygroundFilled(Drawer d)
         {
-            if (game_over_menu.IsSelected)
+            if (gameOverMenu.IsSelected)
             {
                 // Игрок выбрал что делать
                 RemoveGame(d);
 
-                if (game_over_menu.SelectedIndex == 0)
+                if (gameOverMenu.SelectedIndex == 0)
                 {
                     // Перезапустить игру
                     Init();
                 }
-                else if (game_over_menu.SelectedIndex == 1)
+                else if (gameOverMenu.SelectedIndex == 1)
                 {
                     // Выйти из игры
                     this.isGameOver = true;
@@ -161,8 +161,8 @@ namespace Games
         {
             d.Remove(playGround);
             d.Remove(rf);
-            d.Remove(paused_menu);
-            d.Remove(game_over_menu);
+            d.Remove(pausedMenu);
+            d.Remove(gameOverMenu);
             d.Remove(border);
         }
 
