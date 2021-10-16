@@ -14,7 +14,7 @@ namespace Games
 
     public class SnakeGame : Game
     {
-        public override bool IsFocused { get => isFocused; set => isFocused = value; }
+        public override bool IsFocused { get; set; } = true;
 
         public override int DelayBetweenFrames => frameDelay();
 
@@ -28,10 +28,6 @@ namespace Games
         классу, который вызвал эту игру о том что игра закончена.
         */
         bool isGameOver = false;
-        /**
-        Столкнулась ли змейка с собой или с краем.
-        */
-        bool snakeDead => snake.SelfIntersect() || snake.BorderIntersect(FieldSize, padding);
         int delay;
 
         /**
@@ -49,7 +45,6 @@ namespace Games
             return delay;
         }
 
-        bool isFocused = true;
         Apple apple;
         Snake snake;
         /**
@@ -118,7 +113,7 @@ namespace Games
                 drawBorder = false;
             }
 
-            if (snakeDead)
+            if (snake.IsDead(FieldSize, padding))
             {
                 selectGameOverAction(d);
                 return;
@@ -170,14 +165,12 @@ namespace Games
                 snake.AddBlock();
                 progress.AppleEaten();
                 RegenerateApple();
-                if (delay > 50)
-                {
-                    /*
-                    Уменьшить интервал между кадрами, то есть
-                    увеличить скорость змейки. Миниматьный интервал между кадрами: 50
-                    */
-                    delay -= 5;
-                }
+
+                /*
+                Уменьшить интервал между кадрами, то есть
+                увеличить скорость змейки. Миниматьный интервал между кадрами: 50
+                */
+                delay = Math.Max(50, delay - 5);
             }
         }
 
@@ -238,7 +231,7 @@ namespace Games
         {
             if (key == ConsoleKey.Escape)
             {
-                if (!snakeDead)
+                if (!snake.IsDead(FieldSize, padding))
                 {
                     // Не ставить на паузу если змейка врезалась и
                     // пользователь выбирает действие
@@ -249,11 +242,8 @@ namespace Games
             {
                 speedUp = true;
             }
-
-            if (snake.IsFocused)
-            {
-                snake.HandleKey(key);
-            }
+            
+            snake.HandleKey(key);
 
             if (gameOverAction.IsFocused)
             {

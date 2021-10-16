@@ -6,7 +6,7 @@ namespace Games
 {
     public class Column : IDrawableElement
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
 
         int topLength;
         int bottomLength;
@@ -34,7 +34,7 @@ namespace Games
             this.locationX -= pixels;
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             // top left
             var tl = new Line('|', new Point(locationX, p.Top), new Point(locationX, p.Top + topLength));

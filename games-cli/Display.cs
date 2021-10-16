@@ -67,8 +67,14 @@ namespace Games
                 else if (selectedIndex == 3)
                     ConfigurationScreen();
                 else if (selectedIndex == 4)
-                    Exited = true;
+                    Exit();
             });
+        }
+
+        void Exit()
+        {
+            Console.CursorVisible = true;
+            Exited = true;
         }
 
         void GameScreen(Game game)

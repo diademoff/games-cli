@@ -4,7 +4,7 @@ namespace Games
 {
     public class Bird : IDrawableElement
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
 
         IDrawable[] fallingState = new[]
         {
@@ -62,7 +62,7 @@ namespace Games
             this.location = new Point(this.location.X, this.location.Y + offset);
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             IDrawable[] source;
             if (falling)

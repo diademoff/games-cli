@@ -5,9 +5,7 @@ namespace Games
 {
     public class TetrisGame : Game
     {
-        public override bool IsFocused { get => isFocused; set => isFocused = value; }
-        bool isFocused = true;
-
+        public override bool IsFocused { get; set; } = true;
         public override int DelayBetweenFrames => playGround.DelayBetweenFrames;
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;

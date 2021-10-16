@@ -8,7 +8,7 @@ namespace Games
     */
     public class Border : IDrawableElement
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
         List<Line> borderLines = new List<Line>();
 
         public Border(char c, Point lt, Point rt, Point lb, Point rb)
@@ -84,7 +84,7 @@ namespace Games
             borderLines.Add(button);
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             List<DrawableChar> r = new List<DrawableChar>();
             foreach (Line line in borderLines)

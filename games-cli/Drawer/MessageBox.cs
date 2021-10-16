@@ -8,7 +8,7 @@ namespace Games
     */
     public class MessageBox : IDrawableElement
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
         Border border;
         TextField textField;
         public string Text { get; set; }
@@ -39,7 +39,7 @@ namespace Games
             textField.Text = text;
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             List<IDrawable> r = new List<IDrawable>();
 

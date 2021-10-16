@@ -8,7 +8,7 @@ namespace Games
     */
     class RightInfo : IDrawableElement
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
 
         /**
         Отображать следующий блок, который будет создан
@@ -37,7 +37,7 @@ namespace Games
             this.nextTetromino = t;
         }
 
-        IDrawable[] getContent()
+        IDrawable[] GetContent()
         {
             List<IDrawable> r = new List<IDrawable>();
 

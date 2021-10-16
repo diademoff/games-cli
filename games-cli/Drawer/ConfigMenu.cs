@@ -9,8 +9,7 @@ namespace Games
     */
     class ConfigMenu : IDrawableElement, IInteractive
     {
-        public bool IsFocused { get => isFocused; set => isFocused = value; }
-        bool isFocused = false;
+        public bool IsFocused { get; set; }
         public bool IsDone { get; private set; }
         SelectionMenu configMenu;
         public IDrawable[] ElementContent => configMenu.ElementContent;

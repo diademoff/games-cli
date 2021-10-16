@@ -7,7 +7,7 @@ namespace Games
     {
         Game game;
         Size FieldSize;
-        public override IDrawable[] ElementContent => getContent();
+        public override IDrawable[] ElementContent => GetContent();
 
         public GameScreen(Game game, Size windowSize)
         {
@@ -16,7 +16,7 @@ namespace Games
             game.IsFocused = true;
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             if (game.IsGameOver)
             {

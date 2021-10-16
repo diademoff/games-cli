@@ -10,14 +10,12 @@ namespace Games
     */
     class SelectionMenu : IDrawableElement, IInteractive
     {
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
         /// Выбран ли како-нибудь вариант
         public bool IsSelected = false;
-        public bool IsFocused { get => isFocused; set => isFocused = value; }
+        public bool IsFocused { get; set; } = false;
         /// Выбранный вариант
         public int SelectedIndex { get; private set; }
-
-        bool isFocused = false;
         Border Border;
         TextField[] Variants => GetTextFields(strVariants, SelectedIndex);
 
@@ -65,8 +63,6 @@ namespace Games
 
         public void ChangeVariantText(int index, string value)
         {
-            if (index < 0 || index >= strVariants.Length)
-                throw new IndexOutOfRangeException();
             this.strVariants[index] = value;
         }
 
@@ -135,7 +131,7 @@ namespace Games
             return fields;
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             List<DrawableChar> chars = new List<DrawableChar>();
 

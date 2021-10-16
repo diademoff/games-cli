@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Games
 {
-    public class Snake : IDrawableElement, IInteractive
+    public class Snake : IDrawableElement
     {
         /**
         Змейка состоит за блоков
@@ -20,9 +20,7 @@ namespace Games
         переменной показывает сколько еще блоков нужно добавить к змейке.
         */
         private int addBlockQueue = 0;
-        public IDrawable[] ElementContent => getContent();
-
-        public bool IsFocused { get => true; set => throw new NotImplementedException(); }
+        public IDrawable[] ElementContent => GetContent();
 
         /**
         В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
@@ -56,34 +54,33 @@ namespace Games
         public void ChangeDirection(Direction dir)
         {
             // Проверить чтобы змейка не въехала в себя
-            if (dir == Direction.Up)
+            switch (dir)
             {
-                if (actualDirection != Direction.Down)
-                {
-                    this.Direction = Direction.Up;
-                }
+                case Direction.Up:
+                    if (actualDirection != Direction.Down)
+                        this.Direction = Direction.Up;
+                    break;
+                case Direction.Left:
+                    if (actualDirection != Direction.Right)
+                        this.Direction = Direction.Left;
+                    break;
+                case Direction.Right:
+                    if (actualDirection != Direction.Left)
+                        this.Direction = Direction.Right;
+                    break;
+                case Direction.Down:
+                    if (actualDirection != Direction.Up)
+                        this.Direction = Direction.Down;
+                    break;
             }
-            else if (dir == Direction.Left)
-            {
-                if (actualDirection != Direction.Right)
-                {
-                    this.Direction = Direction.Left;
-                }
-            }
-            else if (dir == Direction.Right)
-            {
-                if (actualDirection != Direction.Left)
-                {
-                    this.Direction = Direction.Right;
-                }
-            }
-            else if (dir == Direction.Down)
-            {
-                if (actualDirection != Direction.Up)
-                {
-                    this.Direction = Direction.Down;
-                }
-            }
+        }
+
+        /**
+        Столкнулась ли змейка с собой или с краем.
+        */
+        public bool IsDead(Size FieldSize, Padding padding)
+        {
+            return this.SelfIntersect() || this.BorderIntersect(FieldSize, padding);
         }
 
         /// Сдвинуть змейку по направлению
@@ -175,7 +172,7 @@ namespace Games
         Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
         IDrawableElement
         */
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             IDrawable[] r = new IDrawable[Blocks.Count];
             for (int i = 0; i < Blocks.Count; i++)

@@ -33,7 +33,7 @@ namespace Games
         */
         List<IDrawable> tetrominoFallen = new List<IDrawable>();
         Random rnd = new Random();
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
         public bool IsFocused { get => isFocused; set => isFocused = value; }
         bool isFocused = true;
         Size fieldSize;
@@ -259,7 +259,7 @@ namespace Games
             throw new Exception("Unreal exception GetRandomTetromino");
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             List<IDrawable> r = new List<IDrawable>();
             r.AddRange(fallingTetromino.ElementContent);

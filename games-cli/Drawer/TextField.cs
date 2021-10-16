@@ -8,7 +8,7 @@ namespace Games
     public class TextField : IDrawableElement
     {
         public string Text { get; set; }
-        public IDrawable[] ElementContent => getContent();
+        public IDrawable[] ElementContent => GetContent();
 
         /**
         Позиция, начиная с которой будет напечатан текст слева направо
@@ -25,7 +25,7 @@ namespace Games
             this.Text = text;
         }
 
-        private IDrawable[] getContent()
+        private IDrawable[] GetContent()
         {
             IDrawable[] r = new IDrawable[length];
             for (int i = 0; i < length; i++)
