@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Games
 {
@@ -261,10 +262,7 @@ namespace Games
 
         private IDrawable[] GetContent()
         {
-            List<IDrawable> r = new List<IDrawable>();
-            r.AddRange(fallingTetromino.ElementContent);
-            r.AddRange(tetrominoFallen);
-            return r.ToArray();
+            return fallingTetromino.ElementContent.Concat(tetrominoFallen).ToArray();
         }
 
         bool IsOnBottom(Tetromino t)

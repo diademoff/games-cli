@@ -133,22 +133,7 @@ namespace Games
 
         private IDrawable[] GetContent()
         {
-            List<DrawableChar> chars = new List<DrawableChar>();
-
-            foreach (TextField variantField in Variants)
-            {
-                foreach (DrawableChar c in variantField.ElementContent)
-                {
-                    chars.Add(c);
-                }
-            }
-
-            foreach (DrawableChar c in Border.ElementContent)
-            {
-                chars.Add(c);
-            }
-
-            return chars.ToArray();
+            return Variants.SelectMany(x => x.ElementContent).Concat(Border.ElementContent).ToArray();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Linq;
 
 namespace Games
 {
@@ -75,13 +76,9 @@ namespace Games
                 falling = true;
             }
 
-            IDrawable[] result = new IDrawable[source.Length];
-            for (int i = 0; i < source.Length; i++)
-            {
-                var t = source[i];
-                result[i] = new DrawableChar(t.Char, new Point(t.Location.X + location.X, t.Location.Y + location.Y));
-            }
-            return result;
+            // Copy all elements
+            return source.Select(t => 
+                new DrawableChar(t.Char, new Point(t.Location.X + location.X, t.Location.Y + location.Y))).ToArray();
         }
     }
 }

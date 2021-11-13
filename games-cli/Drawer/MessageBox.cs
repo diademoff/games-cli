@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Games
 {
@@ -41,19 +42,7 @@ namespace Games
 
         private IDrawable[] GetContent()
         {
-            List<IDrawable> r = new List<IDrawable>();
-
-            foreach (var c in border.ElementContent)
-            {
-                r.Add(c);
-            }
-
-            foreach (var c in textField.ElementContent)
-            {
-                r.Add(c);
-            }
-
-            return r.ToArray();
+            return border.ElementContent.Concat(textField.ElementContent).ToArray();
         }
     }
 }

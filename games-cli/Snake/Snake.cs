@@ -174,12 +174,7 @@ namespace Games
         */
         private IDrawable[] GetContent()
         {
-            IDrawable[] r = new IDrawable[Blocks.Count];
-            for (int i = 0; i < Blocks.Count; i++)
-            {
-                r[i] = (IDrawable)Blocks[i];
-            }
-            return r;
+            return Blocks.ToArray();
         }
 
         /**
