@@ -248,7 +248,7 @@ namespace Games
 
         void RegenerateApple()
         {
-            apple = new Apple(new AppleGen(FieldSize, snake, padding), ref rnd);
+            apple = new Apple(new AppleGen(FieldSize, snake.Blocks.Select(x => x.Location), Padding), ref rnd);
         }
     }
 }

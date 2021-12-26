@@ -8,7 +8,7 @@ namespace Games
     /**
     Меню с вариантами выбора
     */
-    class SelectionMenu : IDrawableElement, IInteractive
+    public class SelectionMenu : IDrawableElement, IInteractive
     {
         public IDrawable[] ElementContent => GetContent();
         /// Выбран ли како-нибудь вариант

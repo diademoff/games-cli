@@ -9,6 +9,7 @@ namespace Games
         /**
         Змейка состоит за блоков
         */
+        public DrawableChar Head => Blocks[0];
         public List<DrawableChar> Blocks { get; private set; } = new List<DrawableChar>();
         /// Направление, в котором будет сделано следующее движение
         public Direction Direction { get; private set; }
@@ -33,6 +34,14 @@ namespace Games
             this.Direction = Direction.Right;
             this.actualDirection = Direction.Right;
             this.Blocks.Add(new DrawableChar(c, new Point(p.Left + 1, p.Top + 1)));
+        }
+
+        public Snake(char c, Padding p, Direction direction, Point startLocation)
+        {
+            this.SnakeChar = c;
+            this.Direction = direction;
+            this.actualDirection = direction;
+            this.Blocks.Add(new DrawableChar(c, startLocation));
         }
 
         /**

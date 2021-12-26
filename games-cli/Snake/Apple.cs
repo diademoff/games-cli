@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -27,25 +28,24 @@ namespace Games
         /**
         Не генерировать в заданных точках (на теле змейки)
         */
-        private Point[] Avoid;
+        private IEnumerable<Point> Avoid;
         /// Учитывать отступы
         public Padding Padding;
 
-        public AppleGen(Size fieldSize, Snake snake)
+        /// <summary>
+        /// Генератор яблок
+        /// </summary>
+        /// <param name="fieldSize"></param>
+        /// <param name="avoidPoints">Не генерировать на этих точках</param>
+        public AppleGen(Size fieldSize, IEnumerable<Point> avoidPoints)
         {
             FieldWidth = fieldSize.Width;
             FieldHeight = fieldSize.Height;
             Padding = new Padding(0, 0, 0, 0);
-
-            Avoid = new Point[snake.Blocks.Count];
-
-            for (int i = 0; i < snake.Blocks.Count; i++)
-            {
-                Avoid[i] = snake.Blocks[i].Location; // не генерировать на змейке
-            }
+            Avoid = avoidPoints;
         }
 
-        public AppleGen(Size fieldSize, Snake snake, Padding p) : this(fieldSize, snake)
+        public AppleGen(Size fieldSize, IEnumerable<Point> avoidPoints, Padding p) : this(fieldSize, avoidPoints)
         {
             this.Padding = p;
         }
