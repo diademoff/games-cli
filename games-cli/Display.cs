@@ -47,11 +47,12 @@ namespace Games
         public void StartScreen()
         {
             currentScreen = new SelectGameScreen(new string[]{
-                "Snake game",  // 0
-                "Tetris",      // 1
-                "Flappy bird", // 2
-                "Settings",    // 3
-                "Exit"         // 4
+                "Snake game",     // 0
+                "Snake together", // 1
+                "Tetris",         // 2
+                "Flappy bird",    // 3
+                "Settings",       // 4
+                "Exit"            // 5
             }, fieldSize, p);
 
             ScreenCaller.Call(currentScreen, drawer, 60).OnExit((i) =>
@@ -61,12 +62,14 @@ namespace Games
                 if (selectedIndex == 0)
                     GameScreen(new SnakeGame(fieldSize, p));
                 else if (selectedIndex == 1)
-                    GameScreen(new TetrisGame(fieldSize, p));
+                    GameScreen(new SnakeTogetherGame(fieldSize, p));
                 else if (selectedIndex == 2)
-                    GameScreen(new FlappyBirdGame(fieldSize, p));
+                    GameScreen(new TetrisGame(fieldSize, p));
                 else if (selectedIndex == 3)
-                    ConfigurationScreen();
+                    GameScreen(new FlappyBirdGame(fieldSize, p));
                 else if (selectedIndex == 4)
+                    ConfigurationScreen();
+                else if (selectedIndex == 5)
                     Exit();
             });
         }
