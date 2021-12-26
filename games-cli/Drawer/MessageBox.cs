@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace Games
     {
         public IDrawable[] ElementContent => GetContent();
         Border border;
-        TextField textField;
+        Func<Point> textStartLocation;
+        TextField textField => new TextField(textStartLocation(), Text.Length) { Text = Text };
         public string Text { get; set; }
 
         public MessageBox(string text, int width, int height, int fieldWidth, int fieldHeight, Padding p)
@@ -32,12 +34,10 @@ namespace Games
             /*
             Расчитать координаты текста так чтобы он был в центе обводки
             */
-            Point textStartLocation = new Point((fieldWidth / 2) - (text.Length / 2),
-                                    paddingTopBottom + (height / 2));
+            textStartLocation = () => new Point((fieldWidth / 2) - (Text.Length / 2),
+                                        paddingTopBottom + (height / 2));
 
             this.border = new Border('+', fieldWidth, fieldHeight, paddingBorder);
-            this.textField = new TextField(textStartLocation, text.Length);
-            textField.Text = text;
         }
 
         private IDrawable[] GetContent()
