@@ -24,9 +24,7 @@ namespace Games
         Line buttonLine;
         Line topLine;
         int score = 0;
-        TextField scoreCounter => new TextField(new Point(2, FieldSize.Height - padding.Bottom + 2), 15, $"Score: {score}");
-        SelectionMenu gameOverMenu;
-        SelectionMenu pauseMenu;
+        TextField scoreCounter => new TextField(new Point(2, FieldSize.Height - Padding.Bottom + 2), 15, $"Score: {score}");
 
         const int columnMoveOffset = 2;
         const int birdFallOffset = 1;
@@ -40,22 +38,16 @@ namespace Games
 
         void Init()
         {
-            int birdInitLocation_Y = (FieldSize.Height - padding.Top - padding.Bottom) / 2;
+            int birdInitLocation_Y = (FieldSize.Height - Padding.Top - Padding.Bottom) / 2;
             this.bird = new Bird(jumpSize: birdJumpOffset, new Point(20, birdInitLocation_Y));
-            this.buttonLine = new Line('-', new Point(padding.Left, FieldSize.Height - padding.Bottom), new Point(FieldSize.Width - padding.Right, FieldSize.Height - padding.Bottom));
-            this.topLine = new Line('-', new Point(padding.Left, padding.Top), new Point(FieldSize.Width - padding.Right, padding.Top));
+            this.buttonLine = new Line('-', new Point(Padding.Left, FieldSize.Height - Padding.Bottom), new Point(FieldSize.Width - Padding.Right, FieldSize.Height - Padding.Bottom));
+            this.topLine = new Line('-', new Point(Padding.Left, Padding.Top), new Point(FieldSize.Width - Padding.Right, Padding.Top));
             this.drawnColumns = new List<IEnumerable<IDrawable>>();
             this.score = 0;
-            this.gameOverMenu = new SelectionMenu(new string[]{
-                "Restart",
-                "Exit"
-            }, FieldSize, 0, padding);
-            this.gameOverMenu.IsFocused = false;
-            this.pauseMenu = new SelectionMenu(new string[]{
-                "Resume",
-                "Exit"
-            }, FieldSize, 0, padding);
-            this.pauseMenu.IsFocused = false;
+            this.GameOverActionMenu = GetDefaultGameOverMenu();
+            this.GameOverActionMenu.IsFocused = false;
+            this.MenuPaused = GetDefaultPauseMenu();
+            this.MenuPaused.IsFocused = false;
 
             InitColumns();
         }
@@ -76,20 +68,20 @@ namespace Games
 
         public override void HandleKey(ConsoleKey key)
         {
-            if (gameOverMenu.IsFocused)
+            if (GameOverActionMenu.IsFocused)
             {
-                gameOverMenu.HandleKey(key);
+                GameOverActionMenu.HandleKey(key);
                 return;
             }
 
             if (key == ConsoleKey.Escape)
             {
-                pauseMenu.IsFocused = !pauseMenu.IsFocused;
+                MenuPaused.IsFocused = !MenuPaused.IsFocused;
             }
 
-            if (pauseMenu.IsFocused)
+            if (MenuPaused.IsFocused)
             {
-                pauseMenu.HandleKey(key);
+                MenuPaused.HandleKey(key);
                 return;
             }
 
@@ -102,9 +94,9 @@ namespace Games
 
         public override void NextFrame(Drawer d)
         {
-            if (pauseMenu.IsFocused)
+            if (MenuPaused.IsFocused)
             {
-                d.Create(pauseMenu);
+                d.Create(MenuPaused);
                 PauseMenuAction(d);
                 return;
             }
@@ -130,21 +122,21 @@ namespace Games
 
         void PauseMenuAction(Drawer d)
         {
-            if (!pauseMenu.IsSelected)
+            if (!MenuPaused.IsSelected)
             {
                 return;
             }
 
-            if (pauseMenu.SelectedIndex == 0)
+            if (MenuPaused.SelectedIndex == 0)
             {
-                pauseMenu.IsFocused = false;
+                MenuPaused.IsFocused = false;
             }
-            else if (pauseMenu.SelectedIndex == 1)
+            else if (MenuPaused.SelectedIndex == 1)
             {
                 RemoveGame(d);
                 isGameOver = true;
             }
-            pauseMenu.Reuse();
+            MenuPaused.Reuse();
         }
 
         /**
@@ -152,21 +144,21 @@ namespace Games
         */
         void GameOverUserAction(Drawer d)
         {
-            d.Create(gameOverMenu);
-            this.gameOverMenu.IsFocused = true;
-            if (!gameOverMenu.IsSelected)
+            d.Create(GameOverActionMenu);
+            this.GameOverActionMenu.IsFocused = true;
+            if (!GameOverActionMenu.IsSelected)
             {
                 return;
             }
 
             RemoveGame(d);
-            d.Remove(gameOverMenu);
+            d.Remove(GameOverActionMenu);
 
-            if (gameOverMenu.SelectedIndex == 0)
+            if (GameOverActionMenu.SelectedIndex == 0)
             {
                 Init();
             }
-            else if (gameOverMenu.SelectedIndex == 1)
+            else if (GameOverActionMenu.SelectedIndex == 1)
             {
                 isGameOver = true;
             }
@@ -221,7 +213,7 @@ namespace Games
         {
             foreach (var c in content)
             {
-                if (c.Location.X >= padding.Left)
+                if (c.Location.X >= Padding.Left)
                 {
                     return false;
                 }
@@ -237,8 +229,8 @@ namespace Games
             List<IDrawable> result = new List<IDrawable>();
             foreach (var c in content)
             {
-                if (c.Location.X < padding.Left ||
-                    c.Location.X > FieldSize.Width - padding.Right)
+                if (c.Location.X < Padding.Left ||
+                    c.Location.X > FieldSize.Width - Padding.Right)
                 {
                     continue;
                 }
@@ -250,15 +242,15 @@ namespace Games
         Random random = new Random();
         Column GetColumn(int verticalLocation)
         {
-            return new Column(verticalLocation, intervalHeight: random.Next(13, 15), columnWidth, FieldSize, random, padding);
+            return new Column(verticalLocation, intervalHeight: random.Next(13, 15), columnWidth, FieldSize, random, Padding);
         }
 
         bool BirdIntersectsBorder(IDrawable[] birdContent)
         {
             foreach (IDrawable i in birdContent)
             {
-                if (i.Location.Y <= padding.Top ||
-                    i.Location.Y >= FieldSize.Height - padding.Bottom)
+                if (i.Location.Y <= Padding.Top ||
+                    i.Location.Y >= FieldSize.Height - Padding.Bottom)
                 {
                     return true;
                 }
@@ -282,7 +274,7 @@ namespace Games
             d.Remove(buttonLine);
             d.Remove(topLine);
             d.Remove(scoreCounter);
-            d.Remove(pauseMenu);
+            d.Remove(MenuPaused);
         }
 
         public override void PrepareForNextFrame(Drawer d)

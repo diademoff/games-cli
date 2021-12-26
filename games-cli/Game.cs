@@ -18,13 +18,37 @@ namespace Games
         public abstract void NextFrame(Drawer d);
         public abstract void HandleKey(ConsoleKey key);
 
+        /// Пользователь поставил игру на паузу
+        protected bool IsPaused = false;
+
         protected Size FieldSize;
-        protected Padding padding;
+        protected Padding Padding;
+
+        /// Меню паузы с выбором действия
+        protected SelectionMenu MenuPaused;
+        /// Выбор действия после переполнения игрового поля
+        protected SelectionMenu GameOverActionMenu;
 
         public Game(Size fieldSize, Padding p)
         {
             this.FieldSize = fieldSize;
-            this.padding = p;
+            this.Padding = p;
+        }
+
+        protected SelectionMenu GetDefaultPauseMenu()
+        {
+            return new SelectionMenu(new string[]{
+                "Resume",
+                "Exit"
+            }, FieldSize, 0, Padding);
+        }
+
+        protected SelectionMenu GetDefaultGameOverMenu()
+        {
+            return new SelectionMenu(new string[]{
+                    "Restart",
+                    "Exit"
+            }, FieldSize, 0, Padding);
         }
     }
 }

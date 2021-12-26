@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Games
 {
@@ -51,17 +52,12 @@ namespace Games
         Отрисовать следующий кадр быстрее (ускорить змейку)
         */
         bool speedUp = false;
-        Random rnd = new Random();
-        /// Меню паузы с выбором действия
-        SelectionMenu menuPaused;
-        /// Пользователь поставил игру на паузу
-        bool isPaused = false;
+        Random rnd = new Random();      
 
         /**
         Сохраняет очки, набранные змейкой и выводит их в StatusBar
         */
         SnakeProgress progress;
-        SelectionMenu gameOverAction;
         /// Нужно ли отрисовать границу
         bool drawBorder;
         /// Нарисованная граница
@@ -77,28 +73,22 @@ namespace Games
         */
         void Init()
         {
-            progress = new SnakeProgress(delay, FieldSize, padding.Bottom - 2);
-            snake = new Snake(ConfigStorage.Current.SnakeChar.Value, padding);
+            progress = new SnakeProgress(delay, FieldSize, Padding.Bottom - 2);
+            snake = new Snake(ConfigStorage.Current.SnakeChar.Value, Padding);
             // Пересоздать окно выбора действия чтобы сбросить предыдущий выбор
-            gameOverAction = new SelectionMenu(new string[]{
-                    "Restart",
-                    "Exit"
-                }, FieldSize, 0, padding);
-            menuPaused = new SelectionMenu(new string[]{
-                "Resume",
-                "Exit"
-            }, FieldSize, 0, padding);
+            GameOverActionMenu = GetDefaultGameOverMenu();
+            MenuPaused = GetDefaultPauseMenu();
             RegenerateApple();
-            gameOverAction.IsFocused = false;
+            GameOverActionMenu.IsFocused = false;
             delay = 100;
             drawBorder = true;
         }
 
         public override void PrepareForNextFrame(Drawer d)
         {
-            if (!isPaused)
+            if (!IsPaused)
             {
-                d.Remove(menuPaused);
+                d.Remove(MenuPaused);
             }
 
             d.Remove(snake.ElementContent[snake.ElementContent.Length - 1]);
@@ -109,23 +99,23 @@ namespace Games
         {
             if (drawBorder)
             {
-                this.border = d.CreateBorder(ConfigStorage.Current.SnakeGameBorderChar.Value, padding);
+                this.border = d.CreateBorder(ConfigStorage.Current.SnakeGameBorderChar.Value, Padding);
                 drawBorder = false;
             }
 
-            if (snake.IsDead(FieldSize, padding))
+            if (snake.IsDead(FieldSize, Padding))
             {
                 selectGameOverAction(d);
                 return;
             }
 
-            if (isPaused)
+            if (IsPaused)
             {
-                d.Create(menuPaused);
+                d.Create(MenuPaused);
                 CheckPausedMenuSomethingSelected(d);
             }
 
-            if (!isPaused)
+            if (!IsPaused)
             {
                 MoveSnake();
             }
@@ -140,17 +130,17 @@ namespace Games
 
         void CheckPausedMenuSomethingSelected(Drawer d)
         {
-            if (!menuPaused.IsSelected)
+            if (!MenuPaused.IsSelected)
             {
                 return;
             }
 
-            if (menuPaused.SelectedIndex == 0)
+            if (MenuPaused.SelectedIndex == 0)
             {
-                isPaused = false;
-                menuPaused.Reuse();
+                IsPaused = false;
+                MenuPaused.Reuse();
             }
-            else if (menuPaused.SelectedIndex == 1)
+            else if (MenuPaused.SelectedIndex == 1)
             {
                 RemoveGame(d);
                 isGameOver = true;
@@ -179,22 +169,22 @@ namespace Games
         */
         void selectGameOverAction(Drawer d)
         {
-            if (gameOverAction.IsSelected)
+            if (GameOverActionMenu.IsSelected)
             {
                 // Пользователь уже выбрал что делать
-                if (gameOverAction.SelectedIndex == 1)
+                if (GameOverActionMenu.SelectedIndex == 1)
                 {
                     ExitGame(d);
                     return;
                 }
-                else if (gameOverAction.SelectedIndex == 0)
+                else if (GameOverActionMenu.SelectedIndex == 0)
                 {
                     RestartGame(d);
                     return;
                 }
             }
-            d.Create(gameOverAction);
-            gameOverAction.IsFocused = true;
+            d.Create(GameOverActionMenu);
+            GameOverActionMenu.IsFocused = true;
         }
 
         /**
@@ -202,7 +192,7 @@ namespace Games
         */
         void RestartGame(Drawer d)
         {
-            d.Remove(gameOverAction);
+            d.Remove(GameOverActionMenu);
             d.Remove(snake);
             Init();
         }
@@ -222,8 +212,8 @@ namespace Games
             d.Remove(snake);
             d.Remove(apple);
             d.Remove(progress.StatusBar);
-            d.Remove(gameOverAction);
-            d.Remove(menuPaused);
+            d.Remove(GameOverActionMenu);
+            d.Remove(MenuPaused);
             d.Remove(border);
         }
 
@@ -231,11 +221,11 @@ namespace Games
         {
             if (key == ConsoleKey.Escape)
             {
-                if (!snake.IsDead(FieldSize, padding))
+                if (!snake.IsDead(FieldSize, Padding))
                 {
                     // Не ставить на паузу если змейка врезалась и
                     // пользователь выбирает действие
-                    isPaused = !isPaused;
+                    IsPaused = !IsPaused;
                 }
             }
             else if (key == ConsoleKey.Spacebar)
@@ -245,14 +235,14 @@ namespace Games
             
             snake.HandleKey(key);
 
-            if (gameOverAction.IsFocused)
+            if (GameOverActionMenu.IsFocused)
             {
-                gameOverAction.HandleKey(key);
+                GameOverActionMenu.HandleKey(key);
             }
 
-            if (isPaused)
+            if (IsPaused)
             {
-                menuPaused.HandleKey(key);
+                MenuPaused.HandleKey(key);
             }
         }
 
