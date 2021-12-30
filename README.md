@@ -23,6 +23,10 @@ Snake:
 * <kbd>Escape</kbd> пауза
 * <kbd>Пробел</kbd> ускорение
 
+Snake together:
+* Игрок 1: <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd>
+* Игрок 2: <kbd>↑</kbd>, <kbd>←</kbd>, <kbd>↓</kbd>, <kbd>→</kbd>
+
 Tetris:
 * <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> или <kbd>↑</kbd>, <kbd>←</kbd>, <kbd>↓</kbd>, <kbd>→</kbd>
 * <kbd>Escape</kbd> пауза
