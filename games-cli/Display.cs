@@ -5,21 +5,25 @@ using System.Threading.Tasks;
 
 namespace Games
 {
-    /**
-    Screen management
-    */
+    /// <summary>
+    /// Screen management
+    /// </summary>
     public class Display
     {
+        /// <summary>
         /// Пользователь вышел из приложения
+        /// </summary>
         public bool Exited { get; private set; } = false;
         Size fieldSize;
-        /**
-        Для отрисовки используется класс Drawer. Он предоставляет
-        возможность отрисовать IDrawable.
-        */
+        /// <summary>
+        /// Для отрисовки используется класс Drawer. Он предоставляет
+        /// возможность отрисовать IDrawable.
+        /// </summary>
         Drawer drawer;
         Screen currentScreen;
+        /// <summary>
         /// Отступы от краев консоли
+        /// </summary>
         Padding p = new Padding(1, 1, 3, 5);
 
         public Display()
@@ -41,9 +45,9 @@ namespace Games
             drawer = new Drawer(fieldSize.Width, fieldSize.Height);
         }
 
-        /**
-        Нарисовать окно с выбором игры и ждать пока пользователь выберет
-        */
+        /// <summary>
+        /// Нарисовать окно с выбором игры и ждать пока пользователь выберет
+        /// </summary>
         public void StartScreen()
         {
             currentScreen = new SelectGameScreen(new string[]{
@@ -101,9 +105,9 @@ namespace Games
             });
         }
 
-        /**
-        Запустить поток который читает нажатые клавиши
-        */
+        /// <summary>
+        /// Запустить поток, который читает нажатые клавиши
+        /// </summary>
         void InitKeyReading()
         {
             Thread keyReading = new Thread(ReadKeysThread);
@@ -111,9 +115,9 @@ namespace Games
             keyReading.Start();
         }
 
-        /**
-        Бесконечный цикл который читает нажатые клавиши
-        */
+        /// <summary>
+        /// Бесконечный цикл, который читает нажатые клавиши
+        /// </summary>
         void ReadKeysThread()
         {
             while (true)
@@ -123,9 +127,9 @@ namespace Games
             }
         }
 
-        /**
-        Вызывает функцию при изменении размера консоли.
-        */
+        /// <summary>
+        /// Вызывает функцию при изменении размера консоли.
+        /// </summary>
         async void WindowSizeChangedHandle()
         {
             Size currentFieldSize = fieldSize;

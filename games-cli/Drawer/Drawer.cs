@@ -5,30 +5,30 @@ using System.Linq;
 
 namespace Games
 {
-    /**
-    Класс для рисования в консоли. Добавляете в очередь
-    элементы и выводите их в консоль.
-    */
+    /// <summary>
+    /// Класс для рисования в консоли. Добавляете в очередь
+    /// элементы и выводите их в консоль.
+    /// </summary>
     public class Drawer
     {
-        /**
-        Массив содержит симолы которые отображены в консоли. Вместо
-        изменения массива используйте очередь на отрисовку.
-        */
+        /// <summary>
+        /// Массив содержит симолы которые отображены в консоли. Вместо
+        /// изменения массива используйте очередь на отрисовку.
+        /// </summary>
         public char[,] Content { get; private set; }
 
-        /**
-        В целях оптимизации вместо полной переотрисовки всего массива Content каждый кадр
-        используется очередь на отрисовку. При следующей отрисовке символы
-        отобразятся в консоли, а список с очередью будет очищен.
-        */
+        /// <summary>
+        /// В целях оптимизации вместо полной переотрисовки всего массива Content каждый кадр
+        /// используется очередь на отрисовку. При следующей отрисовке символы
+        /// отобразятся в консоли, а список с очередью будет очищен.
+        /// </summary>
         private Dictionary<Point, DrawableChar> drawQueue = new Dictionary<Point, DrawableChar>();
         public IDrawable[] QueueForDrawing => drawQueue.Select(x => x.Value).ToArray();
 
-        /**
-        Высота и ширина. Этими значениями ограничится поле на
-        котором можно рисовать.
-        */
+        /// <summary>
+        /// Высота и ширина. Этими значениями ограничится поле на
+        /// котором можно рисовать.
+        /// </summary>
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -39,9 +39,9 @@ namespace Games
             this.Height = height;
         }
 
-        /**
-        Отрисовать очередь. Вывести симолы в очереди
-        */
+        /// <summary>
+        /// Отрисовать очередь. Вывести симолы в очереди.
+        /// </summary>
         public void DrawToConsole()
         {
             foreach (KeyValuePair<Point, DrawableChar> p in drawQueue)
@@ -52,7 +52,9 @@ namespace Games
             drawQueue.Clear();
         }
 
+        /// <summary>
         /// Перерисовать всё содержимое (High CPU usage)
+        /// </summary>
         public void RedrawAll()
         {
             for (int i = 0; i < Content.GetLength(0); i++)
@@ -66,7 +68,9 @@ namespace Games
             }
         }
 
-        /// Отрисовать один символ в консоль
+        /// <summary>
+        ///  Отрисовать один символ в консоль
+        /// </summary>
         private void DrawCharToConsole(char c, Point p)
         {
             c = c == (char)0 ? ' ' : c; // заменить пустой символ пробелом
@@ -75,7 +79,9 @@ namespace Games
             Console.Write(c);
         }
 
-        /// Нарисовать границу из символов по краям с отступами
+        /// <summary>
+        /// Нарисовать границу из символов по краям с отступами.
+        /// </summary>
         public Border CreateBorder(char c, Padding p)
         {
             Border b = new Border(c, Width, Height, p);
@@ -83,9 +89,9 @@ namespace Games
             return b;
         }
 
-        /**
-        Добавить элемент в очередь на отрисовку
-        */
+        /// <summary>
+        /// Добавить элемент в очередь на отрисовку.
+        /// </summary>
         public void Create(IDrawableElement element)
         {
             foreach (IDrawable d in element.ElementContent)
@@ -94,9 +100,9 @@ namespace Games
             }
         }
 
-        /**
-        Добавить символ в очередь на отрисовку
-        */
+        /// <summary>
+        /// Добавить символ в очередь на отрисовку.
+        /// </summary>
         public void Create(char c, int x, int y)
         {
             var p = new Point(x, y);
@@ -108,17 +114,17 @@ namespace Games
             }
         }
 
-        /**
-        Добавить символ в очередь на отрисовку
-        */
+        /// <summary>
+        /// Добавить символ в очередь на отрисовку.
+        /// </summary>
         public void Create(IDrawable drawable)
         {
             Create(drawable.Char, drawable.Location.X, drawable.Location.Y);
         }
 
-        /**
-        Добавить символы в очередь на отрисовку
-        */
+        /// <summary>
+        /// Добавить символы в очередь на отрисовку.
+        /// </summary>
         public void Create(IEnumerable<IDrawable> drawables)
         {
             foreach (var item in drawables)
@@ -127,10 +133,10 @@ namespace Games
             }
         }
 
-        /**
-        Запросить затирание пробелами элемента. Запрос будет
-        добавлен в очередь и удовлетворен во время следующей отрисовки.
-        */
+        /// <summary>
+        /// Запросить затирание пробелами элемента. Запрос будет
+        /// добавлен в очередь и удовлетворен во время следующей отрисовки.
+        /// </summary>
         public void Remove(IDrawableElement element)
         {
             foreach (IDrawable d in element.ElementContent)
@@ -139,17 +145,17 @@ namespace Games
             }
         }
 
-        /**
-        Затереть пробелами символ
-        */
+        /// <summary>
+        /// Затереть пробелами символ.
+        /// </summary>
         public void Remove(IDrawable drawable)
         {
             Remove(drawable.Location.X, drawable.Location.Y);
         }
 
-        /**
-        Затереть пробелами символы
-        */
+        /// <summary>
+        /// Затереть пробелами символы.
+        /// </summary>
         public void Remove(IEnumerable<IDrawable> drawables)
         {
             foreach (var item in drawables)
@@ -158,9 +164,9 @@ namespace Games
             }
         }
 
-        /**
-        Удалить символ по заданным координатам
-        */
+        /// <summary>
+        /// Удалить символ по заданным координатам.
+        /// </summary>
         public void Remove(int x, int y)
         {
             Create(' ', x, y);

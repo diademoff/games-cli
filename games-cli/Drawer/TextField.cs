@@ -2,19 +2,21 @@ using System.Drawing;
 
 namespace Games
 {
-    /**
-    Реализация IDrawableElement для вывода теста в консоль
-    */
+    /// <summary>
+    /// Реализация IDrawableElement для вывода теста в консоль
+    /// </summary>
     public class TextField : IDrawableElement
     {
         public string Text { get; set; }
         public IDrawable[] ElementContent => GetContent();
 
-        /**
-        Позиция, начиная с которой будет напечатан текст слева направо
-        */
+        /// <summary>
+        /// Позиция, начиная с которой будет напечатан текст слева направо
+        /// </summary>
         private Point startLocation;
+        /// <summary>
         /// Максимальная длина текстового поля
+        /// </summary>
         public int length { get; private set; }
 
         public TextField(Point startLocation, int length, string text = "")

@@ -4,17 +4,17 @@ using System.Drawing;
 
 namespace Games
 {
-    /**
-    Горизонтальная или вертикальная линия
-    */
+    /// <summary>
+    /// Горизонтальная или вертикальная линия.
+    /// </summary>
     public class Line : IDrawableElement
     {
         public IDrawable[] ElementContent => lineChars.ToArray();
         List<DrawableChar> lineChars = new List<DrawableChar>();
 
-        /**
-        Создать линию по двум точкам
-        */
+        /// <summary>
+        /// Создать линию по двум точкам
+        /// </summary>
         public Line(char c, Point p1, Point p2)
         {
             if (!(p1.X == p2.X || p1.Y == p2.Y))

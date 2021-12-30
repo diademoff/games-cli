@@ -5,37 +5,43 @@ using System.Linq;
 
 namespace Games
 {
-    /**
-    Яблоко, которое змейка должна съесть
-    */
+    /// <summary>
+    /// Яблоко, которое змейка должна съесть
+    /// </summary>
     public class Apple : IDrawable
     {
         public Point Location { get; private set; }
         public char Char => ConfigStorage.Current.SnakeGameAppleChar.Value;
 
+        /// <summary>
         /// Создать яблоко в поле с случайным расположением
+        /// </summary>
         public Apple(AppleGen applegen, ref Random rnd)
         {
             this.Location = applegen.GetRandomPoint(ref rnd);
         }
     }
 
+    /// <summary>
     /// Apple generator
+    /// </summary>
     public struct AppleGen
     {
         public int FieldWidth;
         public int FieldHeight;
-        /**
-        Не генерировать в заданных точках (на теле змейки)
-        */
+        /// <summary>
+        /// Не генерировать в заданных точках (на теле змейки)
+        /// </summary>
         private IEnumerable<Point> Avoid;
+        /// <summary>
         /// Учитывать отступы
+        /// </summary>
         public Padding Padding;
 
         /// <summary>
         /// Генератор яблок
         /// </summary>
-        /// <param name="fieldSize"></param>
+        /// <param name="fieldSize">Размер поля</param>
         /// <param name="avoidPoints">Не генерировать на этих точках</param>
         public AppleGen(Size fieldSize, IEnumerable<Point> avoidPoints)
         {
@@ -50,9 +56,9 @@ namespace Games
             this.Padding = p;
         }
 
-        /**
-        Сгенерировать место в соответствии с заданными параметрами.
-        */
+        /// <summary>
+        /// Сгенерировать место в соответствии с заданными параметрами.
+        /// </summary>
         public Point GetRandomPoint(ref Random rnd)
         {
             Point point;

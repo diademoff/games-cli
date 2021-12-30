@@ -2,9 +2,9 @@ using System.Drawing;
 
 namespace Games
 {
-    /**
-    Простая реализация IDrawable - символ
-    */
+    /// <summary>
+    /// Простая реализация IDrawable - символ
+    /// </summary>
     public class DrawableChar : IDrawable
     {
         public char Char => c;

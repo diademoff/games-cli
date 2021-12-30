@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Games
 {
-    /**
-    Реализация IDrawableElement с настройками приложения
-    */
+    /// <summary>
+    /// Реализация IDrawableElement с настройками приложения
+    /// </summary>
     class ConfigMenu : IDrawableElement, IInteractive
     {
         public bool IsFocused { get; set; }

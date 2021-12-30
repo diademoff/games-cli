@@ -9,9 +9,7 @@ namespace Games
         public override int DelayBetweenFrames => playGround.DelayBetweenFrames;
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;
-        /// Информация справа
         RightInfo rf;
-        /// Игровое поле, в котором падают блоки
         TetrisPlayGround playGround;
         Border border;
         int leftBorderPlayground;
@@ -96,10 +94,11 @@ namespace Games
             playGroundDrawn = playGround.ElementContent;
         }
 
-        /**
-        Проверить не выбрал ли пользователь действие в меню паузы и
-        выполнить это действие
-        */
+        /// <summary>
+        /// Проверить не выбрал ли пользователь действие в меню паузы и
+        /// выполнить это действие
+        /// </summary>
+        /// <param name="d"></param>
         void CheckPauseMenuSomethingSelected(Drawer d)
         {
             if (!MenuPaused.IsSelected)
@@ -119,10 +118,10 @@ namespace Games
             }
         }
 
-        /**
-        После переполнения игрового поля будет вызваться этот
-        метод до тех пор пока игрок не выберет что сделать.
-        */
+        /// <summary>
+        /// После переполнения игрового поля будет вызваться этот
+        /// метод до тех пор пока игрок не выберет что сделать.
+        /// </summary>
         void UserSelectionOnPlaygroundFilled(Drawer d)
         {
             if (GameOverActionMenu.IsSelected)
@@ -153,12 +152,12 @@ namespace Games
             d.Remove(border);
         }
 
-        /**
-        Между кадрами из другого потока может поменяться
-        состояние игрового поля, поэтому сохраняется
-        фактически нарисованное поле, чтобы потом именно его
-        стереть, а не поле измененное из другого потока.
-        */
+        /// <summary>
+        /// Между кадрами из другого потока может поменяться
+        /// состояние игрового поля, поэтому сохраняется
+        /// фактически нарисованное поле, чтобы потом именно его
+        /// стереть, а не поле измененное из другого потока.
+        /// </summary>
         IDrawable[] playGroundDrawn = new IDrawable[0];
         public override void PrepareForNextFrame(Drawer d)
         {

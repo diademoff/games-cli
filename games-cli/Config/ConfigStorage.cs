@@ -1,8 +1,8 @@
 namespace Games
 {
-    /**
-    Хранилище настроек приложения
-    */
+    /// <summary>
+    /// Хранилище настроек приложения
+    /// </summary>
     public class ConfigStorage
     {
         public ConfigCharValue SnakeChar;

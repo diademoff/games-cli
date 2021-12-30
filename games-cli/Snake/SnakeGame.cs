@@ -19,22 +19,22 @@ namespace Games
 
         public override int DelayBetweenFrames => frameDelay();
 
-        /**
-        Игра заканчивается когда змейка столкнулась с чем-либо и пользователь
-        отказался перезапускать игру
-        */
+        /// <summary>
+        /// Игра заканчивается когда змейка столкнулась с чем-либо и пользователь
+        /// отказался перезапускать игру
+        /// </summary>
         public override bool IsGameOver => isGameOver;
-        /**
-        Чтобы выйти из игры сделайте эту переменную true, чтобы сообщить
-        классу, который вызвал эту игру о том что игра закончена.
-        */
+        /// <summary>
+        /// Чтобы выйти из игры сделайте эту переменную true, чтобы сообщить
+        /// классу, который вызвал эту игру о том что игра закончена.
+        /// </summary>
         bool isGameOver = false;
         int delay;
 
-        /**
-        Высчитать задержку между кадрами исходя из текущего прогресса и
-        ускорения.
-        */
+        /// <summary>
+        /// Высчитать задержку между кадрами исходя из текущего прогресса и
+        /// ускорения.
+        /// </summary>
         int frameDelay()
         {
             if (speedUp)
@@ -48,19 +48,23 @@ namespace Games
 
         Apple apple;
         Snake snake;
-        /**
-        Отрисовать следующий кадр быстрее (ускорить змейку)
-        */
+        /// <summary>
+        /// Отрисовать следующий кадр быстрее (ускорить змейку)
+        /// </summary>
         bool speedUp = false;
-        Random rnd = new Random();      
+        Random rnd = new Random();
 
-        /**
-        Сохраняет очки, набранные змейкой и выводит их в StatusBar
-        */
+        /// <summary>
+        /// Сохраняет очки, набранные змейкой и выводит их в StatusBar
+        /// </summary>
         SnakeProgress progress;
+        /// <summary>
         /// Нужно ли отрисовать границу
+        /// </summary>
         bool drawBorder;
-        /// Нарисованная граница
+        /// <summary>
+        /// Нарисованная граница, чтобы при выходе из игры удалить ее
+        /// </summary>
         Border border;
 
         public SnakeGame(Size fieldSize, Padding p) : base(fieldSize, p)
@@ -68,9 +72,9 @@ namespace Games
             Init();
         }
 
-        /**
-        Задаёт начальное состояние игры
-        */
+        /// <summary>
+        /// Задаёт начальное состояние игры
+        /// </summary>
         void Init()
         {
             progress = new SnakeProgress(delay, FieldSize, Padding.Bottom - 2);
@@ -164,9 +168,9 @@ namespace Games
             }
         }
 
-        /**
-        Окно выбора действия после столкновения змейки с чем-либо
-        */
+        /// <summary>
+        /// Окно выбора действия после столкновения змейки с чем-либо
+        /// </summary>
         void selectGameOverAction(Drawer d)
         {
             if (GameOverActionMenu.IsSelected)
@@ -187,9 +191,9 @@ namespace Games
             GameOverActionMenu.IsFocused = true;
         }
 
-        /**
-        Стереть не нужное содержимое и перезапустить игру
-        */
+        /// <summary>
+        /// Стереть не нужное содержимое и перезапустить игру
+        /// </summary>
         void RestartGame(Drawer d)
         {
             d.Remove(GameOverActionMenu);
@@ -197,9 +201,9 @@ namespace Games
             Init();
         }
 
-        /**
-        Стереть ненужное содержимое и выйти из игры
-        */
+        /// <summary>
+        /// Стереть ненужное содержимое и выйти из игры
+        /// </summary>
         void ExitGame(Drawer d)
         {
             this.isGameOver = true;

@@ -14,10 +14,10 @@ namespace Games
         public override bool IsGameOver => isGameOver;
         bool isGameOver = false;
         Bird bird;
-        /*
-        Фактически отрисованная птичка, чтобы ее стереть, так как
-        состояние птички изменяется из другого потока.
-        */
+        /// <summary>
+        /// Фактически отрисованная птичка, чтобы ее стереть, так как
+        /// состояние птички изменяется из другого потока.
+        /// </summary>
         IDrawable[] drawnBird;
         Column[] columns;
         List<IEnumerable<IDrawable>> drawnColumns;
@@ -139,9 +139,9 @@ namespace Games
             MenuPaused.Reuse();
         }
 
-        /**
-        Пользователь выбирает действие
-        */
+        /// <summary>
+        /// Пользователь выбирает действие
+        /// </summary>
         void GameOverUserAction(Drawer d)
         {
             d.Create(GameOverActionMenu);
@@ -206,9 +206,9 @@ namespace Games
             }
         }
 
-        /**
-        Находится ли элемент полностью за левым краем
-        */
+        /// <summary>
+        /// Находится ли элемент полностью за левым краем
+        /// </summary>
         bool IsGoneLeft(IEnumerable<IDrawable> content)
         {
             foreach (var c in content)
@@ -221,9 +221,9 @@ namespace Games
             return true;
         }
 
-        /**
-        Обрезает пиксели, которые выходят за границы вертикально
-        */
+        /// <summary>
+        /// Обрезает пиксели, которые выходят за границы вертикально
+        /// </summary>
         List<IDrawable> CutContentVertical(IEnumerable<IDrawable> content)
         {
             List<IDrawable> result = new List<IDrawable>();

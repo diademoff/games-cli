@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Games
 {
-    /**
-    Текстовое сообщение в рамке. Состоит из рамки (Border) и текстового поля (TextField)
-    */
+    /// <summary>
+    /// Текстовое сообщение в рамке. Состоит из рамки (Border) и текстового поля (TextField)
+    /// </summary>
     public class MessageBox : IDrawableElement
     {
         public IDrawable[] ElementContent => GetContent();

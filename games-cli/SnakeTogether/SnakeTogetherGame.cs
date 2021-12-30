@@ -174,9 +174,9 @@ namespace Games
             }
         }
 
-        /**
-        Лобовое столкновение это ничья
-        */
+        /// <summary>
+        /// Лобовое столкновение это ничья
+        /// </summary>
         bool IsDraw()
         {
             return snake1.Head.Location.X == snake2.Head.Location.X &&

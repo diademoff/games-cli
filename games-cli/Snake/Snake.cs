@@ -6,27 +6,31 @@ namespace Games
 {
     public class Snake : IDrawableElement
     {
-        /**
-        Змейка состоит за блоков
-        */
+        /// <summary>
+        /// Змейка состоит за блоков
+        /// </summary>
         public DrawableChar Head => Blocks[0];
         public List<DrawableChar> Blocks { get; private set; } = new List<DrawableChar>();
+        /// <summary>
         /// Направление, в котором будет сделано следующее движение
+        /// </summary>
         public Direction Direction { get; private set; }
+        /// <summary>
         /// Символ, которым рисуется змейка
+        /// </summary>
         public char SnakeChar { get; set; }
         public Point InitPosition => new Point(1, 1);
-        /**
-        Добавление нового блока к змейки происходит во время движения. Значение
-        переменной показывает сколько еще блоков нужно добавить к змейке.
-        */
+        /// <summary>
+        /// Добавление нового блока к змейки происходит во время движения. Значение
+        /// переменной показывает сколько еще блоков нужно добавить к змейке.
+        /// </summary>
         private int addBlockQueue = 0;
         public IDrawable[] ElementContent => GetContent();
 
-        /**
-        В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
-        направление может сменится несколько раз.
-        */
+        /// <summary>
+        /// В каком направлении фактически было сделано движение последний раз. Так как за одну итерацию
+        /// направление может сменится несколько раз.
+        /// </summary>
         Direction actualDirection;
         public Snake(char c, Padding p)
         {
@@ -44,9 +48,9 @@ namespace Games
             this.Blocks.Add(new DrawableChar(c, startLocation));
         }
 
-        /**
-        Пересекает ли змейка границы
-        */
+        /// <summary>
+        /// Пересекает ли змейка границы
+        /// </summary>
         public bool BorderIntersect(Size fieldSize, Padding p)
         {
             var h = this.Blocks[0].Location;
@@ -59,7 +63,9 @@ namespace Games
             return false;
         }
 
+        /// <summary>
         /// Изменить направление змейки
+        /// </summary>
         public void ChangeDirection(Direction dir)
         {
             // Проверить чтобы змейка не въехала в себя
@@ -84,15 +90,17 @@ namespace Games
             }
         }
 
-        /**
-        Столкнулась ли змейка с собой или с краем.
-        */
+        /// <summary>
+        /// Столкнулась ли змейка с собой или с краем.
+        /// </summary>
         public bool IsDead(Size FieldSize, Padding padding)
         {
             return this.SelfIntersect() || this.BorderIntersect(FieldSize, padding);
         }
 
+        /// <summary>
         /// Сдвинуть змейку по направлению
+        /// </summary>
         public void Move()
         {
             // Первый (ведущий) блок змейки
@@ -123,9 +131,9 @@ namespace Games
             Blocks.Insert(0, blockToAdd);
         }
 
-        /**
-        Пересекает ли змейка сама себя в данный момент
-        */
+        /// <summary>
+        /// Пересекает ли змейка сама себя в данный момент
+        /// </summary>
         public bool SelfIntersect()
         {
             for (int i = 0; i < Blocks.Count - 1; i++)
@@ -142,16 +150,18 @@ namespace Games
             return false;
         }
 
+        /// <summary>
         /// Находится ли голова змейки на яблоке
+        /// </summary>
         public bool IsEaten(Apple apple)
         {
             return Blocks[0].Location.X == apple.Location.X &&
                     Blocks[0].Location.Y == apple.Location.Y;
         }
 
-        /**
-        Добавить блок к змейке
-        */
+        /// <summary>
+        /// Добавить блок к змейке
+        /// </summary>
         public void AddBlock()
         {
             this.addBlockQueue += 1;
@@ -177,18 +187,18 @@ namespace Games
             }
         }
 
-        /**
-        Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
-        IDrawableElement
-        */
+        /// <summary>
+        /// Ковертировать блоки в IDrawable, чтобы реализовать интерфейс
+        /// IDrawableElement
+        /// </summary>
         private IDrawable[] GetContent()
         {
             return Blocks.ToArray();
         }
 
-        /**
-        Получить координаты левее/правее/ниже/выше на 1 чем заданная
-        */
+        /// <summary>
+        /// Получить координаты левее/правее/ниже/выше на 1 чем заданная
+        /// </summary>
         private Point GetPosFollowingDirection(Point point, Direction dir)
         {
             switch (dir)

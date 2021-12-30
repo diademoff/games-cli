@@ -8,25 +8,31 @@ namespace Games
         public abstract bool IsFocused { get; set; }
         public abstract int DelayBetweenFrames { get; }
         public abstract bool IsGameOver { get; }
-        /**
-        Сформировать запросы на удаление старых символов/элементов
-        */
+        /// <summary>
+        /// Сформировать запросы на удаление старых символов/элементов
+        /// </summary>
         public abstract void PrepareForNextFrame(Drawer d);
-        /**
-        Сформировать запросы на отрисовку нужных элементов
-        */
+        /// <summary>
+        /// Сформировать запросы на отрисовку нужных элементов
+        /// </summary>
         public abstract void NextFrame(Drawer d);
         public abstract void HandleKey(ConsoleKey key);
 
+        /// <summary>
         /// Пользователь поставил игру на паузу
+        /// </summary>
         protected bool IsPaused = false;
 
         protected Size FieldSize;
         protected Padding Padding;
 
+        /// <summary>
         /// Меню паузы с выбором действия
+        /// </summary>
         protected SelectionMenu MenuPaused;
+        /// <summary>
         /// Выбор действия после переполнения игрового поля
+        /// </summary>
         protected SelectionMenu GameOverActionMenu;
 
         public Game(Size fieldSize, Padding p)

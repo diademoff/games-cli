@@ -2,9 +2,9 @@ using System.Drawing;
 
 namespace Games
 {
-    /**
-    Символ который можно вывеси в консоль
-    */
+    /// <summary>
+    /// Символ который можно вывеси в консоль.
+    /// </summary>
     public interface IDrawable
     {
         char Char { get; }

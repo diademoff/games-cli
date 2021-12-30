@@ -2,14 +2,18 @@ using System;
 
 namespace Games
 {
-    /**
-    Интерактивный - значит может обрабатывать нажатия клавиш
-    */
+    /// <summary>
+    /// Интерактивный - значит может обрабатывать нажатия клавиш.
+    /// </summary>
     public interface IInteractive
     {
-        /// Включена ли обработка нажатий
+        /// <summary>
+        /// Включена ли обработка нажатий.
+        /// </summary>
         bool IsFocused { get; set; }
-        /// Обработать нажатие
+        /// <summary>
+        /// Обработать нажатие.
+        /// </summary>
         void HandleKey(ConsoleKey key);
     }
 }

@@ -2,9 +2,9 @@ using System;
 
 namespace Games
 {
-    /**
-    Параметры конфигурации с выбором
-    */
+    /// <summary>
+    /// Параметры конфигурации с выбором
+    /// </summary>
     public class ConfigParam
     {
         public string ConfigTitle;
@@ -34,10 +34,10 @@ namespace Games
             this.SelectedValueIndex = 0;
         }
 
-        /**
-        IConfigValue - это ссылочный тип, поэтому возможно изменение
-        конфигурации при вызове OnValueChanged
-        */
+        /// <summary>
+        /// IConfigValue - это ссылочный тип, поэтому возможно изменение
+        /// конфигурации при вызове OnValueChanged
+        /// </summary>
         public ConfigParam BindTo<T>(IConfigValue<T> v)
         {
             // Выбрать пункт, который сейчас находится в конфиге

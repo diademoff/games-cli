@@ -33,17 +33,17 @@ namespace Games
             new DrawableChar('\\', new Point(4, 1))
         };
 
-        /**
-        У птички два состояния: падает или взлетает
-        */
+        /// <summary>
+        /// У птички два состояния: падает или взлетает
+        /// </summary>
         bool falling = true;
-        /**
-        Высота на которую взлетает птичка
-        */
+        /// <summary>
+        /// Высота на которую взлетает птичка
+        /// </summary>
         int jumpSize;
-        /*
-        Положение птички
-        */
+        /// <summary>
+        /// Положение птички
+        /// </summary>
         Point location;
 
         public Bird(int jumpSize, Point location)

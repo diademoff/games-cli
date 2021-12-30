@@ -1,7 +1,3 @@
-/*
-Tetromino в форме квадрата 2x2
-*/
-
 using System.Collections.Generic;
 using System.Drawing;
 

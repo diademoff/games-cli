@@ -3,23 +3,26 @@ using System.Drawing;
 
 namespace Games
 {
-    /**
-    Информация справа в игре Тетрис
-    */
+    /// <summary>
+    /// Информация справа в игре Тетрис
+    /// </summary>
     class RightInfo : IDrawableElement
     {
         public IDrawable[] ElementContent => GetContent();
 
-        /**
-        Отображать следующий блок, который будет создан
-        после того как упадет текущий.
-        */
+        /// <summary>
+        /// Отображать следующий блок, который будет создан
+        /// после того как упадет текущий.
+        /// </summary>
         Tetromino nextTetromino;
-        /// Место в котором нарисовать информацию о следующем блоке
+        /// <summary>
+        /// Место, в котором нарисовать информацию о следующем блоке
+        /// </summary>
         Point nextTetrominoLocation;
-        /// Текстовое поле в котором написано кол-во набранных очков
+        /// <summary>
+        /// Текстовое поле, в котором написано кол-во набранных очков
+        /// </summary>
         TextField scoreField;
-        /// Счетчик очков
         int scoreCount = 0;
         public RightInfo(int rightBorder, Tetromino nextTetromino, Padding p)
         {

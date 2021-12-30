@@ -5,24 +5,32 @@ using System.Linq;
 
 namespace Games
 {
-    /**
-    Меню с вариантами выбора
-    */
+    /// <summary>
+    /// Меню с вариантами выбора
+    /// </summary>
     public class SelectionMenu : IDrawableElement, IInteractive
     {
         public IDrawable[] ElementContent => GetContent();
+        /// <summary>
         /// Выбран ли како-нибудь вариант
+        /// </summary>
         public bool IsSelected = false;
         public bool IsFocused { get; set; } = false;
+        /// <summary>
         /// Выбранный вариант
+        /// </summary>
         public int SelectedIndex { get; private set; }
         Border Border;
         TextField[] Variants => GetTextFields(strVariants, SelectedIndex);
 
         string[] strVariants;
+        /// <summary>
         /// Отступ сверху и снизу (отступы одинаковы)
+        /// </summary>
         int paddingTopBottom;
+        /// <summary>
         /// Отступ слева и справа
+        /// </summary>
         int paddingLeftRight;
         int fieldWidth;
         int fieldHeight;
@@ -66,7 +74,9 @@ namespace Games
             this.strVariants[index] = value;
         }
 
+        /// <summary>
         /// Сбросить сделанный выбор, вернуть в начальное состояние
+        /// </summary>
         public void Reuse()
         {
             this.SelectedIndex = defaultSelected;
